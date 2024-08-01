@@ -11,10 +11,10 @@ export default function NavBar() {
     </div>
     <ul className="navbar-menu">
         <li><Link to="/">Home</Link></li>
-        <li><a href="#">About</a></li>
+        {/*  <li><a href="#">About</a></li>*/}
         <li><Link to="/Login">Login</Link></li>
-        <li><Link to="/SignIn">Sign In</Link></li>
-        <li><a href="#">Contact</a></li>
+        <li><Link to="/SignUP">Sign In</Link></li>
+        {/*  <li><a href="#">Contact</a></li> */} 
     </ul>
     </nav>
   )
