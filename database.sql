@@ -1,8 +1,9 @@
-﻿create database assalaIskane;
+﻿drop database assalaIskane;
+create database assalaIskane;
 use assalaIskane;
 create table user(id varchar(10) primary key, nom varchar(20), prenom varchar(20), fonction varchar(30), numero varchar(15));
 create table ouvrier(id varchar(15) primary key, nom varchar(20), prenom varchar(20), numero varchar(15));
-create table projet(id varchar(40) primary key, nom varchar(40), id_resp varchar(10));
+create table projet(id varchar(40) primary key, nom varchar(40), numero_marche varchar(30), objet varchar(100), date_ordre date, date_fin date, delai int, id_resp varchar(10));
 alter table projet add constraint foreign key (id_resp) references user(id);
 create table chantier(id int primary key auto_increment, id_projet varchar(40), id_resp varchar(10));
 alter table chantier add constraint foreign key (id_projet) references projet(id);
@@ -25,3 +26,20 @@ alter table materiaux add constraint foreign key (id_stock) references stock(id)
 create table materiaux_chantier(id_materiaux int, id_chantier int, qte int);
 alter table materiaux_chantier add constraint foreign key (id_materiaux) references materiaux(id);
 alter table materiaux_chantier add constraint foreign key (id_chantier) references chantier(id);
+create table rapport_jour(id int primary key, date_rj date, temperature varchar(50), pluie varchar(50), vent varchar(50), remarque varchar(150), id_chantier int);
+alter table rapport_jour add constraint foreign key (id_chantier) references chantier(id);
+create table rj_perso_travaille(id_rj int, type varchar(30), id_ouvrier varchar(15));
+alter table rj_perso_travaille add constraint foreign key (id_ouvrier) references ouvrier(id);
+alter table rj_perso_travaille add constraint foreign key (id_rj) references rapport_jour(id);
+create table rj_materiel_sur_chantier(materiel varchar(50), qte int, etat varchar(30), type varchar(30), id_rj int);
+alter table rj_materiel_sur_chantier add constraint foreign key (id_rj) references rapport_jour(id);
+create table rj_travaux_realiser(id int primary key auto_increment, id_rj int, description varchar(150));
+alter table rj_travaux_realiser add constraint foreign key (id_rj) references rapport_jour(id);
+create table photo_rjtr(id_rj_tr int, photo blob);
+alter table photo_rjtr add constraint foreign key (id_rj_tr) references rj_travaux_realiser(id);
+create table rj_materiels_materiaux(id_rj int, designation varchar(50), unité varchar(1), qte int);
+alter table rj_materiels_materiaux add constraint foreign (id_rj) references rapport_jour(id);
+create table avancement_projet(id int primary key auto_increment, date_rapport date, id_projet varchar(40));
+alter table avancement_projet add constraint foreign key (id_projet) references projet(id);
+
+create table ap(id_ap int, no int, nom varchar(50), duree int, debut date, fin date, etat varchar(30), avancement varchar(100));
