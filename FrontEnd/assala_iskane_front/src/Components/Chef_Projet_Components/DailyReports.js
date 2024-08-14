@@ -1,123 +1,155 @@
 import React, { useState } from 'react';
-import {
-  Container,
-  Typography,
-  TextField,
-  Button,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Box,
-} from '@mui/material';
+import './DailyReports.css';
 
 export default function DailyReports() {
-  // Local list of daily reports
   const [reports, setReports] = useState([
-    { id: 1, titre: 'Inspection du Site', contenu: 'Inspection de l’état du chantier à Casablanca', date: '2024-08-13' },
-    { id: 2, titre: 'Réunion de Coordination', contenu: 'Réunion avec les équipes de Marrakech pour discuter des progrès', date: '2024-08-14' },
+    {
+      id: 1,
+      ficheNumber: 29,
+      date: '2024-07-22',
+      weather: {
+        temperature: 'Élevée',
+        rain: 'Non',
+        wind: 'Pas de vent',
+      },
+      tasks: [
+        'Mise en place du ferraillage et coffrage des deux massifs',
+        'Bétonnage des poteaux du premier étage',
+        'Traçage des zones de cloisons du RDC',
+      ],
+      remarks: 'À ce jour, les travaux de bétonnage des poteaux du premier étage ont été achevés avec succès.',
+    },
+    // Other reports...
   ]);
 
   const [newReport, setNewReport] = useState({
-    titre: '',
-    contenu: '',
+    ficheNumber: '',
     date: '',
+    weather: {
+      temperature: '',
+      rain: '',
+      wind: '',
+    },
+    tasks: [],
+    remarks: '',
   });
 
   const handleChange = (e) => {
-    setNewReport({
-      ...newReport,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setNewReport((prevReport) => ({
+      ...prevReport,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (newReport.titre && newReport.contenu && newReport.date) {
+    if (newReport.ficheNumber && newReport.date) {
       setReports([
         ...reports,
         {
           ...newReport,
-          id: reports.length + 1, // Simple ID generation
+          id: reports.length + 1,
         },
       ]);
       setNewReport({
-        titre: '',
-        contenu: '',
+        ficheNumber: '',
         date: '',
+        weather: {
+          temperature: '',
+          rain: '',
+          wind: '',
+        },
+        tasks: [],
+        remarks: '',
       });
     } else {
-      alert('Veuillez remplir tous les champs');
+      alert('Veuillez remplir tous les champs requis');
     }
   };
 
   return (
-    <Container>
-      <Typography variant="h4" component="h1" gutterBottom>
-        Rapports Quotidiens
-      </Typography>
-      <form onSubmit={handleSubmit}>
-        <TextField
-          label="Titre du Rapport"
-          name="titre"
-          value={newReport.titre}
-          onChange={handleChange}
-          fullWidth
-          margin="normal"
-        />
-        <TextField
-          label="Contenu du Rapport"
-          name="contenu"
-          value={newReport.contenu}
-          onChange={handleChange}
-          fullWidth
-          margin="normal"
-          multiline
-          rows={4}
-        />
-        <TextField
-          label="Date du Rapport"
-          name="date"
-          type="date"
-          value={newReport.date}
-          onChange={handleChange}
-          fullWidth
-          margin="normal"
-          InputLabelProps={{ shrink: true }}
-        />
-        <Button variant="contained" color="primary" type="submit" style={{ marginTop: 16 }}>
-          Ajouter Rapport
-        </Button>
-      </form>
+    <div className="app-container">
+      <div className="main-content">
+        <form className="report-form" onSubmit={handleSubmit}>
+          <h2>Ajouter un Rapport Quotidien</h2>
+          <input
+            type="text"
+            name="ficheNumber"
+            placeholder="Numéro de Fiche"
+            value={newReport.ficheNumber}
+            onChange={handleChange}
+          />
+          <input
+            type="date"
+            name="date"
+            value={newReport.date}
+            onChange={handleChange}
+          />
+          <input
+            type="text"
+            name="temperature"
+            placeholder="Température"
+            value={newReport.weather.temperature}
+            onChange={(e) =>
+              setNewReport((prevReport) => ({
+                ...prevReport,
+                weather: { ...prevReport.weather, temperature: e.target.value },
+              }))
+            }
+          />
+          <input
+            type="text"
+            name="rain"
+            placeholder="Pluie"
+            value={newReport.weather.rain}
+            onChange={(e) =>
+              setNewReport((prevReport) => ({
+                ...prevReport,
+                weather: { ...prevReport.weather, rain: e.target.value },
+              }))
+            }
+          />
+          <input
+            type="text"
+            name="wind"
+            placeholder="Vent"
+            value={newReport.weather.wind}
+            onChange={(e) =>
+              setNewReport((prevReport) => ({
+                ...prevReport,
+                weather: { ...prevReport.weather, wind: e.target.value },
+              }))
+            }
+          />
+          <textarea
+            name="remarks"
+            placeholder="Remarques"
+            value={newReport.remarks}
+            onChange={handleChange}
+          />
+          <button type="submit">Ajouter Rapport</button>
+        </form>
 
-      <Box mt={4}>
-        <Typography variant="h4" component="h2" gutterBottom>
-          Liste des Rapports Quotidiens
-        </Typography>
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Titre</TableCell>
-                <TableCell>Contenu</TableCell>
-                <TableCell>Date</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {reports.map((report) => (
-                <TableRow key={report.id}>
-                  <TableCell>{report.titre}</TableCell>
-                  <TableCell>{report.contenu}</TableCell>
-                  <TableCell>{report.date}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Box>
-    </Container>
+        <div className="reports-list">
+          {reports.map((report) => (
+            <div className="report-card" key={report.id}>
+              <h3>Fiche N° {report.ficheNumber}</h3>
+              <p>Date: {report.date}</p>
+              <p>Température: {report.weather.temperature}</p>
+              <p>Pluie: {report.weather.rain}</p>
+              <p>Vent: {report.weather.wind}</p>
+              <div>
+                <h4>Travaux Réalisés</h4>
+                {report.tasks.map((task, index) => (
+                  <p key={index}>{task}</p>
+                ))}
+              </div>
+              <p><strong>Remarques:</strong> {report.remarks}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
