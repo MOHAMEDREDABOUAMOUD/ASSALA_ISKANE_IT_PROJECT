@@ -87,7 +87,7 @@ function App() {
         {/*Chef De Projet  */}
         <Route path="/HomePage_ChefDeProjet" element={<HomePage_ResponsableDeProjet />} />
         <Route path="/list-projects" element={<ListProjects />} />
-        <Route path="/list-workers" element={<ListWorkersWithAbsence />} />
+        <Route path="/list-workersAbsence" element={<ListWorkersWithAbsence />} />
         <Route path="/daily-reports" element={<DailyReports />} />
         <Route path="/weekly-reports" element={<WeeklyReports />} />
         <Route path="/progress" element={<Progress />} />
