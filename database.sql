@@ -1,7 +1,7 @@
 ﻿drop database assalaIskane;
 create database assalaIskane;
 use assalaIskane;
-create table user(id varchar(10) primary key, nom varchar(20), prenom varchar(20), fonction varchar(30), numero varchar(15));
+create table user(id varchar(10) primary key, nom varchar(20), prenom varchar(20), fonction varchar(30), numero varchar(15), pass varchar(30));
 create table ouvrier(id varchar(15) primary key, nom varchar(20), prenom varchar(20), numero varchar(15));
 create table projet(id varchar(40) primary key, nom varchar(40), numero_marche varchar(30), objet varchar(100), date_ordre date, date_fin date, delai int, id_resp varchar(10));
 alter table projet add constraint foreign key (id_resp) references user(id);
@@ -41,5 +41,4 @@ create table rj_materiels_materiaux(id_rj int, designation varchar(50), unité v
 alter table rj_materiels_materiaux add constraint foreign (id_rj) references rapport_jour(id);
 create table avancement_projet(id int primary key auto_increment, date_rapport date, id_projet varchar(40));
 alter table avancement_projet add constraint foreign key (id_projet) references projet(id);
-
 create table ap(id_ap int, no int, nom varchar(50), duree int, debut date, fin date, etat varchar(30), avancement varchar(100));
