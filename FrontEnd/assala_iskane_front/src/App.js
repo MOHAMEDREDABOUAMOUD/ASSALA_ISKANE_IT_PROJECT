@@ -60,6 +60,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home/>} />
         <Route path="/Login" element={<Login/>} />
+        <Route path="/logout" element={<Login/>} />
         <Route path="/SignUP" element={<SignUp/>} />
         
         {/*--------------------------------------*/}
