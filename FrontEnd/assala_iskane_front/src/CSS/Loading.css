@@ -1,0 +1,19 @@
+/* src/Loading.css */
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #F3F7EC;
+}
+
+.loading-logo {
+    width: 300px; /* Adjust this as needed */
+    height: auto;
+    margin-bottom: 20px; /* Add some space between the logo and the progress bar */
+}
+
+.loading-progress {
+    width: 80%; /* Adjust this as needed */
+}
