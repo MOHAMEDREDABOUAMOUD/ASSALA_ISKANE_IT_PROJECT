@@ -1,0 +1,43 @@
+/* src/Navbar.css */
+
+.navbar {
+    width: 100%;
+    background-color: #ffffff; /* White background for the navbar */
+    padding: 10px 20px; /* Adjusted padding for better spacing */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000; /* Ensures the navbar stays on top of other content */
+}
+
+.navbar-logo img {
+    width: 60px; /* Slightly larger logo for better visibility */
+    height: auto; /* Maintain aspect ratio */
+}
+
+.navbar-menu {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-menu li {
+    margin: 0 20px; /* Increased spacing between menu items */
+}
+
+.navbar-menu li a {
+    color: #007bff; /* Primary color for links */
+    text-decoration: none;
+    font-size: 18px; /* Slightly larger font size */
+    transition: color 0.3s ease, text-decoration 0.3s ease;
+}
+
+.navbar-menu li a:hover {
+    color: #0056b3; /* Darker shade for hover effect */
+    text-decoration: underline;
+}
