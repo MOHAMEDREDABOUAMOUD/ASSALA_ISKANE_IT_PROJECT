@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../CSS/Login_singin.css';
@@ -12,33 +12,33 @@ function Login() {
   };
 
   const [users, setUsers] = useState([]);
-  const [email, setEmail] = useState('');
+  const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
   useEffect(() => {
-    // Fetch user data from the backend API
-    axios.get('/api/users')
-      .then(response => {
-        setUsers(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching user data:', error);
-      });
-  }, []);
-
+    if (id && password) {
+      axios.get(`/assalaiskane/authenticate/${id}/${password}`)
+        .then(response => {
+          setUsers([response.data]); // Wrap the response in an array
+        })
+        .catch(error => {
+          console.error('Error fetching user data:', error);
+        });
+    }
+  }, [id, password]);  
 
   const handleLoginClick = (e) => {
     e.preventDefault();
 
     // Check if user exists
     const user = users.find(
-      (user) => user.email === email && user.password === password
+      (user) => user.Id === id && user.Pass === password
     );
 
     if (user) {
       // Navigate to different pages based on the user's role
-      switch (user.role) {
+      switch (user.Fonction) {
         case 'ChefChantier':
           navigate('/HomePage_ChefChantier');
           break;
@@ -69,9 +69,10 @@ function Login() {
       }
     } else {
       // Show error message if login fails
-      setError('Invalid email or password');
+      setError('Invalid ID or password');
     }
   };
+
   return (
     <div className="login-container">
       <div className="login-logo-container">
@@ -81,14 +82,14 @@ function Login() {
         <h2 className="login-title">Login</h2>
         <form onSubmit={handleLoginClick}>
           <div className="login-input-group">
-            <label className="login-label" htmlFor="email">Email:</label>
+            <label className="login-label" htmlFor="id">ID:</label>
             <input
               className="login-input"
-              type="email"
-              id="email"
-              name="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="text"
+              id="id"
+              name="id"
+              value={id}
+              onChange={(e) => setId(e.target.value)}
               required
             />
           </div>

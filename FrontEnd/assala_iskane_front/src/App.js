@@ -6,35 +6,34 @@ import Login from './Components/Login';
 import SignUp from './Components/SignUp';
 import NavBar from './Components/NavBar';
 import Loading from './Components/Loading';
-import HomePage_ChefChantier from './Components/HomePage_ChefChantier';
-import HomePage_RespComptabiliter from './Components/HomePage_RespComptabiliter';
-import HomePage_RespMarchandise from './Components/HomePage_RespMarchandise';
-import HomePage_ResponsableDeProjet from './Components/HomePage_ResponsableDeProjet';
-import HomePage_RespTechnique from './Components/HomePage_RespTechnique';
-import HomePage_ServiceTechnique from './Components/HomePage_ServiceTechnique';
-import HomePage_ChefTechnique from './Components/HomePage_ChefTechnique';
+import HomePage_ChefChantier from './Components/Chef_Chantier_Components/HomePage_ChefChantier';
+import HomePage_RespComptabiliter from './Components/Resp_Comptabiliter/HomePage_RespComptabiliter';
+import HomePage_RespMarchandise from './Components/Resp_Marchandise/HomePage_RespMarchandise';
+import HomePage_ResponsableDeProjet from './Components/Chef_Projet_Components/HomePage_ResponsableDeProjet';
+import HomePage_RespTechnique from './Components/Responsable_Technique_Components/HomePage_RespTechnique';
+import HomePage_ServiceTechnique from './Components/Service_Technique_Components/HomePage_ServiceTechnique';
 import ListOuvrier from './Components/Chef_Chantier_Components/ListOuvrier';
 import ListMaterials from './Components/Chef_Chantier_Components/ListMaterials';
 import DeclareNeeds from './Components/Chef_Chantier_Components/DeclareNeeds';
-import ListProjects from './Components/Chef_Projet_Components/ListProjects';
 import ListWorkersWithAbsence from './Components/Chef_Projet_Components/ListWorkersWithAbsence';
-import DailyReports from './Components/Chef_Projet_Components/DailyReports';
 import WeeklyReports from './Components/Chef_Projet_Components/WeeklyReports';
 import Progress from './Components/Chef_Projet_Components/Progress';
 import ListNeeds from './Components/Chef_Projet_Components/ListNeeds';
-import ListFiles from './Components/Chef_Projet_Components/ListFiles';
-import ListTechProjects from './Components/Chef_Technique_Components/ListTechProjects';
-import ListTechWorkersWithAbsence from './Components/Chef_Technique_Components/ListTechWorkersWithAbsence';
-import ListTechDailyReports from './Components/Chef_Technique_Components/ListTechDailyReports';
-import ListTechWeeklyReports from './Components/Chef_Technique_Components/ListTechWeeklyReports';
-import ListTechProgress from './Components/Chef_Technique_Components/ListTechProgress';
-import ListTechMaterials from './Components/Chef_Technique_Components/ListTechMaterials';
-import ListValidatedNeeds from './Components/Chef_Technique_Components/ListValidatedNeeds';
-import ListTechFiles from './Components/Chef_Technique_Components/ListTechFiles';
+import ListTechProjects from './Components/Responsable_Technique_Components/ListTechProjects';
+import ListTechWorkersWithAbsence from './Components/Responsable_Technique_Components/ListTechWorkersWithAbsence';
+import ListTechDailyReports from './Components/Responsable_Technique_Components/ListTechDailyReports';
+import ListTechWeeklyReports from './Components/Responsable_Technique_Components/ListTechWeeklyReports';
+import ListTechProgress from './Components/Responsable_Technique_Components/ListTechProgress';
+import ListTechMaterials from './Components/Responsable_Technique_Components/ListTechMaterials';
+import ListValidatedNeeds from './Components/Responsable_Technique_Components/ListValidatedNeeds';
+import ListTechFiles from './Components/Responsable_Technique_Components/ListTechFiles';
 import ListServiceProjects from './Components/Service_Technique_Components/ListServiceProjects';
 import ListServiceValidatedNeeds from './Components/Service_Technique_Components/ListServiceValidatedNeeds';
 import ListServiceFiles from './Components/Service_Technique_Components/ListServiceFiles';
 import AjouterOuvrier from './Components/Service_Technique_Components/AjouterOuvrier';
+import ListProjects from './Components/Chef_Projet_Components/ListWorkersWithAbsence';
+import ListFiles from './Components/Chef_Projet_Components/ListFiles';
+import DailyReports from './Components/Chef_Projet_Components/DailyReports';
 
 
 
@@ -73,8 +72,8 @@ function App() {
         <Route path="/ajouter-ouvrier" element={<AjouterOuvrier />} />
         {/*--------------------------------------*/}
         
-        {/*Chef Technique*/}
-        <Route path="/HomePage_ChefTechnique" element={<HomePage_ChefTechnique/>} />
+        {/*Responsable Technique*/}
+        <Route path="/HomePage_RespTechnique" element={<HomePage_RespTechnique/>} />
         <Route path="/list-tech-projects" element={<ListTechProjects />} />
         <Route path="/list-tech-workers" element={<ListTechWorkersWithAbsence />} />
         <Route path="/list-tech-daily-reports" element={<ListTechDailyReports />} />
@@ -104,9 +103,17 @@ function App() {
         <Route path="/declare-needs" element={<DeclareNeeds />} />
         {/*-------------------------------*/}
 
+        {/*Responsable Comptabiliter*/}
         <Route path="/HomePage_RespComptabiliter" element={<HomePage_RespComptabiliter/>} />
+        {/*-------------------------------*/}
+
+        {/*Responsable Marchandise*/}
         <Route path="/HomePage_RespMarchandise" element={<HomePage_RespMarchandise/>} />
+        {/*-------------------------------*/}
+        
+        {/*Responsable Technique*/}
         <Route path="/ResponsableTechnique" element={<HomePage_RespTechnique/>} />
+        {/*-------------------------------*/}
       </Routes>
       </div>
     </Router>
