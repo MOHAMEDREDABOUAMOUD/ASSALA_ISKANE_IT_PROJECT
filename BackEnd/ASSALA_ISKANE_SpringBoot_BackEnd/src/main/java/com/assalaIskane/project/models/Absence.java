@@ -2,10 +2,21 @@ package com.assalaIskane.project.models;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+@Entity
 public class Absence {
+	@Id
 	private int id;
+	@ManyToOne
+	@JoinColumn(name = "id_ouvrier")
 	private Ouvrier ouvrier;
 	private Date date_absence;
+	@ManyToOne
+	@JoinColumn(name = "id_chantier")
 	private Chantier chantier;
 	private int absent;
 	

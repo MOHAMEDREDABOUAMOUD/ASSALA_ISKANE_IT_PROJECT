@@ -2,7 +2,14 @@ package com.assalaIskane.project.models;
 
 import java.util.Base64;
 
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+@Entity
 public class Photo_rjtr {
+	@ManyToOne
+	@JoinColumn(name = "id_rj_tr")
 	private Rj_travaux_realiser rjtr;
 	private Base64 photo;
 	
