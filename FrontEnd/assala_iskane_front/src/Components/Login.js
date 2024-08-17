@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import '../CSS/Login_singin.css';
 import Logo from "../images/logo00.png";
 
@@ -10,23 +11,28 @@ function Login() {
     navigate('/SignUP');
   };
 
-  const user_data = [
-    { id: 'USR001', lastName: 'El Ayoubi', firstName: 'Khalid', role: 'ChefDeProjet', phone: '0612345678', email: 'khalid.elayoubi@example.com', password: 'password1' },
-    { id: 'USR002', lastName: 'Benjelloun', firstName: 'Ahmed', role: 'ChefChantier', phone: '0678901234', email: 'ahmed.benjelloun@example.com', password: 'password2' },
-    { id: 'USR003', lastName: 'Bouhssine', firstName: 'Fatima', role: 'ServiceTechnique', phone: '0667890123', email: 'fatima.bouhssine@example.com', password: 'password3' },
-    { id: 'USR004', lastName: 'El Fassi', firstName: 'Omar', role: 'ChefTechnique', phone: '0645678901', email: 'omar.elfassi@example.com', password: 'password4' },
-    { id: 'USR005', lastName: 'Tazi', firstName: 'Rachid', role: 'ChefDeProjet', phone: '0623456789', email: 'rachid.tazi@example.com', password: 'password5' },
-  ];
-
+  const [users, setUsers] = useState([]);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    // Fetch user data from the backend API
+    axios.get('/api/users')
+      .then(response => {
+        setUsers(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching user data:', error);
+      });
+  }, []);
+
 
   const handleLoginClick = (e) => {
     e.preventDefault();
 
     // Check if user exists
-    const user = user_data.find(
+    const user = users.find(
       (user) => user.email === email && user.password === password
     );
 
@@ -66,7 +72,6 @@ function Login() {
       setError('Invalid email or password');
     }
   };
-
   return (
     <div className="login-container">
       <div className="login-logo-container">
