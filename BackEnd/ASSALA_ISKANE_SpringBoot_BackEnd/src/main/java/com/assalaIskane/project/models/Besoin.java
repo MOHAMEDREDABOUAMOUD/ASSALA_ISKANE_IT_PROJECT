@@ -17,6 +17,8 @@ public class Besoin {
 	@ManyToOne
 	@JoinColumn(name = "valide_par")
 	private User valide_par;
+	@ManyToOne
+	@JoinColumn(name = "id_chantier")
 	private Chantier chantier;
 	
 	public Besoin(int id, String nom, Date date_demande, int qte, User valide_par, Chantier chantier) {

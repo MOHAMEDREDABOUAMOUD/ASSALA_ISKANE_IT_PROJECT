@@ -12,7 +12,7 @@ alter table chantier add constraint foreign key (id_resp) references user(id);
 create table besoin(id int primary key auto_increment, nom varchar(20), date_demande date, qte int, valide_par varchar(10), id_chantier int);
 alter table besoin add constraint foreign key (id_chantier) references chantier(id);
 alter table besoin add constraint foreign key (valide_par) references user(id);
-create table fichier_projet(id int primary key auto_increment, fichier blob, id_projet varchar(40));
+create table fichier_projet(id int primary key auto_increment, nom varchar(40), fichier blob, id_projet varchar(40));
 alter table fichier_projet add constraint foreign key (id_projet) references projet(id);
 create table absence(id int primary key auto_increment, id_ouvrier varchar(10), date_absence date, id_chantier int, absent int);
 alter table absence add constraint foreign key (id_ouvrier) references ouvrier(id);
