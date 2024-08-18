@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
-import '../CSS/Home.css';
+import '../../CSS/Home.css'; // Add any custom CSS if needed
 
 export default function HomePage_ServiceTechnique() {
     const navigate = useNavigate();

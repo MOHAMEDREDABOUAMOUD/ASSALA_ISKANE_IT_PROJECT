@@ -2,7 +2,14 @@ package com.assalaIskane.project.models;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+@Entity
 public class Ap {
+	@ManyToOne
+	@JoinColumn(name = "id_ap")
 	private Avancement_projet ap;
 	private int no;
 	private String nom;

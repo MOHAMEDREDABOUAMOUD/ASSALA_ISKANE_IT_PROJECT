@@ -1,0 +1,26 @@
+.dashboard-container {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .dashboard-title {
+    margin-bottom: 20px;
+    font-size: 2rem;
+  }
+  
+  .menu-item {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .menu-item button {
+    font-size: 1rem;
+    font-weight: 500;
+  }
+  
+  .menu-item button:hover {
+    background-color: #f0f0f0;
+  }
+  

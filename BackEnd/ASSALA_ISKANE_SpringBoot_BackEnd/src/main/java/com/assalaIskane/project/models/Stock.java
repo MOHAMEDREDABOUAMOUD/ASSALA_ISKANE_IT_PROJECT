@@ -1,6 +1,11 @@
 package com.assalaIskane.project.models;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Stock {
+	@Id
 	private int id;
 	private String gerant;
 	private String numero;
