@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Container, Typography, Box, AppBar, Toolbar, IconButton, Menu, MenuItem, Avatar } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import '../CSS/Home.css'; // Add any custom CSS if needed
+import '../../CSS/Home.css'; // Add any custom CSS if needed
 
 // Sample personal information
 const chefChantierInfo = {
