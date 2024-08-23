@@ -1,0 +1,72 @@
+package com.assalaIskane.project.business;
+
+import java.util.Base64;
+import java.util.Date;
+import java.util.List;
+
+import com.assalaIskane.project.models.Besoin;
+import com.assalaIskane.project.models.Fichier_projet;
+import com.assalaIskane.project.models.Materiaux_chantier;
+import com.assalaIskane.project.models.Materiel_chantier;
+import com.assalaIskane.project.models.Projet;
+import com.assalaIskane.project.repositories.ProjetRepository;
+
+public class ProjetService implements ProjetServiceInterface{
+	private ProjetRepository projetDao;
+	
+	public ProjetService(ProjetRepository projetDao) {
+		this.projetDao = projetDao;
+	}
+
+	@Override
+	public void createProjet(String id, String nom, String numero_marche, String objet, Date date_ordre, Date date_fin,
+			int delai, String id_resp, String id_resp_chantier) {
+		projetDao.createProjet(id, nom, numero_marche, objet, date_ordre, date_fin, delai, id_resp, id_resp_chantier);
+	}
+
+	@Override
+	public void AddAbsence(String id_ouvrier, Date date_absence, int id_chantier, int absent) {
+		projetDao.AddAbsence(id_ouvrier, date_absence, id_chantier, absent);
+	}
+
+	@Override
+	public void addFichier(String nom, Base64 fichier, String id_projet) {
+		projetDao.addFichier(nom, fichier, id_projet);
+	}
+
+	@Override
+	public List<Fichier_projet> getFichiersProjet(String id_projet) {
+		return projetDao.getFichiersProjet(id_projet);
+	}
+
+	@Override
+	public List<Projet> getProjets(String id_resp) {
+		return projetDao.getProjets(id_resp);
+	}
+
+	@Override
+	public List<Projet> getProjets() {
+		return projetDao.getProjets();
+	}
+
+	@Override
+	public List<Materiel_chantier> getMaterielsChantiers(String id_projet) {
+		return projetDao.getMaterielsChantiers(id_projet);
+	}
+
+	@Override
+	public List<Materiaux_chantier> getMateriauxChantiers(String id_projet) {
+		return projetDao.getMateriauxChantiers(id_projet);
+	}
+
+	@Override
+	public void addBesoin(String nom, Date date_demande, String qte, String valide_par, int id_chantier) {
+		projetDao.addBesoin(nom, date_demande, qte, valide_par, id_chantier);
+	}
+
+	@Override
+	public List<Besoin> getBesoins(String id_resp, String id_projet) {
+		return projetDao.getBesoins(id_resp, id_projet);
+	}
+
+}
