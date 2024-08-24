@@ -11,12 +11,15 @@ import javax.persistence.ManyToOne;
 public class Fichier_projet {
 	@Id
 	private int id;
-	private Base64 fichier;
+	private byte[] fichier;
 	@ManyToOne
 	@JoinColumn(name = "id_projet")
 	private Projet projet;
 	
-	public Fichier_projet(int id, Base64 fichier, Projet projet) {
+	public Fichier_projet() {
+		// TODO Auto-generated constructor stub
+	}
+	public Fichier_projet(int id, byte[] fichier, Projet projet) {
 		super();
 		this.id = id;
 		this.fichier = fichier;
@@ -31,11 +34,11 @@ public class Fichier_projet {
 		this.id = id;
 	}
 
-	public Base64 getFichier() {
+	public byte[] getFichier() {
 		return fichier;
 	}
 
-	public void setFichier(Base64 fichier) {
+	public void setFichier(byte[] fichier) {
 		this.fichier = fichier;
 	}
 

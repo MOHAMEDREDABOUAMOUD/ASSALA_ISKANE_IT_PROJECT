@@ -21,6 +21,9 @@ public class Besoin {
 	@JoinColumn(name = "id_chantier")
 	private Chantier chantier;
 	
+	public Besoin() {
+		// TODO Auto-generated constructor stub
+	}
 	public Besoin(int id, String nom, Date date_demande, int qte, User valide_par, Chantier chantier) {
 		super();
 		this.id = id;

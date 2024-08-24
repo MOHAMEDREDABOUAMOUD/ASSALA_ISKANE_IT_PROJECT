@@ -13,6 +13,10 @@ public class Rj_travaux_realiser {
 	@JoinColumn(name = "id_rj")
 	private Rapport_jour rj;
 	private String description;
+	
+	public Rj_travaux_realiser() {
+		// TODO Auto-generated constructor stub
+	}
 	public Rj_travaux_realiser(int id, Rapport_jour rj, String description) {
 		super();
 		this.id = id;

@@ -15,6 +15,10 @@ public class Ouvrier {
 	@ManyToOne
 	@JoinColumn(name = "id_projet")
 	private Projet projet;
+	
+	public Ouvrier() {
+		// TODO Auto-generated constructor stub
+	}
 	public Ouvrier(String id, String nom, String prenom, String numero, Projet projet) {
 		super();
 		this.id = id;

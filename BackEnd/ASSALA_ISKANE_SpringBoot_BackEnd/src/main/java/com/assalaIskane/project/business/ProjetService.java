@@ -4,13 +4,18 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.assalaIskane.project.models.Besoin;
 import com.assalaIskane.project.models.Fichier_projet;
+import com.assalaIskane.project.models.Materiaux;
 import com.assalaIskane.project.models.Materiaux_chantier;
+import com.assalaIskane.project.models.Materiel;
 import com.assalaIskane.project.models.Materiel_chantier;
 import com.assalaIskane.project.models.Projet;
 import com.assalaIskane.project.repositories.ProjetRepository;
 
+@Service
 public class ProjetService implements ProjetServiceInterface{
 	private ProjetRepository projetDao;
 	
@@ -21,16 +26,17 @@ public class ProjetService implements ProjetServiceInterface{
 	@Override
 	public void createProjet(String id, String nom, String numero_marche, String objet, Date date_ordre, Date date_fin,
 			int delai, String id_resp, String id_resp_chantier) {
-		projetDao.createProjet(id, nom, numero_marche, objet, date_ordre, date_fin, delai, id_resp, id_resp_chantier);
+		projetDao.insertProjet(id, nom, numero_marche, objet, date_ordre, date_fin, delai, id_resp);
+		projetDao.insertChantier(id, id_resp_chantier);
 	}
 
 	@Override
 	public void AddAbsence(String id_ouvrier, Date date_absence, int id_chantier, int absent) {
-		projetDao.AddAbsence(id_ouvrier, date_absence, id_chantier, absent);
+		projetDao.addAbsence(id_ouvrier, date_absence, id_chantier, absent);
 	}
 
 	@Override
-	public void addFichier(String nom, Base64 fichier, String id_projet) {
+	public void addFichier(String nom, byte[] fichier, String id_projet) {
 		projetDao.addFichier(nom, fichier, id_projet);
 	}
 
@@ -50,12 +56,12 @@ public class ProjetService implements ProjetServiceInterface{
 	}
 
 	@Override
-	public List<Materiel_chantier> getMaterielsChantiers(String id_projet) {
+	public List<Materiel> getMaterielsChantiers(String id_projet) {
 		return projetDao.getMaterielsChantiers(id_projet);
 	}
 
 	@Override
-	public List<Materiaux_chantier> getMateriauxChantiers(String id_projet) {
+	public List<Materiaux> getMateriauxChantiers(String id_projet) {
 		return projetDao.getMateriauxChantiers(id_projet);
 	}
 

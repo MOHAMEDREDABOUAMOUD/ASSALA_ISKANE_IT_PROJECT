@@ -19,6 +19,10 @@ public class Rapport_jour {
 	@ManyToOne
 	@JoinColumn(name = "id_chantier")
 	private Chantier chantier;
+	
+	public Rapport_jour() {
+		// TODO Auto-generated constructor stub
+	}
 	public Rapport_jour(int id, Date date_rj, String temperature, String pluie, String vent, String remarque,
 			Chantier chantier) {
 		super();

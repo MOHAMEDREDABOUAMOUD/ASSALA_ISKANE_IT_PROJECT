@@ -15,6 +15,10 @@ public class Avancement_projet {
 	@ManyToOne
 	@JoinColumn(name = "id_projet")
 	private Projet projet;
+	
+	public Avancement_projet() {
+		// TODO Auto-generated constructor stub
+	}
 	public Avancement_projet(int id, Date date_rapport, Projet projet) {
 		super();
 		this.id = id;

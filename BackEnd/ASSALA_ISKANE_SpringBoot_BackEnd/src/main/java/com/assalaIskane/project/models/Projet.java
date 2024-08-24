@@ -20,6 +20,10 @@ public class Projet {
 	@ManyToOne
 	@JoinColumn(name = "id_resp")
 	private User resp;
+	
+	public Projet() {
+		// TODO Auto-generated constructor stub
+	}
 	public Projet(String id, String nom, String numero_marche, String objet, Date date_ordre, Date date_fin, int delai,
 			User resp) {
 		super();

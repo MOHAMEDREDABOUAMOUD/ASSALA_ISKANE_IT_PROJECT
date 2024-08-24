@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.assalaIskane.project.business.ProjetServiceInterface;
 import com.assalaIskane.project.models.Besoin;
 import com.assalaIskane.project.models.Fichier_projet;
+import com.assalaIskane.project.models.Materiaux;
 import com.assalaIskane.project.models.Materiaux_chantier;
+import com.assalaIskane.project.models.Materiel;
 import com.assalaIskane.project.models.Materiel_chantier;
 import com.assalaIskane.project.models.Projet;
 
@@ -33,15 +35,15 @@ public class ProjetController {
 		service.AddAbsence(id_ouvrier, date_absence, id_chantier, absent);
 	}
 	@PostMapping("/AddFichier")
-	void addFichier(@RequestParam String nom, @RequestParam Base64 fichier, @RequestParam String id_projet) {
+	void addFichier(@RequestParam String nom, @RequestParam byte[] fichier, @RequestParam String id_projet) {
 		service.addFichier(nom, fichier, id_projet);
 	}
 	@GetMapping("/getFichiersProjet")
 	List<Fichier_projet> getFichiersProjet(@RequestParam String id_projet) {
 		return service.getFichiersProjet(id_projet);
 	}
-	@GetMapping("/getProjets")
-	List<Projet> getProjets(@RequestParam String id_resp) {
+	@GetMapping("/getProjet")
+	List<Projet> getProjet(@RequestParam String id_resp) {
 		return service.getProjets(id_resp);
 	}
 	@GetMapping("/getProjets")
@@ -49,11 +51,11 @@ public class ProjetController {
 		return service.getProjets();
 	}
 	@GetMapping("/getMaterielsChantiers")
-	List<Materiel_chantier> getMaterielsChantiers(@RequestParam String id_projet) {
+	List<Materiel> getMaterielsChantiers(@RequestParam String id_projet) {
 		return service.getMaterielsChantiers(id_projet);
 	}
 	@GetMapping("/getMateriauxChantiers")
-	List<Materiaux_chantier> getMateriauxChantiers(@RequestParam String id_projet) {
+	List<Materiaux> getMateriauxChantiers(@RequestParam String id_projet) {
 		return service.getMateriauxChantiers(id_projet);
 	}
 	@PostMapping("/AddBesoin")
