@@ -1,24 +1,34 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, IconButton } from '@mui/material';
 import { ListAlt as ListAltIcon, Person as PersonIcon } from '@mui/icons-material';
-
-// Local list of projects
-const projects = [
-  { id: 'PROJ001', nom: 'Projet Casablanca', id_resp: 'USR001' },
-  { id: 'PROJ002', nom: 'Projet Marrakech', id_resp: 'USR002' },
-  { id: 'PROJ003', nom: 'Projet Fes', id_resp: 'USR003' },
-  // Add more projects as needed
-];
-
-// Local list of users (for example purposes)
-const users = [
-  { id: 'USR001', nom: 'El Ayoubi', prenom: 'Khalid' },
-  { id: 'USR002', nom: 'Benjelloun', prenom: 'Ahmed' },
-  { id: 'USR003', nom: 'Bouhssine', prenom: 'Fatima' },
-  // Add more users as needed
-];
+import axios from 'axios';
 
 export default function ListProjects() {
+  const [projects, setProjects] = useState([]);
+  const [users, setUsers] = useState([]);
+
+  // Fetch projects data from backend
+  useEffect(() => {
+    axios.get('/getProjets')
+      .then(response => {
+        setProjects(response.data);
+      })
+      .catch(error => {
+        console.error('There was an error fetching the projects data!', error);
+      });
+  }, []);
+
+  // Fetch users data from backend (assuming you have a corresponding endpoint)
+  useEffect(() => {
+    axios.get('/getUsers')
+      .then(response => {
+        setUsers(response.data);
+      })
+      .catch(error => {
+        console.error('There was an error fetching the users data!', error);
+      });
+  }, []);
+
   // Find the project manager names based on the project manager ID
   const getProjectManagerName = (id) => {
     const user = users.find(user => user.id === id);

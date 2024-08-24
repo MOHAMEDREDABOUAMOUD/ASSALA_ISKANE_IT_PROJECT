@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Container,
   Typography,
@@ -11,46 +11,63 @@ import {
   Paper,
   Box,
 } from '@mui/material';
+import axios from 'axios';
+
 
 export default function ListMaterials() {
-  // Local list of materials in stock
-  const materials = [
-    { id: 1, nom: 'Ciment', qte: 150, prix: 70.00, chantier: 'Chantier Casablanca' },
-    { id: 2, nom: 'Barres d’Acier', qte: 80, prix: 250.00, chantier: 'Chantier Marrakech' },
-    { id: 3, nom: 'Briques', qte: 1000, prix: 0.75, chantier: 'Chantier Fes' },
-    // Add more materials as needed
-  ];
+    const [materials, setMaterials] = useState([]);
+    const [chantierMaterials, setChantierMaterials] = useState([]);
+    const id_projet = "P001"; // Replace with the actual project ID you want to use
 
-  // Local list of materials available in chantier
-  const chantierMaterials = [
-    { id_materiaux: 1, nom: 'Ciment', qte: 60, chantier: 'Chantier Casablanca' },
-    { id_materiaux: 2, nom: 'Barres d’Acier', qte: 30, chantier: 'Chantier Marrakech' },
-    { id_materiaux: 3, nom: 'Briques', qte: 500, chantier: 'Chantier Fes' },
-    // Add more chantier materials as needed
-  ];
+    useEffect(() => {
+      // Fetch materials in stock from the backend
+      const fetchMaterials = async () => {
+        try {
+          const response = await axios.get(`/api/materiels-chantier/${id_projet}`);
+          setMaterials(response.data);
+        } catch (error) {
+          console.error('Error fetching materials:', error);
+        }
+      };
+
+      // Fetch chantier materials from the backend
+      const fetchChantierMaterials = async () => {
+        try {
+          const response = await axios.get(`/api/materiaux-chantier/${id_projet}`);
+          setChantierMaterials(response.data);
+        } catch (error) {
+          console.error('Error fetching chantier materials:', error);
+        }
+      };
+
+      fetchMaterials();
+      fetchChantierMaterials();
+    }, [id_projet]);
 
   return (
     <Container>
       <Typography variant="h4" component="h1" gutterBottom>
-        Liste des Matériaux en Stock
+        Liste des Matérieles
       </Typography>
       <TableContainer component={Paper}>
-        <Table>
+      <Table>
           <TableHead>
             <TableRow>
+              <TableCell>ID</TableCell>
               <TableCell>Nom</TableCell>
               <TableCell>Quantité</TableCell>
-              <TableCell>Prix (MAD)</TableCell>
-              <TableCell>Chantier</TableCell>
+              <TableCell>Prix</TableCell>
+              <TableCell>ID Stock</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {materials.map((material) => (
               <TableRow key={material.id}>
+                <TableCell>{material.id}</TableCell>
                 <TableCell>{material.nom}</TableCell>
                 <TableCell>{material.qte}</TableCell>
-                <TableCell>{material.prix} MAD</TableCell>
-                <TableCell>{material.chantier}</TableCell>
+                <TableCell>{material.prix}</TableCell>
+                <TableCell>{material.id_stock}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -59,24 +76,30 @@ export default function ListMaterials() {
 
       <Box mt={4}>
         <Typography variant="h4" component="h2" gutterBottom>
-          Liste des Matériaux Disponibles dans les Chantiers
+          Liste des Matériaux
         </Typography>
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
               <TableRow>
+                <TableCell>ID</TableCell>
                 <TableCell>Nom</TableCell>
                 <TableCell>Quantité</TableCell>
-                <TableCell>Chantier</TableCell>
+                <TableCell>Type</TableCell>
+                <TableCell>Prix</TableCell>
+                <TableCell>ID Stock</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {chantierMaterials.map((material) => (
                 <TableRow key={material.id_materiaux}>
+                  <TableCell>{material.id}</TableCell>
                   <TableCell>{material.nom}</TableCell>
                   <TableCell>{material.qte}</TableCell>
-                  <TableCell>{material.chantier}</TableCell>
-                </TableRow>
+                  <TableCell>{material.type}</TableCell>
+                  <TableCell>{material.prix}</TableCell>
+                  <TableCell>{material.id_stock}</TableCell>
+                  </TableRow>
               ))}
             </TableBody>
           </Table>

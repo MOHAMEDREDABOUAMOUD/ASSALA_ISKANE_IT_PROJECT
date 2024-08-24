@@ -1,16 +1,26 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Container, Typography, Button } from '@mui/material';
+import axios from 'axios';
 import { DataGridPro } from '@mui/x-data-grid-pro';
 
 export default function ListOuvrier() {
-    const rows = [
-        { id: '1', nom: 'El Majdoub', prenom: 'Ahmed', numero: '0612345678' },
-        { id: '2', nom: 'Bennani', prenom: 'Khalid', numero: '0612345679' },
-        { id: '3', nom: 'Chakir', prenom: 'Fatima', numero: '0612345680' },
-        { id: '4', nom: 'Touhami', prenom: 'Hicham', numero: '0612345681' },
-    ];
-
+    const id_projet = "P001";
+    const [ouvriers, setOuvriers] = useState([]);
     const [selectedOuvriers, setSelectedOuvriers] = useState([]);
+
+    useEffect(() => {
+        // Fetch data from the backend
+        const fetchOuvriers = async () => {
+            try {
+                const response = await axios.get(`/api/ouvriers/${id_projet}`);
+                setOuvriers(response.data);
+            } catch (error) {
+                console.error('Error fetching ouvriers:', error);
+            }
+        };
+
+        fetchOuvriers();
+    }, [id_projet]);
 
     const columns = [
         { field: 'nom', headerName: 'Nom', width: 150 },
@@ -22,12 +32,28 @@ export default function ListOuvrier() {
         setSelectedOuvriers(newSelection);
     };
 
-    const handleDeclareAbsence = () => {
-        selectedOuvriers.forEach(id => {
-            const ouvrier = rows.find(row => row.id === id);
-            console.log(`Absence declared for ouvrier ${ouvrier.nom} ${ouvrier.prenom}`);
-        });
+    const handleDeclareAbsence = async () => {
+        const date_absence = new Date().toISOString().split('T')[0]; // Current date in YYYY-MM-DD format
+        const id_chantier = 1; 
+        
+        for (const id of selectedOuvriers) {
+            const ouvrier = ouvriers.find(row => row.id === id);
+            if (ouvrier) {
+                try {
+                    await axios.post('/api/absence', {
+                        id_ouvrier: ouvrier.id,
+                        date_absence,
+                        id_chantier,
+                        absent: 1
+                    });
+                    console.log(`Absence declared for ouvrier ${ouvrier.nom} ${ouvrier.prenom}`);
+                } catch (error) {
+                    console.error(`Error declaring absence for ouvrier ${ouvrier.nom} ${ouvrier.prenom}:`, error);
+                }
+            }
+        }
     };
+
     return (
    
 
@@ -37,7 +63,7 @@ export default function ListOuvrier() {
             </Typography>
             <div style={{ height: 400, width: '100%' }}>
                 <DataGridPro
-                    rows={rows}
+                    rows={ouvriers}
                     columns={columns}
                     checkboxSelection
                     onSelectionModelChange={handleSelectionChange}
