@@ -1,5 +1,6 @@
 import React from 'react';
-import './ListProjects.css';  // Ensure Tailwind CSS is imported here
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, IconButton } from '@mui/material';
+import { ListAlt as ListAltIcon, Person as PersonIcon } from '@mui/icons-material';
 
 // Local list of projects
 const projects = [
@@ -25,26 +26,38 @@ export default function ListProjects() {
   };
 
   return (
-    <div className="p-8 max-w-5xl mx-auto">
-      <h1 className="text-4xl font-bold mb-6 text-gray-800">Liste des Projets</h1>
-      <div className="bg-white shadow-md rounded-lg overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom du Projet</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Responsable</th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+    <div style={{ padding: '16px', maxWidth: '1200px', margin: 'auto' }}>
+      <Typography variant="h4" component="h1" gutterBottom>
+        Liste des Projets
+      </Typography>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>
+                <IconButton>
+                  <ListAltIcon />
+                </IconButton>
+                Nom du Projet
+              </TableCell>
+              <TableCell>
+                <IconButton>
+                  <PersonIcon />
+                </IconButton>
+                Responsable
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
             {projects.map(project => (
-              <tr key={project.id} className="hover:bg-gray-100">
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{project.nom}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{getProjectManagerName(project.id_resp)}</td>
-              </tr>
+              <TableRow key={project.id} sx={{ '&:hover': { backgroundColor: '#f5f5f5' } }}>
+                <TableCell>{project.nom}</TableCell>
+                <TableCell>{getProjectManagerName(project.id_resp)}</TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
-      </div>
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   );
 }

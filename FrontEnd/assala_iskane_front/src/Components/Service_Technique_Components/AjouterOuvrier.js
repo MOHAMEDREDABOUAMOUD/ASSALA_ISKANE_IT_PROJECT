@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { TextField, Button, Typography, Box, Alert } from '@mui/material';
 
 export default function AjouterOuvrier() {
   const [nom, setNom] = useState('');
@@ -42,40 +43,53 @@ export default function AjouterOuvrier() {
   };
 
   return (
-    <div>
-      <h2>Ajouter un Ouvrier</h2>
+    <Box sx={{ maxWidth: 600, margin: 'auto', padding: 2 }}>
+      <Typography variant="h4" gutterBottom>
+        Ajouter un Ouvrier
+      </Typography>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Nom:</label>
-          <input
-            type="text"
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <TextField
+            label="Nom"
+            variant="outlined"
             value={nom}
             onChange={(e) => setNom(e.target.value)}
             required
           />
-        </div>
-        <div>
-          <label>Prénom:</label>
-          <input
-            type="text"
+          <TextField
+            label="Prénom"
+            variant="outlined"
             value={prenom}
             onChange={(e) => setPrenom(e.target.value)}
             required
           />
-        </div>
-        <div>
-          <label>Numéro:</label>
-          <input
-            type="text"
+          <TextField
+            label="Numéro"
+            variant="outlined"
             value={numero}
             onChange={(e) => setNumero(e.target.value)}
             required
           />
-        </div>
-        <button type="submit">Ajouter</button>
-        {success && <p>Ouvrier ajouté avec succès!</p>}
-        {error && <p>Erreur: {error}</p>}
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            sx={{ marginTop: 2 }}
+          >
+            Ajouter
+          </Button>
+        </Box>
+        {success && (
+          <Alert severity="success" sx={{ marginTop: 2 }}>
+            Ouvrier ajouté avec succès!
+          </Alert>
+        )}
+        {error && (
+          <Alert severity="error" sx={{ marginTop: 2 }}>
+            Erreur: {error}
+          </Alert>
+        )}
       </form>
-    </div>
+    </Box>
   );
 }
