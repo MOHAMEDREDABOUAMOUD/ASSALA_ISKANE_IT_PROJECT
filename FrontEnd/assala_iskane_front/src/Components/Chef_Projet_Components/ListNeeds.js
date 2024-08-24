@@ -5,36 +5,33 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 
 export default function ListNeeds() {
-  const [needs, setNeeds] = useState([
-    // Fake data for testing
-    { id: 1, nom: 'Ciment', date_demande: '2024-08-17', qte: 50, validated: false, id_chantier: 1 },
-    { id: 2, nom: 'Sable', date_demande: '2024-08-16', qte: 100, validated: true, id_chantier: 2 },
-    { id: 3, nom: 'Briques', date_demande: '2024-08-15', qte: 200, validated: false, id_chantier: 3 }
-  ]);
+  const [needs, setNeeds] = useState([]);
 
-  // Uncomment when you are ready to fetch from API
-  /*
   useEffect(() => {
     const fetchNeeds = async () => {
-      // Replace with actual API call to fetch needs
-      const response = await fetch('/api/needs'); // Example API endpoint
-      const data = await response.json();
-      setNeeds(data);
+      try {
+        const response = await fetch('/api/getBesoins?id_resp=RESP001&id_projet=PROJ001');
+        const data = await response.json();
+        setNeeds(data);
+      } catch (error) {
+        console.error('Error fetching needs:', error);
+      }
     };
-    
+
     fetchNeeds();
   }, []);
-  */
 
-  // Handle validation of needs
   const handleValidate = async (needId) => {
-    // Replace with actual API call to validate the need
-    await fetch(`/api/needs/validate/${needId}`, {
-      method: 'POST',
-    });
+    try {
+      await fetch(`/api/needs/validate/${needId}`, {
+        method: 'POST',
+      });
 
-    // Update the UI after validation
-    setNeeds(needs.map(need => need.id === needId ? { ...need, validated: true } : need));
+      // Update the UI after validation
+      setNeeds(needs.map(need => need.id === needId ? { ...need, validated: true } : need));
+    } catch (error) {
+      console.error('Error validating need:', error);
+    }
   };
 
   return (

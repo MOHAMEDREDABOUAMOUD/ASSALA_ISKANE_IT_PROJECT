@@ -15,7 +15,6 @@ import HomePage_ServiceTechnique from './Components/Service_Technique_Components
 import ListOuvrier from './Components/Chef_Chantier_Components/ListOuvrier';
 import ListMaterials from './Components/Chef_Chantier_Components/ListMaterials';
 import DeclareNeeds from './Components/Chef_Chantier_Components/DeclareNeeds';
-import ListWorkersWithAbsence from './Components/Chef_Projet_Components/ListWorkersWithAbsence';
 import WeeklyReports from './Components/Chef_Projet_Components/WeeklyReports';
 import Progress from './Components/Chef_Projet_Components/Progress';
 import ListNeeds from './Components/Chef_Projet_Components/ListNeeds';
@@ -31,9 +30,9 @@ import ListServiceProjects from './Components/Service_Technique_Components/ListS
 import ListServiceValidatedNeeds from './Components/Service_Technique_Components/ListServiceValidatedNeeds';
 import ListServiceFiles from './Components/Service_Technique_Components/ListServiceFiles';
 import AjouterOuvrier from './Components/Service_Technique_Components/AjouterOuvrier';
-import ListProjects from './Components/Chef_Projet_Components/ListWorkersWithAbsence';
 import ListFiles from './Components/Chef_Projet_Components/ListFiles';
 import DailyReports from './Components/Chef_Projet_Components/DailyReports';
+import ListProjects from './Components/Chef_Projet_Components/ListProjects';
 
 
 
@@ -87,7 +86,6 @@ function App() {
         {/*Chef De Projet  */}
         <Route path="/HomePage_ChefDeProjet" element={<HomePage_ResponsableDeProjet />} />
         <Route path="/list-projects" element={<ListProjects />} />
-        <Route path="/list-workersAbsence" element={<ListWorkersWithAbsence />} />
         <Route path="/daily-reports" element={<DailyReports />} />
         <Route path="/weekly-reports" element={<WeeklyReports />} />
         <Route path="/progress" element={<Progress />} />

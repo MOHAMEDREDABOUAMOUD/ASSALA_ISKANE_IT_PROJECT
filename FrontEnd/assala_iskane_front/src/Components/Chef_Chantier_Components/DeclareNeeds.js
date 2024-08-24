@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Container,
   Typography,
@@ -13,13 +13,10 @@ import {
   Paper,
   Box,
 } from '@mui/material';
+import axios from 'axios'; 
 
 export default function DeclareNeeds() {
-  // Local list of needs (demandes)
-  const [needs, setNeeds] = useState([
-    { id: 1, nom: 'Ciment', qte: 100, date_demande: '2024-08-10', chantier: 'Chantier Casablanca' },
-    { id: 2, nom: 'Barres d’Acier', qte: 50, date_demande: '2024-08-12', chantier: 'Chantier Marrakech' },
-  ]);
+  const [needs, setNeeds] = useState([]);
 
   const [newNeed, setNewNeed] = useState({
     nom: '',
@@ -28,6 +25,25 @@ export default function DeclareNeeds() {
     chantier: '',
   });
 
+  // Fetch needs from the backend when the component mounts
+  useEffect(() => {
+    const fetchNeeds = async () => {
+      try {
+        const response = await axios.get('/getBesoins', {
+          params: {
+            id_resp: 'id_resp_value', // Replace with the actual responsible user's ID
+            id_projet: 'id_projet_value', // Replace with the actual project ID
+          },
+        });
+        setNeeds(response.data);
+      } catch (error) {
+        console.error('Error fetching needs:', error);
+      }
+    };
+
+    fetchNeeds();
+  }, []);
+
   const handleChange = (e) => {
     setNewNeed({
       ...newNeed,
@@ -35,22 +51,38 @@ export default function DeclareNeeds() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (newNeed.nom && newNeed.qte && newNeed.date_demande && newNeed.chantier) {
-      setNeeds([
-        ...needs,
-        {
-          ...newNeed,
-          id: needs.length + 1, // Simple ID generation
-        },
-      ]);
-      setNewNeed({
-        nom: '',
-        qte: '',
-        date_demande: '',
-        chantier: '',
-      });
+      try {
+        await axios.post('/AddBesoin', null, {
+          params: {
+            nom: newNeed.nom,
+            date_demande: newNeed.date_demande,
+            qte: newNeed.qte,
+            valide_par: 'id_of_user_validating', // Replace with the actual ID
+            id_chantier: 'id_chantier_value', // Replace with the actual chantier ID
+          },
+        });
+
+        // Optionally refetch the needs list to update the UI
+        const response = await axios.get('/getBesoins', {
+          params: {
+            id_resp: 'id_resp_value', // Replace with the actual responsible user's ID
+            id_projet: 'id_projet_value', // Replace with the actual project ID
+          },
+        });
+        setNeeds(response.data);
+
+        setNewNeed({
+          nom: '',
+          qte: '',
+          date_demande: '',
+          chantier: '',
+        });
+      } catch (error) {
+        console.error('Error adding need:', error);
+      }
     } else {
       alert('Veuillez remplir tous les champs');
     }
