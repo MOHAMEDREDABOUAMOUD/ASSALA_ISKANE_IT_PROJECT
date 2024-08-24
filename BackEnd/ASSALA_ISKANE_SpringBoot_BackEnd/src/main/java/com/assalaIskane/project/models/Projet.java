@@ -2,7 +2,14 @@ package com.assalaIskane.project.models;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+@Entity
 public class Projet {
+	@Id
 	private String id;
 	private String nom;
 	private String numero_marche;
@@ -10,6 +17,8 @@ public class Projet {
 	private Date date_ordre;
 	private Date date_fin;
 	private int delai;
+	@ManyToOne
+	@JoinColumn(name = "id_resp")
 	private User resp;
 	public Projet(String id, String nom, String numero_marche, String objet, Date date_ordre, Date date_fin, int delai,
 			User resp) {

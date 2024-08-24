@@ -2,9 +2,18 @@ package com.assalaIskane.project.models;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+@Entity
 public class Avancement_projet {
+	@Id
 	private int id;
 	private Date date_rapport;
+	@ManyToOne
+	@JoinColumn(name = "id_projet")
 	private Projet projet;
 	public Avancement_projet(int id, Date date_rapport, Projet projet) {
 		super();

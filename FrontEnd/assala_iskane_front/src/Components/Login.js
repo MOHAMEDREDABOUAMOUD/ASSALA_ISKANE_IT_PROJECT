@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import '../CSS/Login_singin.css';
 import Logo from "../images/logo00.png";
 
@@ -10,29 +11,34 @@ function Login() {
     navigate('/SignUP');
   };
 
-  const user_data = [
-    { id: 'USR001', lastName: 'El Ayoubi', firstName: 'Khalid', role: 'ChefDeProjet', phone: '0612345678', email: 'khalid.elayoubi@example.com', password: 'password1' },
-    { id: 'USR002', lastName: 'Benjelloun', firstName: 'Ahmed', role: 'ChefChantier', phone: '0678901234', email: 'ahmed.benjelloun@example.com', password: 'password2' },
-    { id: 'USR003', lastName: 'Bouhssine', firstName: 'Fatima', role: 'ServiceTechnique', phone: '0667890123', email: 'fatima.bouhssine@example.com', password: 'password3' },
-    { id: 'USR004', lastName: 'El Fassi', firstName: 'Omar', role: 'ChefTechnique', phone: '0645678901', email: 'omar.elfassi@example.com', password: 'password4' },
-    { id: 'USR005', lastName: 'Tazi', firstName: 'Rachid', role: 'ChefDeProjet', phone: '0623456789', email: 'rachid.tazi@example.com', password: 'password5' },
-  ];
-
-  const [email, setEmail] = useState('');
+  const [users, setUsers] = useState([]);
+  const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (id && password) {
+      axios.get(`/assalaiskane/authenticate/${id}/${password}`)
+        .then(response => {
+          setUsers([response.data]); // Wrap the response in an array
+        })
+        .catch(error => {
+          console.error('Error fetching user data:', error);
+        });
+    }
+  }, [id, password]);  
 
   const handleLoginClick = (e) => {
     e.preventDefault();
 
     // Check if user exists
-    const user = user_data.find(
-      (user) => user.email === email && user.password === password
+    const user = users.find(
+      (user) => user.Id === id && user.Pass === password
     );
 
     if (user) {
       // Navigate to different pages based on the user's role
-      switch (user.role) {
+      switch (user.Fonction) {
         case 'ChefChantier':
           navigate('/HomePage_ChefChantier');
           break;
@@ -63,7 +69,7 @@ function Login() {
       }
     } else {
       // Show error message if login fails
-      setError('Invalid email or password');
+      setError('Invalid ID or password');
     }
   };
 
@@ -76,14 +82,14 @@ function Login() {
         <h2 className="login-title">Login</h2>
         <form onSubmit={handleLoginClick}>
           <div className="login-input-group">
-            <label className="login-label" htmlFor="email">Email:</label>
+            <label className="login-label" htmlFor="id">ID:</label>
             <input
               className="login-input"
-              type="email"
-              id="email"
-              name="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="text"
+              id="id"
+              name="id"
+              value={id}
+              onChange={(e) => setId(e.target.value)}
               required
             />
           </div>

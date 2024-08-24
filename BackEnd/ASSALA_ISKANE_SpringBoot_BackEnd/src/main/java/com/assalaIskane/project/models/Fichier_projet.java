@@ -2,9 +2,18 @@ package com.assalaIskane.project.models;
 
 import java.util.Base64;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+@Entity
 public class Fichier_projet {
+	@Id
 	private int id;
 	private Base64 fichier;
+	@ManyToOne
+	@JoinColumn(name = "id_projet")
 	private Projet projet;
 	
 	public Fichier_projet(int id, Base64 fichier, Projet projet) {

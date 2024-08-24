@@ -1,6 +1,13 @@
 package com.assalaIskane.project.models;
 
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+@Entity
 public class Rj_materiel_sur_chantier {
+	@ManyToOne
+	@JoinColumn(name = "id_rj")
 	private Rapport_jour rj;
 	private String materiel;
 	private int qte;
