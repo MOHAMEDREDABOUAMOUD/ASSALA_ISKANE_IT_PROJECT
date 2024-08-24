@@ -16,6 +16,9 @@ public class Chantier {
 	@JoinColumn(name = "id_resp")
 	private User resp;
 	
+	public Chantier() {
+		// TODO Auto-generated constructor stub
+	}
 	public Chantier(int id, Projet projet, User resp) {
 		super();
 		this.id = id;

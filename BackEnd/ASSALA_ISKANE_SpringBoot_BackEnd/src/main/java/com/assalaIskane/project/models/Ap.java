@@ -3,11 +3,14 @@ package com.assalaIskane.project.models;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
 public class Ap {
+	@Id
+	private int id;
 	@ManyToOne
 	@JoinColumn(name = "id_ap")
 	private Avancement_projet ap;
@@ -18,6 +21,10 @@ public class Ap {
 	private Date fin;
 	private String etat;
 	private String avancement;
+	
+	public Ap() {
+		// TODO Auto-generated constructor stub
+	}
 	public Ap(Avancement_projet ap, int no, String nom, int duree, Date debut, Date fin, String etat,
 			String avancement) {
 		super();

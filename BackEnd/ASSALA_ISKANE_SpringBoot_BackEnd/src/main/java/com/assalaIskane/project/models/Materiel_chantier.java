@@ -1,11 +1,14 @@
 package com.assalaIskane.project.models;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
 public class Materiel_chantier {
+	@Id
+	private int id;
 	@ManyToOne
 	@JoinColumn(name = "id_materiel")
 	private Materiel materiel;
@@ -14,6 +17,9 @@ public class Materiel_chantier {
 	private Chantier chantier;
 	private int qte;
 	
+	public Materiel_chantier() {
+		// TODO Auto-generated constructor stub
+	}
 	public Materiel_chantier(Materiel materiel, Chantier chantier, int qte) {
 		super();
 		this.materiel = materiel;

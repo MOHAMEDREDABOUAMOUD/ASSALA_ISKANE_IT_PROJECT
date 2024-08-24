@@ -11,6 +11,6 @@ import com.assalaIskane.project.models.Ouvrier;
 
 
 public interface OuvrierRepository extends JpaRepository<Ouvrier, String> {
-	@Query("SELECT o FROM Ouvrier o WHERE o.id_projet = :id_projet")
+	@Query("SELECT o FROM Ouvrier o WHERE id_projet = :id_projet")
 	List<Ouvrier> getOuvriers(@Param("id_projet") String id_projet);
 }

@@ -16,6 +16,9 @@ public class Materiel {
 	@JoinColumn(name = "id_stock")
 	private Stock stock;
 	
+	public Materiel() {
+		// TODO Auto-generated constructor stub
+	}
 	public Materiel(int id, String nom, int qte, float prix, Stock stock) {
 		super();
 		this.id = id;

@@ -11,6 +11,9 @@ public class Stock {
 	private String numero;
 	private String email;
 	
+	public Stock() {
+		// TODO Auto-generated constructor stub
+	}
 	public Stock(int id, String gerant, String numero, String email) {
 		super();
 		this.id = id;

@@ -20,6 +20,10 @@ public class Absence {
 	private Chantier chantier;
 	private int absent;
 	
+	public Absence() {
+		// TODO Auto-generated constructor stub
+	}
+	
 	public Absence(int id, Ouvrier ouvrier, Date date_absence, Chantier chantier, int absent) {
 		super();
 		this.id = id;
