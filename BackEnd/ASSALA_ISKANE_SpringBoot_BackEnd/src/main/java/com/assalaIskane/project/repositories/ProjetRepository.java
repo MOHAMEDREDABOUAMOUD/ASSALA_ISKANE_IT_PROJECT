@@ -12,8 +12,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.assalaIskane.project.models.Besoin;
+import com.assalaIskane.project.models.Fichier_projet;
 import com.assalaIskane.project.models.Materiaux_chantier;
 import com.assalaIskane.project.models.Materiel_chantier;
+import com.assalaIskane.project.models.Ouvrier;
 import com.assalaIskane.project.models.Projet;
 
 public interface ProjetRepository extends JpaRepository<Projet, String> {
@@ -34,12 +36,18 @@ public interface ProjetRepository extends JpaRepository<Projet, String> {
     @Query("insert into fichier_projet(nom, fichier, id_projet) values(:nom, :fichier, :id_projet)")
     void addFichier(@Param("nom") String nom, @Param("fichier") Base64 fichier, @Param("id_projet") String id_projet);
 
+	@Query("SELECT f from Fichier f where f.id_projet = :id_projet")
+	List<Fichier_projet> getFichiersProjet(@Param("id_projet") String id_projet);
+	
 	@Query("SELECT p FROM Projet p inner join chantier c on o.id = c.id_projet WHERE c.id_resp = :id_resp AND c.date_ordre = (\r\n" + 
 			"    SELECT MAX(c2.date_ordre) \r\n" + 
 			"    FROM Chantier c2 \r\n" + 
 			"    WHERE c2.id_projet = c.id_projet\r\n" + 
 			")")
-	Projet getProjet(@Param("id_projet") String id_resp);
+	List<Projet> getProjets(@Param("id_resp") String id_resp);
+	
+	@Query("SELECT * FROM Projet")
+	List<Projet> getProjets();
 	
 	@Query("SELECT m FROM Materiel m inner join Materiel_chantier mc inner join chantier c on c.id=mc.id_chantier and m.id = mc.id_materiel WHERE c.id_projet = :id_projet")
 	List<Materiel_chantier> getMaterielsChantiers(@Param("id_projet") String id_projet);
@@ -52,6 +60,6 @@ public interface ProjetRepository extends JpaRepository<Projet, String> {
     @Query("insert into besoin(nom, date_demande, qte, valide_par, id_chantier) values(:nom, :date_demande, :qte, :valide_par, :id_chantier)")
     void addBesoin(@Param("nom") String nom, @Param("date_demande") Date date_demande, @Param("qte") String qte, @Param("valide_par") String valide_par, @Param("id_chantier") int id_chantier);
 
-	@Query("SELECT b from besoin b where valide_par = :id_resp")
-	List<Besoin> getBesoins(@Param("id_resp") String id_resp);
+	@Query("SELECT b from besoin b where valide_par = :id_resp and id_chantier = (select id from chantier where id_projet = :id_projet)")
+	List<Besoin> getBesoins(@Param("id_resp") String id_resp, @Param("id_projet") String id_projet);
 }
