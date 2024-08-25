@@ -61,7 +61,7 @@ public interface ProjetRepository extends JpaRepository<Projet, String> {
 	@Query(value = "INSERT INTO besoin (nom, date_demande, qte, valide_par, id_chantier) VALUES (:nom, :date_demande, :qte, :valide_par, :id_chantier)", nativeQuery = true)
 	void addBesoin(@Param("nom") String nom, @Param("date_demande") Date dateDemande, @Param("qte") String qte, @Param("valide_par") String validePar, @Param("id_chantier") int idChantier);
 
-	@Query("SELECT b FROM Besoin b WHERE b.valide_par = :id_resp AND b.chantier.id IN (SELECT id FROM Chantier c WHERE c.projet.id = :id_projet)")
+	@Query("SELECT b FROM Besoin b WHERE b.valide_par.id = :id_resp AND b.chantier.id IN (SELECT id FROM Chantier c WHERE c.projet.id = :id_projet)")
 	List<Besoin> getBesoins(@Param("id_resp") String idResp, @Param("id_projet") String idProjet);
 
 }
