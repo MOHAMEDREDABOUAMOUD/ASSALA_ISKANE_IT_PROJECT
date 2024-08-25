@@ -1,5 +1,7 @@
 package com.assalaIskane.project.controllers;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
@@ -27,12 +29,12 @@ public class ProjetController {
 	private ProjetServiceInterface service;
 	
 	@PostMapping("/CreateProjet")
-	void createProjet(@RequestParam String id, @RequestParam String nom, @RequestParam String numero_marche, @RequestParam String objet, @RequestParam Date date_ordre, @RequestParam Date date_fin, @RequestParam int delai, @RequestParam String id_resp, @RequestParam String id_resp_chantier) {
-		service.createProjet(id, nom, numero_marche, objet, date_ordre, date_fin, delai, id_resp, id_resp_chantier);
+	void createProjet(@RequestParam String id, @RequestParam String nom, @RequestParam String numero_marche, @RequestParam String objet, @RequestParam String date_ordre, @RequestParam String date_fin, @RequestParam int delai, @RequestParam String id_resp, @RequestParam String id_resp_chantier) throws ParseException {
+		service.createProjet(id, nom, numero_marche, objet, new SimpleDateFormat("yyyy-MM-dd").parse(date_ordre), new SimpleDateFormat("yyyy-MM-dd").parse(date_fin), delai, id_resp, id_resp_chantier);
 	}
 	@PostMapping("/AddAbsence")
-	void AddAbsence(@RequestParam String id_ouvrier, @RequestParam Date date_absence, @RequestParam int id_chantier, @RequestParam int absent) {
-		service.AddAbsence(id_ouvrier, date_absence, id_chantier, absent);
+	void AddAbsence(@RequestParam String id_ouvrier, @RequestParam String date_absence, @RequestParam int id_chantier, @RequestParam int absent) throws ParseException {
+		service.AddAbsence(id_ouvrier, new SimpleDateFormat("yyyy-MM-dd").parse(date_absence), id_chantier, absent);
 	}
 	@PostMapping("/AddFichier")
 	void addFichier(@RequestParam String nom, @RequestParam byte[] fichier, @RequestParam String id_projet) {
@@ -59,8 +61,8 @@ public class ProjetController {
 		return service.getMateriauxChantiers(id_projet);
 	}
 	@PostMapping("/AddBesoin")
-	void addBesoin(@RequestParam String nom, @RequestParam Date date_demande, @RequestParam String qte, @RequestParam String valide_par, @RequestParam int id_chantier) {
-		service.addBesoin(nom, date_demande, qte, valide_par, id_chantier);
+	void addBesoin(@RequestParam String nom, @RequestParam String date_demande, @RequestParam String qte, @RequestParam String valide_par, @RequestParam int id_chantier) throws ParseException {
+		service.addBesoin(nom, new SimpleDateFormat("yyyy-MM-dd").parse(date_demande), qte, valide_par, id_chantier);
 	}
 	@GetMapping("/getBesoins")
 	List<Besoin> getBesoins(@RequestParam String id_resp, @RequestParam String id_projet){
