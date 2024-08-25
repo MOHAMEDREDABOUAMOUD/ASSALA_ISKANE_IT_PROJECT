@@ -11,56 +11,58 @@ function Login() {
     navigate('/SignUP');
   };
 
-  const [users, setUsers] = useState([]);
+  const [user, setUser] = useState({});
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  useEffect(() => {
+  // useEffect(() => {
+    
+  // }, [id, password]);  
+
+  const handleLoginClick = (e) => {
+    e.preventDefault();
+
     if (id && password) {
-      axios.get(`/assalaiskane/authenticate/${id}/${password}`)
+      axios.get(`http://localhost:9092/assalaiskane/authenticate?id=${id}&pass=${password}`)
         .then(response => {
-          setUsers([response.data]); // Wrap the response in an array
+          setUser(response.data); // Wrap the response in an array
         })
         .catch(error => {
           console.error('Error fetching user data:', error);
         });
     }
-  }, [id, password]);  
-
-  const handleLoginClick = (e) => {
-    e.preventDefault();
 
     // Check if user exists
-    const user = users.find(
-      (user) => user.Id === id && user.Pass === password
-    );
+    // const user = users.find(
+    //   (user) => user.Id === id && user.Pass === password
+    // );
 
     if (user) {
       // Navigate to different pages based on the user's role
-      switch (user.Fonction) {
+      switch (user.fonction) {
         case 'ChefChantier':
           navigate('/HomePage_ChefChantier');
           break;
-        case 'ResponsableComptabiliter':
+        case 'responsable_comptabiliter':
           navigate('/HomePage_RespComptabiliter');
           break;
-        case 'ResponsableMarchandise':
+        case 'responsable_marchandise':
           navigate('/HomePage_RespMarchandise');
           break;
-        case 'ResponsableDeProjet':
+        case 'responsable_projet':
           navigate('/HomePage_ResponsableDeProjet');
           break;
-        case 'ResponsableTechnique':
+        case 'responsable_technique':
           navigate('/HomePage_RespTechnique');
           break;
-        case 'ServiceTechnique':
+        case 'service_technique':
           navigate('/HomePage_ServiceTechnique');
           break;
-        case 'ChefTechnique':
+        case 'chef_technique':
           navigate('/HomePage_ChefTechnique');
           break;
-        case 'ChefDeProjet':
+        case 'chef_projet':
           navigate('/HomePage_ChefDeProjet');
           break;
         default:
@@ -80,7 +82,7 @@ function Login() {
       </div>
       <div className="login-form-container">
         <h2 className="login-title">Login</h2>
-        <form onSubmit={handleLoginClick}>
+        <form>
           <div className="login-input-group">
             <label className="login-label" htmlFor="id">ID:</label>
             <input
@@ -106,7 +108,7 @@ function Login() {
             />
           </div>
           {error && <div className="login-error">{error}</div>}
-          <button className="login-button" type="submit">Login</button>
+          <button className="login-button" type="submit" onClick={handleLoginClick}>Login</button>
           <button className="signin-button" type="button" onClick={handleSignInClick}>Sign In</button>
         </form>
       </div>
