@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, IconButton } from '@mui/material';
-import { ListAlt as ListAltIcon, Person as PersonIcon } from '@mui/icons-material';
+import {
+  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, IconButton,
+  Box, Tooltip
+} from '@mui/material';
+import {
+  ListAlt as ListAltIcon, Person as PersonIcon, DateRange as DateRangeIcon, 
+  AccessTime as AccessTimeIcon, Description as DescriptionIcon, Gavel as GavelIcon
+} from '@mui/icons-material';
 import axios from 'axios';
 
 export default function ListProjects() {
   const [projects, setProjects] = useState([]);
-  const [users, setUsers] = useState([]);
 
   // Fetch projects data from backend
   useEffect(() => {
-    axios.get('/getProjets')
+    axios.get('http://localhost:9092/assalaiskane/getProjets')
       .then(response => {
         setProjects(response.data);
       })
@@ -17,23 +22,6 @@ export default function ListProjects() {
         console.error('There was an error fetching the projects data!', error);
       });
   }, []);
-
-  // Fetch users data from backend (assuming you have a corresponding endpoint)
-  useEffect(() => {
-    axios.get('/getUsers')
-      .then(response => {
-        setUsers(response.data);
-      })
-      .catch(error => {
-        console.error('There was an error fetching the users data!', error);
-      });
-  }, []);
-
-  // Find the project manager names based on the project manager ID
-  const getProjectManagerName = (id) => {
-    const user = users.find(user => user.id === id);
-    return user ? `${user.prenom} ${user.nom}` : 'Inconnu';
-  };
 
   return (
     <div style={{ padding: '16px', maxWidth: '1200px', margin: 'auto' }}>
@@ -44,25 +32,29 @@ export default function ListProjects() {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>
-                <IconButton>
-                  <ListAltIcon />
-                </IconButton>
-                Nom du Projet
-              </TableCell>
-              <TableCell>
-                <IconButton>
-                  <PersonIcon />
-                </IconButton>
-                Responsable
-              </TableCell>
+              <TableCell><ListAltIcon /> Nom du Projet</TableCell>
+              <TableCell><GavelIcon /> Numéro Marché</TableCell>
+              <TableCell><DescriptionIcon /> Objet</TableCell>
+              <TableCell><DateRangeIcon /> Date Ordre</TableCell>
+              <TableCell><DateRangeIcon /> Date Fin</TableCell>
+              <TableCell><AccessTimeIcon /> Délai</TableCell>
+              <TableCell><PersonIcon /> Responsable</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {projects.map(project => (
               <TableRow key={project.id} sx={{ '&:hover': { backgroundColor: '#f5f5f5' } }}>
                 <TableCell>{project.nom}</TableCell>
-                <TableCell>{getProjectManagerName(project.id_resp)}</TableCell>
+                <TableCell>{project.numero_marche}</TableCell>
+                <TableCell>{project.objet}</TableCell>
+                <TableCell>{new Date(project.date_ordre).toLocaleDateString('fr-FR')}</TableCell>
+                <TableCell>{new Date(project.date_fin).toLocaleDateString('fr-FR')}</TableCell>
+                <TableCell>{project.delai} jours</TableCell>
+                <TableCell>
+                  <Tooltip title={`${project.resp.prenom} ${project.resp.nom} - ${project.resp.fonction}`}>
+                    <span>{project.resp.prenom} {project.resp.nom}</span>
+                  </Tooltip>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

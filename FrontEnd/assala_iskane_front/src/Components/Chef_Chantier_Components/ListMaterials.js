@@ -18,12 +18,22 @@ export default function ListMaterials() {
     const [materials, setMaterials] = useState([]);
     const [chantierMaterials, setChantierMaterials] = useState([]);
     const id_projet = "P001"; // Replace with the actual project ID you want to use
+    
+    // Function to format prices with "DH" currency
+    const formatPrice = (price) => {
+      return new Intl.NumberFormat('fr-MA', {
+        style: 'currency',
+        currency: 'MAD',
+        currencyDisplay: 'symbol',
+      }).format(price);
+    };
 
     useEffect(() => {
       // Fetch materials in stock from the backend
       const fetchMaterials = async () => {
         try {
-          const response = await axios.get(`/api/materiels-chantier/${id_projet}`);
+          const response = await axios.get(`http://localhost:9092/assalaiskane/getMaterielsChantiers?id_projet=${id_projet}`);
+          
           setMaterials(response.data);
         } catch (error) {
           console.error('Error fetching materials:', error);
@@ -33,7 +43,7 @@ export default function ListMaterials() {
       // Fetch chantier materials from the backend
       const fetchChantierMaterials = async () => {
         try {
-          const response = await axios.get(`/api/materiaux-chantier/${id_projet}`);
+          const response = await axios.get(`http://localhost:9092/assalaiskane/getMateriauxChantiers?id_projet=${id_projet}`);
           setChantierMaterials(response.data);
         } catch (error) {
           console.error('Error fetching chantier materials:', error);
@@ -57,7 +67,6 @@ export default function ListMaterials() {
               <TableCell>Nom</TableCell>
               <TableCell>Quantité</TableCell>
               <TableCell>Prix</TableCell>
-              <TableCell>ID Stock</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -66,8 +75,7 @@ export default function ListMaterials() {
                 <TableCell>{material.id}</TableCell>
                 <TableCell>{material.nom}</TableCell>
                 <TableCell>{material.qte}</TableCell>
-                <TableCell>{material.prix}</TableCell>
-                <TableCell>{material.id_stock}</TableCell>
+                <TableCell>{formatPrice(material.prix)}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -87,7 +95,6 @@ export default function ListMaterials() {
                 <TableCell>Quantité</TableCell>
                 <TableCell>Type</TableCell>
                 <TableCell>Prix</TableCell>
-                <TableCell>ID Stock</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -97,8 +104,7 @@ export default function ListMaterials() {
                   <TableCell>{material.nom}</TableCell>
                   <TableCell>{material.qte}</TableCell>
                   <TableCell>{material.type}</TableCell>
-                  <TableCell>{material.prix}</TableCell>
-                  <TableCell>{material.id_stock}</TableCell>
+                  <TableCell>{formatPrice(material.prix)}</TableCell>
                   </TableRow>
               ))}
             </TableBody>
