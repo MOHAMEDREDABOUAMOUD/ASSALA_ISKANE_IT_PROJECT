@@ -3,11 +3,11 @@ import { Container, Typography, Button, IconButton, Tooltip } from '@mui/materia
 import { CheckBox as CheckBoxIcon, CheckBoxOutlineBlank as CheckBoxOutlineBlankIcon } from '@mui/icons-material';
 import axios from 'axios';
 import { DataGrid } from '@mui/x-data-grid';
+import { Checkbox } from '@mui/material'; // Import Checkbox component
 
 export default function ListOuvrier() {
     const id_projet = "P001";
     const [ouvriers, setOuvriers] = useState([]);
-    const [selectedOuvriers, setSelectedOuvriers] = useState([]);
 
     useEffect(() => {
         const fetchOuvriers = async () => {
@@ -18,6 +18,7 @@ export default function ListOuvrier() {
                     nom: ouvrier.nom,
                     prenom: ouvrier.prenom,
                     numero: ouvrier.numero,
+                    selected: false
                 }));
                 setOuvriers(extractedData);
             } catch (error) {
@@ -28,54 +29,86 @@ export default function ListOuvrier() {
         fetchOuvriers();
     }, [id_projet]);
 
-    console.log(ouvriers);
-
     const columns = [
         { field: 'id', headerName: 'ID', width: 100 },
         { field: 'nom', headerName: 'Nom', width: 150 },
         { field: 'prenom', headerName: 'Prénom', width: 150 },
         { field: 'numero', headerName: 'Numéro de Téléphone', width: 200 },
+        {
+            field: 'selected',
+            headerName: 'Select',
+            width: 120,
+            renderCell: (params) => (
+                <Checkbox
+                    checked={params.row.selected}
+                    disabled
+                />
+            ),
+        },
     ];
 
-    const handleSelectionChange = (newSelection) => {
-        console.log("New Selection:", newSelection);
-        setSelectedOuvriers(newSelection);
+    const handleRowClick = async (params) => {
+        const id = params.id;
+
+        await setOuvriers(prevOuvriers => {
+            const updatedOuvriers = prevOuvriers.map(ouvrier => {
+                if (ouvrier.id === id) {
+                    return { ...ouvrier, selected: !ouvrier.selected };
+                }
+                return ouvrier;
+            });
+            return updatedOuvriers;
+        });
+        //console.log(ouvriers);
     };
 
     const handleDeclareAbsence = async () => {
         console.log("handleDeclareAbsence function triggered");
-        console.log("Selected Ouvriers:", selectedOuvriers);
 
         const date_absence = new Date().toISOString().split('T')[0];
         const id_chantier = 1;
         const absent = 1;
 
-        for (const id of selectedOuvriers) {
-            console.log(`Attempting to declare absence for ouvrier with ID: ${id}`);
-            try {
-                await axios.post('http://localhost:9092/assalaiskane/AddAbsence', null, {
-                    params: {
-                        id_ouvrier: id,
-                        date_absence: date_absence,
-                        id_chantier: id_chantier,
-                        absent: absent
-                    }
-                });
+        
+        for (const ouvrier of ouvriers) {
+            //console.log("selected : "+ouvrier.id+", "+ouvrier.selected);
+            if (ouvrier.selected) {
+                console.log(`Attempting to declare absence for ouvrier with ID: ${ouvrier.id}`);
+                try {
+                  await axios.post(
+                    `http://localhost:9092/assalaiskane/AddAbsence?id_ouvrier=${ouvrier.id}&date_absence=${date_absence}&id_chantier=${id_chantier}&absent=1`
+                );
 
-                console.log(`Absence declared for ouvrier with ID ${id}`);
-            } catch (error) {
-                console.error(`Error declaring absence for ouvrier with ID ${id}:`, error.response ? error.response.data : error.message);
+                    console.log(`Absence declared for ouvrier with ID ${ouvrier.id}`);
+                } catch (error) {
+                    console.error(`Error declaring absence for ouvrier with ID ${ouvrier.id}:`, error.response ? error.response.data : error.message);
+                }
+            }
+            else{
+              console.log(`Attempting to declare absence for ouvrier with ID: ${ouvrier.id}`);
+                try {
+                  await axios.post(
+                    `http://localhost:9092/assalaiskane/AddAbsence?id_ouvrier=${ouvrier.id}&date_absence=${date_absence}&id_chantier=${id_chantier}&absent=0`
+                );
+
+                    console.log(`Absence declared for ouvrier with ID ${ouvrier.id}`);
+                } catch (error) {
+                    console.error(`Error declaring absence for ouvrier with ID ${ouvrier.id}:`, error.response ? error.response.data : error.message);
+                }
             }
         }
     };
 
     const handleSelectAll = () => {
-        const allOuvriers = ouvriers.map(ouvrier => ouvrier.id);
-        setSelectedOuvriers(allOuvriers);
+        setOuvriers(prevOuvriers =>
+            prevOuvriers.map(ouvrier => ({ ...ouvrier, selected: true }))
+        );
     };
 
     const handleDeselectAll = () => {
-        setSelectedOuvriers([]);
+        setOuvriers(prevOuvriers =>
+            prevOuvriers.map(ouvrier => ({ ...ouvrier, selected: false }))
+        );
     };
 
     return (
@@ -87,8 +120,7 @@ export default function ListOuvrier() {
                 <DataGrid
                     rows={ouvriers}
                     columns={columns}
-                    checkboxSelection
-                    onSelectionModelChange={handleSelectionChange}
+                    onRowClick={handleRowClick}
                 />
             </div>
             <div style={{ marginBottom: '16px' }}>

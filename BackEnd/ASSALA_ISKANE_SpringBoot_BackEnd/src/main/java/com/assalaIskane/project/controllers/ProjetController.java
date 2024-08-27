@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.assalaIskane.project.business.ProjetServiceInterface;
+import com.assalaIskane.project.models.Absence;
 import com.assalaIskane.project.models.Besoin;
 import com.assalaIskane.project.models.Fichier_projet;
 import com.assalaIskane.project.models.Materiaux;
@@ -67,5 +68,9 @@ public class ProjetController {
 	@GetMapping("/getBesoins")
 	List<Besoin> getBesoins(@RequestParam String id_resp, @RequestParam String id_projet){
 		return service.getBesoins(id_resp, id_projet);
+	}
+	@GetMapping("/getAbsences")
+	List<Absence> getAbsences(@RequestParam String id_projet, @RequestParam String date_debut, @RequestParam String date_fin) throws ParseException{
+		return service.getAbsences(id_projet, new SimpleDateFormat("yyyy-MM-dd").parse(date_debut), new SimpleDateFormat("yyyy-MM-dd").parse(date_fin));
 	}
 }
