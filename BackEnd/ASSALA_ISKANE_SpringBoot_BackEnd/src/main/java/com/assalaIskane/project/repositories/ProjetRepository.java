@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.assalaIskane.project.models.Absence;
 import com.assalaIskane.project.models.Besoin;
 import com.assalaIskane.project.models.Fichier_projet;
 import com.assalaIskane.project.models.Materiaux;
@@ -63,5 +64,8 @@ public interface ProjetRepository extends JpaRepository<Projet, String> {
 
 	@Query("SELECT b FROM Besoin b WHERE b.valide_par.id = :id_resp AND b.chantier.id IN (SELECT id FROM Chantier c WHERE c.projet.id = :id_projet)")
 	List<Besoin> getBesoins(@Param("id_resp") String idResp, @Param("id_projet") String idProjet);
+	
+	@Query("select a from Absence a where a.date_absence > :date_debut and a.date_absence < :date_fin and a.chantier.projet.id = :id_projet")
+	List<Absence> getAbsences(@Param("id_projet") String id_projet, @Param("date_debut") Date date_debut, @Param("date_fin") Date date_fin);
 
 }
