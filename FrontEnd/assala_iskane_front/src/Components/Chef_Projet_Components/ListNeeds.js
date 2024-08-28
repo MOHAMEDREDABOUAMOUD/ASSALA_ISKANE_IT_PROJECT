@@ -3,40 +3,43 @@ import { Button, List, ListItem, ListItemText, ListItemSecondaryAction, Divider,
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
+import axios from 'axios'; 
 
 export default function ListNeeds() {
   const [needs, setNeeds] = useState([]);
+  const id_resp = 'U001'; // Replace with the actual responsible user's ID
+  const id_projet = 'P001'; // Replace with the actual project ID
 
   useEffect(() => {
     const fetchNeeds = async () => {
       try {
-        const response = await fetch('/api/getBesoins?id_resp=RESP001&id_projet=PROJ001');
-        const data = await response.json();
-        setNeeds(data);
+        const response = await axios.get(`http://localhost:9092/assalaiskane/getBesoins?id_resp=${id_resp}&id_projet=${id_projet}`);
+        setNeeds(response.data);
       } catch (error) {
         console.error('Error fetching needs:', error);
       }
     };
-
+  
     fetchNeeds();
   }, []);
-
+  
+  
   const handleValidate = async (needId) => {
     try {
-      await fetch(`/api/needs/validate/${needId}`, {
-        method: 'POST',
-      });
-
+      await axios.post(`/api/needs/validate/${needId}`);
+  
       // Update the UI after validation
       setNeeds(needs.map(need => need.id === needId ? { ...need, validated: true } : need));
     } catch (error) {
       console.error('Error validating need:', error);
     }
   };
-
+  
+  console.log(needs);
   return (
     <div>
       <h2>Lister/Valider les besoins du chef chantier</h2>
+      
       <List>
         {needs.map((need) => (
           <div key={need.id}>

@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.assalaIskane.project.models.Absence;
 import com.assalaIskane.project.models.Besoin;
 import com.assalaIskane.project.models.Fichier_projet;
 import com.assalaIskane.project.models.Materiaux;
@@ -73,6 +74,11 @@ public class ProjetService implements ProjetServiceInterface{
 	@Override
 	public List<Besoin> getBesoins(String id_resp, String id_projet) {
 		return projetDao.getBesoins(id_resp, id_projet);
+	}
+
+	@Override
+	public List<Absence> getAbsences(String id_projet, Date date_debut, Date date_fin) {
+		return projetDao.getAbsences(id_projet, date_debut, date_fin);
 	}
 
 }

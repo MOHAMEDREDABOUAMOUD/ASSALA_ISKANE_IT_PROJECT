@@ -33,6 +33,7 @@ import AjouterOuvrier from './Components/Service_Technique_Components/AjouterOuv
 import ListFiles from './Components/Chef_Projet_Components/ListFiles';
 import DailyReports from './Components/Chef_Projet_Components/DailyReports';
 import ListProjects from './Components/Chef_Projet_Components/ListProjects';
+import ListAllOuvrier from './Components/Resp_Comptabiliter/ListAllOuvrier';
 
 
 
@@ -103,6 +104,7 @@ function App() {
 
         {/*Responsable Comptabiliter*/}
         <Route path="/HomePage_RespComptabiliter" element={<HomePage_RespComptabiliter/>} />
+        <Route path="/listAllOuvriers" element={<ListAllOuvrier />} />
         {/*-------------------------------*/}
 
         {/*Responsable Marchandise*/}
