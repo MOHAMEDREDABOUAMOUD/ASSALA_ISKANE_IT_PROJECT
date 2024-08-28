@@ -1,5 +1,6 @@
 package com.assalaIskane.project.controllers;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.assalaIskane.project.business.ProjetServiceInterface;
 import com.assalaIskane.project.models.Absence;
@@ -38,9 +40,16 @@ public class ProjetController {
 		service.AddAbsence(id_ouvrier, new SimpleDateFormat("yyyy-MM-dd").parse(date_absence), id_chantier, absent);
 	}
 	@PostMapping("/AddFichier")
-	void addFichier(@RequestParam String nom, @RequestParam byte[] fichier, @RequestParam String id_projet) {
-		service.addFichier(nom, fichier, id_projet);
-	}
+    public String handleFileUpload(@RequestParam("nom") String nom, @RequestParam("fichier") MultipartFile fichier, @RequestParam("id_projet") String id_projet) {
+        try {
+            byte[] fileContent = fichier.getBytes();
+            service.addFichier(nom, fileContent, id_projet);
+            return "File uploaded successfully!";
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "File upload failed!";
+        }
+    }
 	@GetMapping("/getFichiersProjet")
 	List<Fichier_projet> getFichiersProjet(@RequestParam String id_projet) {
 		return service.getFichiersProjet(id_projet);

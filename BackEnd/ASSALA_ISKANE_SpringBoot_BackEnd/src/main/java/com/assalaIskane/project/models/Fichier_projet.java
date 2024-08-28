@@ -1,5 +1,6 @@
 package com.assalaIskane.project.models;
 
+import java.util.Arrays;
 import java.util.Base64;
 
 import javax.persistence.Entity;
@@ -11,6 +12,7 @@ import javax.persistence.ManyToOne;
 public class Fichier_projet {
 	@Id
 	private int id;
+	private String nom;
 	private byte[] fichier;
 	@ManyToOne
 	@JoinColumn(name = "id_projet")
@@ -19,9 +21,10 @@ public class Fichier_projet {
 	public Fichier_projet() {
 		// TODO Auto-generated constructor stub
 	}
-	public Fichier_projet(int id, byte[] fichier, Projet projet) {
+	public Fichier_projet(int id, String nom, byte[] fichier, Projet projet) {
 		super();
 		this.id = id;
+		this.nom = nom;
 		this.fichier = fichier;
 		this.projet = projet;
 	}
@@ -49,10 +52,16 @@ public class Fichier_projet {
 	public void setProjet(Projet projet) {
 		this.projet = projet;
 	}
-
+	
+	public String getNom() {
+		return nom;
+	}
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
 	@Override
 	public String toString() {
-		return "Fichier_projet [id=" + id + ", fichier=" + fichier + ", projet=" + projet + "]";
+		return "Fichier_projet [id=" + id + ", nom=" + nom + ", fichier=" + Arrays.toString(fichier) + ", projet="
+				+ projet + "]";
 	}
-
 }
