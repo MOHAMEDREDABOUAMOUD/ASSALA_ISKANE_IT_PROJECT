@@ -39,11 +39,6 @@ public class ProjetController {
 	void AddAbsence(@RequestParam String id_ouvrier, @RequestParam String date_absence, @RequestParam int id_chantier, @RequestParam int absent) throws ParseException {
 		service.AddAbsence(id_ouvrier, new SimpleDateFormat("yyyy-MM-dd").parse(date_absence), id_chantier, absent);
 	}
-//	@PostMapping("/AddFichier")
-//	void addFichier(@RequestParam String nom, @RequestParam byte[] fichier, @RequestParam String id_projet) {
-//		System.out.println(nom+" , "+fichier);
-//		service.addFichier(nom, fichier, id_projet);
-//	}
 	@PostMapping("/AddFichier")
     public String handleFileUpload(@RequestParam("nom") String nom, @RequestParam("fichier") MultipartFile fichier, @RequestParam("id_projet") String id_projet) {
         try {
