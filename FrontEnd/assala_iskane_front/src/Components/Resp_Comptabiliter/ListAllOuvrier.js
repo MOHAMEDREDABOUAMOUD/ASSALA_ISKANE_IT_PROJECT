@@ -1,174 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, TextField, Grid } from '@mui/material';
 import { Cancel as CancelIcon, CheckCircle as CheckCircleIcon } from '@mui/icons-material';
 import { format, differenceInDays, addDays } from 'date-fns';
+import axios from 'axios';
 
 export default function ListOuvrier() {
-  function transformData(data) {
-    const transformedData = {};
-  
-    data.forEach((item) => {
-      const { ouvrier, date_absence, absent } = item;
-      const date = new Date(date_absence).toLocaleDateString('fr-FR');
-  
-      if (!transformedData[ouvrier.id]) {
-        transformedData[ouvrier.id] = {
-          id: ouvrier.id,
-          nom: ouvrier.nom,
-          prenom: ouvrier.prenom,
-          numero: ouvrier.numero,
-          absences: [],
-        };
-      }
-  
-      if (absent) {
-        transformedData[ouvrier.id].absences.push(date);
-      }
-    });
-  
-    return Object.values(transformedData);
-  }
-  
-  // Example usage with your data
-  const data = [
-    {
-      id: 5,
-      ouvrier: {
-        id: "O001",
-        nom: "Williams",
-        prenom: "David",
-        numero: "1112223334",
-        projet: {
-          id: "P001",
-          nom: "Project A",
-          numero_marche: "M001",
-          objet: "Building a bridge",
-          date_ordre: "2023-01-14T23:00:00.000+00:00",
-          date_fin: "2023-12-14T23:00:00.000+00:00",
-          delai: 330,
-          resp: {
-            id: "U001",
-            nom: "Smith",
-            prenom: "John",
-            fonction: "ChefChantier",
-            numero: "1234567890",
-            pass: "pass123",
-          },
-        },
-      },
-      date_absence: "2024-08-25T23:00:00.000+00:00",
-      chantier: {
-        id: 1,
-        projet: {
-          id: "P001",
-          nom: "Project A",
-          numero_marche: "M001",
-          objet: "Building a bridge",
-          date_ordre: "2023-01-14T23:00:00.000+00:00",
-          date_fin: "2023-12-14T23:00:00.000+00:00",
-          delai: 330,
-          resp: {
-            id: "U001",
-            nom: "Smith",
-            prenom: "John",
-            fonction: "ChefChantier",
-            numero: "1234567890",
-            pass: "pass123",
-          },
-        },
-        resp: {
-          id: "U001",
-          nom: "Smith",
-          prenom: "John",
-          fonction: "ChefChantier",
-          numero: "1234567890",
-          pass: "pass123",
-        },
-      },
-      absent: 1,
-    },
-    {
-      id: 6,
-      ouvrier: {
-        id: "O003",
-        nom: "reda",
-        prenom: "reda",
-        numero: "1111111111",
-        projet: {
-          id: "P001",
-          nom: "Project A",
-          numero_marche: "M001",
-          objet: "Building a bridge",
-          date_ordre: "2023-01-14T23:00:00.000+00:00",
-          date_fin: "2023-12-14T23:00:00.000+00:00",
-          delai: 330,
-          resp: {
-            id: "U001",
-            nom: "Smith",
-            prenom: "John",
-            fonction: "ChefChantier",
-            numero: "1234567890",
-            pass: "pass123",
-          },
-        },
-      },
-      date_absence: "2024-08-25T23:00:00.000+00:00",
-      chantier: {
-        id: 1,
-        projet: {
-          id: "P001",
-          nom: "Project A",
-          numero_marche: "M001",
-          objet: "Building a bridge",
-          date_ordre: "2023-01-14T23:00:00.000+00:00",
-          date_fin: "2023-12-14T23:00:00.000+00:00",
-          delai: 330,
-          resp: {
-            id: "U001",
-            nom: "Smith",
-            prenom: "John",
-            fonction: "ChefChantier",
-            numero: "1234567890",
-            pass: "pass123",
-          },
-        },
-        resp: {
-          id: "U001",
-          nom: "Smith",
-          prenom: "John",
-          fonction: "ChefChantier",
-          numero: "1234567890",
-          pass: "pass123",
-        },
-      },
-      absent: 0,
-    },
-  ];
-  
-  const transformedData = transformData(data);
-  console.log(transformedData);
-  
+  const [ouvriers, setOuvriers] = useState([]);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
 
-  
-  const ouvriers = [
-    {
-      id: 1,
-      nom: 'Saidi',
-      prenom: 'Abdelah',
-      numero: '0617901313',
-      absences: ['25/08/2024', '27/08/2024'],
-    },
-    {
-      id: 2,
-      nom: 'Doe',
-      prenom: 'John',
-      numero: '0622334455',
-      absences: ['26/08/2024'],
-    },
-  ];
+  const id_projet = 'P001'; // Replace with your actual project ID
 
+  // Function to generate date columns based on the selected start and end dates
   const generateDateColumns = () => {
     if (!startDate || !endDate) return [];
 
@@ -179,6 +22,65 @@ export default function ListOuvrier() {
     return Array.from({ length: days }, (_, i) => format(addDays(start, i), 'dd/MM/yyyy'));
   };
 
+  const fetchAbsences = async () => {
+    if (!startDate || !endDate) return; // Don't fetch if dates are not set
+
+    try {
+      const response = await axios.get(
+        `http://localhost:9092/assalaiskane/getAbsences`,
+        {
+          params: {
+            id_projet: id_projet,
+            date_debut: startDate,
+            date_fin: endDate
+          }
+        }
+      );
+
+      console.log('Raw data from backend:', response.data); // Debugging: log the raw data from the backend
+
+      const transformedData = transformData(response.data);
+      console.log('Transformed data:', transformedData); // Debugging: log the transformed data
+      setOuvriers(transformedData);
+    } catch (error) {
+      console.error('Error fetching absences:', error.response ? error.response.data : error.message);
+    }
+  };
+
+  function transformData(data) {
+    console.log('Data before transformation:', data); // Debugging: log the raw data
+
+    const transformedData = {};
+
+    data.forEach((item) => {
+      const { ouvrier, date_absence, absent } = item;
+      const date = format(new Date(date_absence), 'dd/MM/yyyy');
+
+      if (!transformedData[ouvrier.id]) {
+        transformedData[ouvrier.id] = {
+          id: ouvrier.id,
+          nom: ouvrier.nom,
+          prenom: ouvrier.prenom,
+          numero: ouvrier.numero,
+          absences: [],
+        };
+      }
+
+      if (absent) {
+        transformedData[ouvrier.id].absences.push(date);
+      }
+    });
+
+    console.log('Data after transformation:', transformedData); // Debugging: log the transformed data
+
+    return Object.values(transformedData);
+  }
+
+  useEffect(() => {
+    fetchAbsences();
+  }, [startDate, endDate]); // Fetch data when startDate or endDate changes
+
+  // Generate date columns based on the startDate and endDate
   const dateColumns = generateDateColumns();
 
   return (
