@@ -62,8 +62,25 @@ public interface ProjetRepository extends JpaRepository<Projet, String> {
 	@Query(value = "INSERT INTO besoin (nom, date_demande, qte, valide_par, id_chantier) VALUES (:nom, :date_demande, :qte, :valide_par, :id_chantier)", nativeQuery = true)
 	void addBesoin(@Param("nom") String nom, @Param("date_demande") Date dateDemande, @Param("qte") String qte, @Param("valide_par") String validePar, @Param("id_chantier") int idChantier);
 
+	@Modifying
+	@Transactional
+	@Query(value = "update besoin set valide_par = :id_resp where id = :id_besoin", nativeQuery = true)
+	void validateBesoins(@Param("id_resp") String id_resp, @Param("id_besoin") String id_besoin);
+	
 	@Query("SELECT b FROM Besoin b WHERE b.valide_par.id = :id_resp AND b.chantier.id IN (SELECT id FROM Chantier c WHERE c.projet.id = :id_projet)")
-	List<Besoin> getBesoins(@Param("id_resp") String idResp, @Param("id_projet") String idProjet);
+	List<Besoin> getBesoins(@Param("id_resp") String idResp, @Param("id_projet") String id_projet);
+	
+	@Query("SELECT b FROM Besoin b WHERE b.valide_par.fonction <> 'service_technique' AND b.chantier.projet.id = :id_projet")
+	List<Besoin> getBesoinsCC(@Param("id_projet") String id_projet);
+	
+	@Query("SELECT b FROM Besoin b WHERE b.valide_par.fonction = 'ChefChantier' AND b.chantier.projet.id = :id_projet")
+	List<Besoin> getBesoinsRP(@Param("id_projet") String id_projet);
+	
+	@Query("SELECT b FROM Besoin b WHERE b.valide_par.fonction = 'responsable_projet' AND b.chantier.projet.id = :id_projet")
+	List<Besoin> getBesoinsRT(@Param("id_projet") String id_projet);
+	
+	@Query("SELECT b FROM Besoin b WHERE b.valide_par.fonction = 'responsable_technique' AND b.chantier.projet.id = :id_projet")
+	List<Besoin> getBesoinsST(@Param("id_projet") String id_projet);
 	
 	@Query("select a from Absence a where a.date_absence >= :date_debut and a.date_absence <= :date_fin and a.chantier.projet.id = :id_projet")
 	List<Absence> getAbsences(@Param("id_projet") String id_projet, @Param("date_debut") Date date_debut, @Param("date_fin") Date date_fin);

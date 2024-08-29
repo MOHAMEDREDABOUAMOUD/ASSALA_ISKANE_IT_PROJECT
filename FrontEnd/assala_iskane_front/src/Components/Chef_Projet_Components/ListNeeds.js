@@ -11,7 +11,8 @@ export default function ListNeeds({id_projet,id_resp}) {
   useEffect(() => {
     const fetchNeeds = async () => {
       try {
-        const response = await axios.get(`http://localhost:9092/assalaiskane/getBesoins?id_resp=${id_resp}&id_projet=${id_projet}`);
+        console.log(id_projet+", "+id_resp);
+        const response = await axios.get(`http://localhost:9092/assalaiskane/getBesoinsRP?id_projet=${id_projet}`);
         setNeeds(response.data);
       } catch (error) {
         console.error('Error fetching needs:', error);
@@ -24,9 +25,7 @@ export default function ListNeeds({id_projet,id_resp}) {
   
   const handleValidate = async (needId) => {
     try {
-      await axios.post(`/api/needs/validate/${needId}`);
-  
-      // Update the UI after validation
+      await axios.post(`http://localhost:9092/assalaiskane/validateBesoin?id_resp=${id_resp}&id_besoin=${needId}`);
       setNeeds(needs.map(need => need.id === needId ? { ...need, validated: true } : need));
     } catch (error) {
       console.error('Error validating need:', error);

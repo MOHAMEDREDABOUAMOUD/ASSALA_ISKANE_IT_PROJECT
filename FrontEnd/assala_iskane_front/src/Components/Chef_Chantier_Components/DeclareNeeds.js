@@ -44,7 +44,7 @@ export default function DeclareNeeds({ id_projet }) {
   useEffect(() => {
     const fetchNeeds = async () => {
       try {
-        const response = await axios.get(`http://localhost:9092/assalaiskane/getBesoins?id_resp=${id_resp}&id_projet=${id_projet}`);
+        const response = await axios.get(`http://localhost:9092/assalaiskane/getBesoinsCC?id_projet=${id_projet}`);
         setNeeds(response.data);
       } catch (error) {
         console.error('Error fetching needs:', error);
@@ -147,7 +147,7 @@ export default function DeclareNeeds({ id_projet }) {
                 <Button 
                   variant="contained" 
                   color="primary" 
-                  type="submit" 
+                  type="submit"
                   fullWidth
                   size="large"
                   startIcon={<AddCircleOutlineIcon />}

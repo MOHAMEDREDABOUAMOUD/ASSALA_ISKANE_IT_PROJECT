@@ -11,7 +11,7 @@ export default function ListValidatedNeedsCompta({id_projet,id_resp}) {
   useEffect(() => {
     const fetchNeeds = async () => {
       try {
-        const response = await axios.get(`http://localhost:9092/assalaiskane/getBesoins?id_resp=${id_resp}&id_projet=${id_projet}`);
+        const response = await axios.get(`http://localhost:9092/assalaiskane/getBesoinsST?id_projet=${id_projet}`);
         setNeeds(response.data);
       } catch (error) {
         console.error('Error fetching needs:', error);

@@ -25,5 +25,10 @@ public interface ProjetServiceInterface {
 	List<Materiaux> getMateriauxChantiers(String id_projet);
 	void addBesoin(String nom, Date date_demande, String qte, String valide_par, int id_chantier);
 	List<Besoin> getBesoins(String id_resp, String id_projet);
+	List<Besoin> getBesoinsCC(String id_projet);
+	List<Besoin> getBesoinsRP(String id_projet);
+	List<Besoin> getBesoinsRT(String id_projet);
+	List<Besoin> getBesoinsST(String id_projet);
+	void validateBesoin(String id_resp, String id_besoin);
 	List<Absence> getAbsences(String id_projet, Date date_debut, Date date_fin);
 }
