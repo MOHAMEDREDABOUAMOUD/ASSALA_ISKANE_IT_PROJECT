@@ -26,7 +26,7 @@ import BusinessIcon from '@mui/icons-material/Business';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from 'react-router-dom';
 
-export default function DeclareNeeds() {
+export default function DeclareNeeds({ id_projet }) {
   const [needs, setNeeds] = useState([]);
   const [newNeed, setNewNeed] = useState({
     nom: '',
@@ -36,7 +36,6 @@ export default function DeclareNeeds() {
   });
   const navigate = useNavigate();
   const id_resp = 'U001'; // Replace with the actual responsible user's ID
-  const id_projet = 'P001'; // Replace with the actual project ID
   const id_chantier = 1; // Replace with the actual chantier ID
   
   const handleReturn = () => {

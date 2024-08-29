@@ -22,9 +22,9 @@ import { DataGrid } from '@mui/x-data-grid';
 import { Checkbox } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-export default function ListOuvrier() {
+export default function ListOuvrier({ id_projet }) {
     const navigate = useNavigate();
-    const id_projet = "P001";
+    //const id_projet = "P001";
     const [ouvriers, setOuvriers] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -110,10 +110,13 @@ export default function ListOuvrier() {
         setOuvriers(prevOuvriers => prevOuvriers.map(ouvrier => ({ ...ouvrier, selected: false })));
     };
 
+   
     const handleRetour = () => {
-        navigate('/HomePage_ChefChantier');
+            console.log("Navigating to HomePage_ChefChantier");
+            navigate('/HomePage_ChefChantier');
     };
-
+        
+    
     return (
         <Container maxWidth="lg">
             <Paper elevation={3} sx={{ p: 3, mt: 3 }}>

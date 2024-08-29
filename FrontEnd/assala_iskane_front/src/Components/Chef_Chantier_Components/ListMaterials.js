@@ -18,10 +18,9 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import ConstructionIcon from '@mui/icons-material/Construction';
 
-export default function ListMaterials() {
+export default function ListMaterials({ id_projet }) {
   const [materials, setMaterials] = useState([]);
   const [chantierMaterials, setChantierMaterials] = useState([]);
-  const id_projet = "P001"; // Replace with the actual project ID you want to use
   const navigate = useNavigate();
 
   // Function to format prices with "DH" currency

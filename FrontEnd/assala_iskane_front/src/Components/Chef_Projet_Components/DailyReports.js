@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './DailyReports.css';
 
-export default function DailyReports() {
+export default function DailyReports({id_projet,id_resp}) {
   const [reports, setReports] = useState([
     {
       id: 1,
