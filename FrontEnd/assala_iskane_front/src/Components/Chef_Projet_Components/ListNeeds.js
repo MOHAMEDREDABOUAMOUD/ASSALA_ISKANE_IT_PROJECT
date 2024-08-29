@@ -5,11 +5,9 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 import axios from 'axios'; 
 
-export default function ListNeeds() {
+export default function ListNeeds({id_projet,id_resp}) {
   const [needs, setNeeds] = useState([]);
-  const id_resp = 'U001'; // Replace with the actual responsible user's ID
-  const id_projet = 'P001'; // Replace with the actual project ID
-
+ 
   useEffect(() => {
     const fetchNeeds = async () => {
       try {

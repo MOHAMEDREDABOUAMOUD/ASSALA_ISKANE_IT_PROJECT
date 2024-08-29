@@ -34,12 +34,19 @@ import ListFiles from './Components/Chef_Projet_Components/ListFiles';
 import DailyReports from './Components/Chef_Projet_Components/DailyReports';
 import ListProjects from './Components/Chef_Projet_Components/ListProjects';
 import ListAllOuvrier from './Components/Resp_Comptabiliter/ListAllOuvrier';
+import { ThemeProvider } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles';
+import ListFilesCompta from './Components/Resp_Comptabiliter/ListFilesCompta';
+import ListValidatedNeedsCompta from './Components/Resp_Comptabiliter/ListValidatedNeedsCompta';
+import ListFilesMar from './Components/Resp_Marchandise/ListFilesMarchandise';
+import ListServiceValidatedNeedsMar from './Components/Resp_Marchandise/ListValidatedNeedsMar';
+
 
 
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
-
+  const theme = createTheme();
   useEffect(() => {
       const timer = setTimeout(() => {
           setIsLoading(false);
@@ -53,6 +60,9 @@ function App() {
   }
 
   return (
+    <ThemeProvider theme={theme}>
+      {/* Your app components */}
+    
     <Router>
     <NavBar />
     <div className="App">
@@ -105,10 +115,15 @@ function App() {
         {/*Responsable Comptabiliter*/}
         <Route path="/HomePage_RespComptabiliter" element={<HomePage_RespComptabiliter/>} />
         <Route path="/listAllOuvriers" element={<ListAllOuvrier />} />
+        <Route path="/listFilesCompta" element={<ListFilesCompta />} />
+        <Route path="/listValidatedNeedsCompta" element={<ListValidatedNeedsCompta />} />
         {/*-------------------------------*/}
 
         {/*Responsable Marchandise*/}
         <Route path="/HomePage_RespMarchandise" element={<HomePage_RespMarchandise/>} />
+        <Route path="/listAllOuvriers" element={<ListAllOuvrier />} />
+        <Route path="/listFilesMarchandise" element={<ListFilesMar />} />
+        <Route path="/listValidatedNeedsMarchandise" element={<ListServiceValidatedNeedsMar />} />
         {/*-------------------------------*/}
         
         {/*Responsable Technique*/}
@@ -117,6 +132,7 @@ function App() {
       </Routes>
       </div>
     </Router>
+    </ThemeProvider>
   );
 }
 

@@ -1,13 +1,32 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Typography, Button, IconButton, Tooltip } from '@mui/material';
-import { CheckBox as CheckBoxIcon, CheckBoxOutlineBlank as CheckBoxOutlineBlankIcon } from '@mui/icons-material';
+import { 
+  Container, 
+  Typography, 
+  Button, 
+  IconButton, 
+  Tooltip, 
+  Box,
+  Paper,
+  Divider,
+  Chip
+} from '@mui/material';
+import { 
+  CheckBox as CheckBoxIcon, 
+  CheckBoxOutlineBlank as CheckBoxOutlineBlankIcon, 
+  ArrowBack as ArrowBackIcon,
+  People as PeopleIcon,
+  EventBusy as EventBusyIcon
+} from '@mui/icons-material';
 import axios from 'axios';
 import { DataGrid } from '@mui/x-data-grid';
-import { Checkbox } from '@mui/material'; // Import Checkbox component
+import { Checkbox } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
-export default function ListOuvrier() {
-    const id_projet = "P001";
+export default function ListOuvrier({ id_projet }) {
+    const navigate = useNavigate();
+    //const id_projet = "P001";
     const [ouvriers, setOuvriers] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchOuvriers = async () => {
@@ -23,6 +42,8 @@ export default function ListOuvrier() {
                 setOuvriers(extractedData);
             } catch (error) {
                 console.error('Error fetching ouvriers:', error);
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -33,115 +54,128 @@ export default function ListOuvrier() {
         { field: 'id', headerName: 'ID', width: 100 },
         { field: 'nom', headerName: 'Nom', width: 150 },
         { field: 'prenom', headerName: 'Prénom', width: 150 },
-        { field: 'numero', headerName: 'Numéro de Téléphone', width: 200 },
+        { 
+            field: 'numero', 
+            headerName: 'Numéro de Téléphone', 
+            width: 200,
+            renderCell: (params) => (
+                <Chip 
+                    label={params.value} 
+                    variant="outlined" 
+                    size="small" 
+                    color="primary"
+                />
+            ),
+        },
         {
             field: 'selected',
-            headerName: 'Select',
+            headerName: 'Absent',
             width: 120,
             renderCell: (params) => (
                 <Checkbox
                     checked={params.row.selected}
-                    disabled
+                    color="secondary"
                 />
             ),
         },
     ];
 
-    const handleRowClick = async (params) => {
+    const handleRowClick = (params) => {
         const id = params.id;
-
-        await setOuvriers(prevOuvriers => {
-            const updatedOuvriers = prevOuvriers.map(ouvrier => {
-                if (ouvrier.id === id) {
-                    return { ...ouvrier, selected: !ouvrier.selected };
-                }
-                return ouvrier;
-            });
-            return updatedOuvriers;
-        });
-        //console.log(ouvriers);
+        setOuvriers(prevOuvriers => prevOuvriers.map(ouvrier => 
+            ouvrier.id === id ? { ...ouvrier, selected: !ouvrier.selected } : ouvrier
+        ));
     };
 
     const handleDeclareAbsence = async () => {
-        console.log("handleDeclareAbsence function triggered");
-
         const date_absence = new Date().toISOString().split('T')[0];
         const id_chantier = 1;
-        const absent = 1;
 
-        
         for (const ouvrier of ouvriers) {
-            //console.log("selected : "+ouvrier.id+", "+ouvrier.selected);
-            if (ouvrier.selected) {
-                console.log(`Attempting to declare absence for ouvrier with ID: ${ouvrier.id}`);
-                try {
-                  await axios.post(
-                    `http://localhost:9092/assalaiskane/AddAbsence?id_ouvrier=${ouvrier.id}&date_absence=${date_absence}&id_chantier=${id_chantier}&absent=1`
+            try {
+                await axios.post(
+                    `http://localhost:9092/assalaiskane/AddAbsence?id_ouvrier=${ouvrier.id}&date_absence=${date_absence}&id_chantier=${id_chantier}&absent=${ouvrier.selected ? 1 : 0}`
                 );
-
-                    console.log(`Absence declared for ouvrier with ID ${ouvrier.id}`);
-                } catch (error) {
-                    console.error(`Error declaring absence for ouvrier with ID ${ouvrier.id}:`, error.response ? error.response.data : error.message);
-                }
-            }
-            else{
-              console.log(`Attempting to declare absence for ouvrier with ID: ${ouvrier.id}`);
-                try {
-                  await axios.post(
-                    `http://localhost:9092/assalaiskane/AddAbsence?id_ouvrier=${ouvrier.id}&date_absence=${date_absence}&id_chantier=${id_chantier}&absent=0`
-                );
-
-                    console.log(`Absence declared for ouvrier with ID ${ouvrier.id}`);
-                } catch (error) {
-                    console.error(`Error declaring absence for ouvrier with ID ${ouvrier.id}:`, error.response ? error.response.data : error.message);
-                }
+            } catch (error) {
+                console.error(`Error declaring absence for ouvrier with ID ${ouvrier.id}:`, error.response ? error.response.data : error.message);
             }
         }
     };
 
     const handleSelectAll = () => {
-        setOuvriers(prevOuvriers =>
-            prevOuvriers.map(ouvrier => ({ ...ouvrier, selected: true }))
-        );
+        setOuvriers(prevOuvriers => prevOuvriers.map(ouvrier => ({ ...ouvrier, selected: true })));
     };
 
     const handleDeselectAll = () => {
-        setOuvriers(prevOuvriers =>
-            prevOuvriers.map(ouvrier => ({ ...ouvrier, selected: false }))
-        );
+        setOuvriers(prevOuvriers => prevOuvriers.map(ouvrier => ({ ...ouvrier, selected: false })));
     };
 
+   
+    const handleRetour = () => {
+            console.log("Navigating to HomePage_ChefChantier");
+            navigate('/HomePage_ChefChantier');
+    };
+        
+    
     return (
-        <Container>
-            <Typography variant="h5" gutterBottom>
-                Liste des Ouvriers - Déclarer Absence
-            </Typography>
-            <div style={{ height: 400, width: '100%', marginBottom: '16px' }}>
-                <DataGrid
-                    rows={ouvriers}
-                    columns={columns}
-                    onRowClick={handleRowClick}
-                />
-            </div>
-            <div style={{ marginBottom: '16px' }}>
-                <Tooltip title="Select All">
-                    <IconButton onClick={handleSelectAll}>
-                        <CheckBoxIcon />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="Deselect All">
-                    <IconButton onClick={handleDeselectAll}>
-                        <CheckBoxOutlineBlankIcon />
-                    </IconButton>
-                </Tooltip>
-            </div>
-            <Button
-                variant="contained"
-                color="primary"
-                onClick={handleDeclareAbsence}
-            >
-                Déclarer Absence
-            </Button>
+        <Container maxWidth="lg">
+            <Paper elevation={3} sx={{ p: 3, mt: 3 }}>
+                <Box display="flex" alignItems="center" mb={2}>
+                    <Tooltip title="Retour">
+                        <IconButton onClick={handleRetour} sx={{ mr: 2 }}>
+                            <ArrowBackIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Typography variant="h4" component="h1" sx={{ flexGrow: 1 }}>
+                        <PeopleIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
+                        Liste des Ouvriers
+                    </Typography>
+                    <Chip 
+                        icon={<EventBusyIcon />} 
+                        label="Déclarer Absence" 
+                        color="primary" 
+                        variant="outlined"
+                    />
+                </Box>
+                <Divider sx={{ mb: 2 }} />
+                <Box sx={{ height: 400, width: '100%', mb: 2 }}>
+                    <DataGrid
+                        rows={ouvriers}
+                        columns={columns}
+                        onRowClick={handleRowClick}
+                        loading={loading}
+                        disableSelectionOnClick
+                        sx={{
+                            '& .MuiDataGrid-cell:hover': {
+                                color: 'primary.main',
+                            },
+                        }}
+                    />
+                </Box>
+                <Box display="flex" justifyContent="space-between" alignItems="center">
+                    <Box>
+                        <Tooltip title="Select All">
+                            <IconButton onClick={handleSelectAll} color="primary">
+                                <CheckBoxIcon />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Deselect All">
+                            <IconButton onClick={handleDeselectAll} color="secondary">
+                                <CheckBoxOutlineBlankIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </Box>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleDeclareAbsence}
+                        startIcon={<EventBusyIcon />}
+                        size="large"
+                    >
+                        Déclarer Absence
+                    </Button>
+                </Box>
+            </Paper>
         </Container>
     );
 }
