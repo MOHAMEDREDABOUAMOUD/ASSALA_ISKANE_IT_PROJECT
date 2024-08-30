@@ -18,8 +18,10 @@ import axios from 'axios';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import ConstructionIcon from '@mui/icons-material/Construction';
+import { useParams } from 'react-router';
 
-export default function ListTechMaterials({ id_projet }) {
+export default function ListTechMaterials() {
+  const { id_resp, id_projet } = useParams();
   const [materials, setMaterials] = useState([]);
   const [chantierMaterials, setChantierMaterials] = useState([]);
   const navigate = useNavigate();

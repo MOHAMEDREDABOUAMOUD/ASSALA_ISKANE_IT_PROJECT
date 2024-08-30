@@ -4,8 +4,10 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 import axios from 'axios'; 
+import { useParams } from 'react-router';
 
-export default function ListNeeds({id_projet,id_resp}) {
+export default function ListNeeds() {
+  const { id_resp, id_projet } = useParams();
   const [needs, setNeeds] = useState([]);
  
   useEffect(() => {

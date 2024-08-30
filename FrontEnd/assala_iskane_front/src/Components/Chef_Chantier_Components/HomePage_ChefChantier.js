@@ -33,6 +33,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import ListOuvrier from './ListOuvrier';
 import ListMaterials from './ListMaterials';
 import DeclareNeeds from './DeclareNeeds';
+import { useParams } from 'react-router';
 
 const chefChantierInfo = {
   id: 'USR002',
@@ -47,13 +48,14 @@ const chefChantierInfo = {
 const drawerWidth = 240;
 
 export default function HomePage_ChefChantier() {
+  const { id_resp, id_projet } = useParams();
   const [selectedOption, setSelectedOption] = useState(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const navigate = useNavigate();
   const location = useLocation();
-  const id_projet = 'P001'; // Example project ID
+  //const id_projet = 'P001'; // Example project ID
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -84,11 +86,11 @@ export default function HomePage_ChefChantier() {
   const renderSelectedComponent = () => {
     switch (selectedOption) {
       case 'list-workers':
-        return <ListOuvrier id_projet={id_projet} />;
+        navigate('/list-workers/'+id_resp+'/'+id_projet);
       case 'list-materials':
-        return <ListMaterials id_projet={id_projet} />;
+        navigate('/list-materials/'+id_resp+'/'+id_projet);
       case 'declare-needs':
-        return <DeclareNeeds id_projet={id_projet} />;
+        navigate('/declare-needs/'+id_resp+'/'+id_projet);
       default:
         return (
           <Card elevation={3}>

@@ -17,8 +17,10 @@ import { Visibility as VisibilityIcon, CheckCircle as CheckCircleIcon, Cancel as
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 import axios from 'axios'; 
+import { useParams } from 'react-router';
 
-export default function ListServiceValidatedNeedsMar({id_projet,id_resp}) {
+export default function ListServiceValidatedNeedsMar() {
+  const { id_resp, id_projet } = useParams();
   const [needs, setNeeds] = useState([]);
  
   useEffect(() => {

@@ -17,6 +17,7 @@ import {
   Add
 } from '@mui/icons-material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useParams } from 'react-router';
 
 const theme = createTheme({
   palette: {
@@ -33,6 +34,7 @@ const theme = createTheme({
 });
 
 export default function AjouterOuvrier() {
+  const { id_resp, id_projet } = useParams();
   const [id, setId] = useState('');
   const [idProjet, setIdProjet] = useState('');
   const [nom, setNom] = useState('');

@@ -10,8 +10,10 @@ import {
   Business as BusinessIcon
 } from '@mui/icons-material';
 import axios from 'axios';
+import { useParams } from 'react-router';
 
 export default function AllProjectsList() {
+  const { id_resp } = useParams();
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const theme = useTheme();
@@ -44,7 +46,7 @@ export default function AllProjectsList() {
   const handleProjectClick = (projectId) => {
     // Navigate to HomePage_RespComptabiliter with the selected project ID
     // Note: You'll need to replace 'id_resp' with the actual ID of the responsible person
-    navigate(`/HomePage_RespComptabiliter/${projectId}`);
+    navigate(`/HomePage_RespComptabiliter/${id_resp}/${projectId}`);
   };
 
   return (

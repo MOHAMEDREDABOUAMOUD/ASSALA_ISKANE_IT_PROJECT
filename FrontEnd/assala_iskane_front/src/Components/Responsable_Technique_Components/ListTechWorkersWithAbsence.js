@@ -10,8 +10,9 @@ import {
 } from '@mui/icons-material';
 import { format, differenceInDays, addDays } from 'date-fns';
 import axios from 'axios';
-export default function ListTechWorkersWithAbsence({id_projet}) {
- 
+import { useParams } from 'react-router';
+export default function ListTechWorkersWithAbsence() {
+  const { id_resp, id_projet } = useParams();
   const [ouvriers, setOuvriers] = useState([]);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
