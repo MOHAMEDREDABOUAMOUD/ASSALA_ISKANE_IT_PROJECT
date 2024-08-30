@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './WeeklyReports.css';
 
-export default function WeeklyReports() {
+export default function WeeklyReports({id_projet,id_resp}) {
   const [weeklyReports, setWeeklyReports] = useState([
     {
       id: 1,

@@ -78,8 +78,28 @@ public class ProjetController {
 	List<Besoin> getBesoins(@RequestParam String id_resp, @RequestParam String id_projet){
 		return service.getBesoins(id_resp, id_projet);
 	}
+	@GetMapping("/getBesoinsCC")
+	List<Besoin> getBesoinsCC(@RequestParam String id_projet){
+		return service.getBesoinsCC(id_projet);
+	}
+	@GetMapping("/getBesoinsRP")
+	List<Besoin> getBesoinsRP(@RequestParam String id_projet){
+		return service.getBesoinsRP(id_projet);
+	}
+	@GetMapping("/getBesoinsRT")
+	List<Besoin> getBesoinsRT(@RequestParam String id_projet){
+		return service.getBesoinsRT(id_projet);
+	}
+	@GetMapping("/getBesoinsST")
+	List<Besoin> getBesoinsST(@RequestParam String id_projet){
+		return service.getBesoinsST(id_projet);
+	}
 	@GetMapping("/getAbsences")
 	List<Absence> getAbsences(@RequestParam String id_projet, @RequestParam String date_debut, @RequestParam String date_fin) throws ParseException{
 		return service.getAbsences(id_projet, new SimpleDateFormat("yyyy-MM-dd").parse(date_debut), new SimpleDateFormat("yyyy-MM-dd").parse(date_fin));
+	}
+	@PostMapping("/validateBesoin")
+	void validateBesoin(@RequestParam String id_resp, @RequestParam String id_besoin){
+		service.validateBesoin(id_resp, id_besoin);
 	}
 }

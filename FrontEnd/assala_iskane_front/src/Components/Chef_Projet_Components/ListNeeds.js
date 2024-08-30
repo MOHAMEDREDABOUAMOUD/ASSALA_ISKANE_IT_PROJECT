@@ -5,15 +5,14 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 import axios from 'axios'; 
 
-export default function ListNeeds() {
+export default function ListNeeds({id_projet,id_resp}) {
   const [needs, setNeeds] = useState([]);
-  const id_resp = 'U001'; // Replace with the actual responsible user's ID
-  const id_projet = 'P001'; // Replace with the actual project ID
-
+ 
   useEffect(() => {
     const fetchNeeds = async () => {
       try {
-        const response = await axios.get(`http://localhost:9092/assalaiskane/getBesoins?id_resp=${id_resp}&id_projet=${id_projet}`);
+        console.log(id_projet+", "+id_resp);
+        const response = await axios.get(`http://localhost:9092/assalaiskane/getBesoinsRP?id_projet=${id_projet}`);
         setNeeds(response.data);
       } catch (error) {
         console.error('Error fetching needs:', error);
@@ -26,9 +25,7 @@ export default function ListNeeds() {
   
   const handleValidate = async (needId) => {
     try {
-      await axios.post(`/api/needs/validate/${needId}`);
-  
-      // Update the UI after validation
+      await axios.post(`http://localhost:9092/assalaiskane/validateBesoin?id_resp=${id_resp}&id_besoin=${needId}`);
       setNeeds(needs.map(need => need.id === needId ? { ...need, validated: true } : need));
     } catch (error) {
       console.error('Error validating need:', error);
