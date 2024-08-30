@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -19,7 +18,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import ConstructionIcon from '@mui/icons-material/Construction';
 
-export default function ListTechMaterials({ id_projet }) {
+export default function ListServiceMaterials({ id_projet }) {
   const [materials, setMaterials] = useState([]);
   const [chantierMaterials, setChantierMaterials] = useState([]);
   const navigate = useNavigate();

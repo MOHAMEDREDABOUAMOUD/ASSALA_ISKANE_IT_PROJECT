@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Card, CardContent, Typography, List, ListItem, ListItemText, Divider } from '@mui/material';
 
-export default function ListTechDailyReports() {
+export default function ListTechDailyReports({id_projet}) {
   // Sample data representing daily reports fetched from the database
   const [reports, setReports] = useState([
     {

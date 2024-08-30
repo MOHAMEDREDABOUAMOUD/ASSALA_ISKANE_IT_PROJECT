@@ -40,6 +40,7 @@ import ListFilesCompta from './Components/Resp_Comptabiliter/ListFilesCompta';
 import ListValidatedNeedsCompta from './Components/Resp_Comptabiliter/ListValidatedNeedsCompta';
 import ListFilesMar from './Components/Resp_Marchandise/ListFilesMarchandise';
 import ListServiceValidatedNeedsMar from './Components/Resp_Marchandise/ListValidatedNeedsMar';
+import AllProjectsList from './Components/Resp_Comptabiliter/AllProjectsList';
 
 
 
@@ -80,6 +81,7 @@ function App() {
         <Route path="/list-service-validated-needs" element={<ListServiceValidatedNeeds />} />
         <Route path="/list-service-files" element={<ListServiceFiles />} />
         <Route path="/ajouter-ouvrier" element={<AjouterOuvrier />} />
+        <Route path="/list-service-Materials" element={<AjouterOuvrier />} />
         {/*--------------------------------------*/}
         
         {/*Responsable Technique*/}
@@ -117,6 +119,9 @@ function App() {
         <Route path="/listAllOuvriers" element={<ListAllOuvrier />} />
         <Route path="/listFilesCompta" element={<ListFilesCompta />} />
         <Route path="/listValidatedNeedsCompta" element={<ListValidatedNeedsCompta />} />
+        <Route path="/AllProjectsList" element={<AllProjectsList />} />
+        
+        
         {/*-------------------------------*/}
 
         {/*Responsable Marchandise*/}

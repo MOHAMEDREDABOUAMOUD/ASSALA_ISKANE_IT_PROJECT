@@ -9,7 +9,7 @@ import {
   LinearProgress,
 } from '@mui/material';
 
-export default function ListTechProgress() {
+export default function ListTechProgress({id_projet}) {
   // Sample data representing project progress
   const [progressList, setProgressList] = useState([
     {
