@@ -19,8 +19,8 @@ import InventoryIcon from '@mui/icons-material/Inventory';
 import ConstructionIcon from '@mui/icons-material/Construction';
 import { useParams } from 'react-router';
 
-export default function ListMaterials() {
-  const { id_projet } = useParams();
+export default function ListServiceMaterials() {
+  const { id_resp, id_projet } = useParams();
   const [materials, setMaterials] = useState([]);
   const [chantierMaterials, setChantierMaterials] = useState([]);
   const navigate = useNavigate();

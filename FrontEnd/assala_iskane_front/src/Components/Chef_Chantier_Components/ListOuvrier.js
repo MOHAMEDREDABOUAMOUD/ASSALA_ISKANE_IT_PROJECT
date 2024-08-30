@@ -21,8 +21,10 @@ import axios from 'axios';
 import { DataGrid } from '@mui/x-data-grid';
 import { Checkbox } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router';
 
-export default function ListOuvrier({ id_projet }) {
+export default function ListOuvrier() {
+  const { id_projet } = useParams();
     const navigate = useNavigate();
     //const id_projet = "P001";
     const [ouvriers, setOuvriers] = useState([]);

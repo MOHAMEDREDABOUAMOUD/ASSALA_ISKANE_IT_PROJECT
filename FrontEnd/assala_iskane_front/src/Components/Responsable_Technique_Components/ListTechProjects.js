@@ -1,144 +1,138 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  Container,
-  Typography,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemIcon,
-  Divider,
-  IconButton,
-  Tooltip,
-  Box,
-  Paper,
+  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, IconButton,
+  Box, Tooltip, Container, Card, CardContent, Chip, LinearProgress, useTheme, useMediaQuery
 } from '@mui/material';
 import {
-  Work as WorkIcon,
-  Info as InfoIcon,
-  DateRange as DateRangeIcon,
-  CheckCircle as CheckCircleIcon,
-  HourglassEmpty as HourglassEmptyIcon
+  ListAlt as ListAltIcon, Person as PersonIcon, DateRange as DateRangeIcon,
+  AccessTime as AccessTimeIcon, Description as DescriptionIcon, Gavel as GavelIcon,
+  Business as BusinessIcon
 } from '@mui/icons-material';
+import axios from 'axios';
+import { useNavigate, useParams } from 'react-router';
 
 export default function ListTechProjects() {
-  // Sample data representing projects
-  const [projects, setProjects] = useState([
-    {
-      id: 1,
-      name: 'Construction de la base des unités de santé mobiles à Témara',
-      number: '0001',
-      description: 'Projet de construction de bases pour unités médicales',
-      startDate: '2024-06-01',
-      endDate: '2024-12-31',
-      status: 'Ongoing' // Ongoing or Completed
-    },
-    {
-      id: 2,
-      name: 'Extension du complexe sportif de Rabat',
-      number: '0002',
-      description: 'Extension du complexe avec ajout de nouveaux équipements',
-      startDate: '2024-07-01',
-      endDate: '2024-10-15',
-      status: 'Completed'
-    },
-    {
-      id: 3,
-      name: 'Réhabilitation du pont de Casablanca',
-      number: '0003',
-      description: 'Réhabilitation et renforcement du pont',
-      startDate: '2023-01-15',
-      endDate: '2023-12-31',
-      status: 'Completed'
-    },
-    // More project data...
-  ]);
+  const { id_resp } = useParams();
+  const navigate = useNavigate();
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const ongoingProjects = projects.filter(project => project.status === 'Ongoing');
-  const completedProjects = projects.filter(project => project.status === 'Completed');
+  // Fetch projects data from backend
+  useEffect(() => {
+    setLoading(true);
+    axios.get(`http://localhost:9092/assalaiskane/getProjets`)
+      .then(response => {
+        setProjects(response.data);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('There was an error fetching the projects data!', error);
+        setLoading(false);
+      });
+  }, []); // Add id_resp to dependency array
+
+  const calculateProgress = (startDate, endDate) => {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const today = new Date();
+    const totalDays = (end - start) / (1000 * 60 * 60 * 24);
+    const daysElapsed = (today - start) / (1000 * 60 * 60 * 24);
+    return Math.min(Math.max((daysElapsed / totalDays) * 100, 0), 100);
+  };
+
+  // Function to handle row click
+  const handleRowClick = (project) => {
+    // Implement your logic here, e.g., navigate to a detailed page or display more info
+    navigate(`/HomePage_RespTechnique/${id_resp}/${project.id}`);
+  };
 
   return (
-    <Container>
-      <Typography variant="h4" gutterBottom>
-        Lister tous les projets
-      </Typography>
-
-      <Divider sx={{ marginBottom: 2 }} />
-
-      <Box mb={4}>
-        <Typography variant="h5" gutterBottom>
-          Projets en Cours
-        </Typography>
-        <Paper elevation={3} sx={{ padding: 2 }}>
-          <List>
-            {ongoingProjects.map((project) => (
-              <ListItem key={project.id} divider>
-                <ListItemIcon>
-                  <HourglassEmptyIcon color="action" />
-                </ListItemIcon>
-                <ListItemText
-                  primary={project.name}
-                  secondary={
-                    <>
-                      <Typography component="span" variant="body2" color="textSecondary">
-                        <InfoIcon sx={{ verticalAlign: 'middle', mr: 1 }} />
-                        {project.description}
-                      </Typography>
-                      <br />
-                      <Typography component="span" variant="body2" color="textSecondary">
-                        <DateRangeIcon sx={{ verticalAlign: 'middle', mr: 1 }} />
-                        {`Début: ${project.startDate} | Fin: ${project.endDate}`}
-                      </Typography>
-                    </>
-                  }
-                />
-                <Tooltip title="Voir les détails">
-                  <IconButton edge="end" aria-label="details">
-                    <InfoIcon />
-                  </IconButton>
-                </Tooltip>
-              </ListItem>
-            ))}
-          </List>
-        </Paper>
-      </Box>
-
-      <Box mb={4}>
-        <Typography variant="h5" gutterBottom>
-          Projets Terminés
-        </Typography>
-        <Paper elevation={3} sx={{ padding: 2 }}>
-          <List>
-            {completedProjects.map((project) => (
-              <ListItem key={project.id} divider>
-                <ListItemIcon>
-                  <CheckCircleIcon color="success" />
-                </ListItemIcon>
-                <ListItemText
-                  primary={project.name}
-                  secondary={
-                    <>
-                      <Typography component="span" variant="body2" color="textSecondary">
-                        <InfoIcon sx={{ verticalAlign: 'middle', mr: 1 }} />
-                        {project.description}
-                      </Typography>
-                      <br />
-                      <Typography component="span" variant="body2" color="textSecondary">
-                        <DateRangeIcon sx={{ verticalAlign: 'middle', mr: 1 }} />
-                        {`Début: ${project.startDate} | Fin: ${project.endDate}`}
-                      </Typography>
-                    </>
-                  }
-                />
-                <Tooltip title="Voir les détails">
-                  <IconButton edge="end" aria-label="details">
-                    <InfoIcon />
-                  </IconButton>
-                </Tooltip>
-              </ListItem>
-            ))}
-          </List>
-        </Paper>
-      </Box>
+    <Container maxWidth="xl" sx={{ py: 4 }}>
+      <Card elevation={3}>
+        <CardContent>
+          <Box display="flex" alignItems="center" mb={3}>
+            <BusinessIcon sx={{ fontSize: 40, color: theme.palette.primary.main, mr: 2 }} />
+            <Typography variant="h4" component="h1">
+              Liste des Projets
+            </Typography>
+          </Box>
+          {loading ? (
+            <LinearProgress />
+          ) : (
+            <TableContainer component={Paper} elevation={0}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell><ListAltIcon /> Nom du Projet</TableCell>
+                    <TableCell><GavelIcon /> Numéro Marché</TableCell>
+                    {!isMobile && <TableCell><DescriptionIcon /> Objet</TableCell>}
+                    <TableCell><DateRangeIcon /> Dates</TableCell>
+                    {!isMobile && <TableCell><AccessTimeIcon /> Délai</TableCell>}
+                    <TableCell><PersonIcon /> Responsable</TableCell>
+                    <TableCell>Progression</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {projects.map(project => (
+                    <TableRow 
+                      key={project.id} 
+                      sx={{ '&:hover': { backgroundColor: theme.palette.action.hover, cursor: 'pointer' } }}
+                      onClick={() => handleRowClick(project)} // Add onClick event handler
+                    >
+                      <TableCell>
+                        <Typography variant="subtitle1" fontWeight="bold">{project.nom}</Typography>
+                      </TableCell>
+                      <TableCell>{project.numero_marche}</TableCell>
+                      {!isMobile && <TableCell>{project.objet}</TableCell>}
+                      <TableCell>
+                        <Tooltip title={`Début: ${new Date(project.date_ordre).toLocaleDateString('fr-FR')}`}>
+                          <Chip 
+                            icon={<DateRangeIcon />} 
+                            label={new Date(project.date_fin).toLocaleDateString('fr-FR')}
+                            size="small"
+                            color="primary"
+                            variant="outlined"
+                          />
+                        </Tooltip>
+                      </TableCell>
+                      {!isMobile && <TableCell>{project.delai} jours</TableCell>}
+                      <TableCell>
+                        <Tooltip title={`${project.resp.prenom} ${project.resp.nom} - ${project.resp.fonction}`}>
+                          <Chip
+                            icon={<PersonIcon />}
+                            label={`${project.resp.prenom} ${project.resp.nom}`}
+                            size="small"
+                            color="secondary"
+                            variant="outlined"
+                          />
+                        </Tooltip>
+                      </TableCell>
+                      <TableCell>
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                          <Box sx={{ width: '100%', mr: 1 }}>
+                            <LinearProgress 
+                              variant="determinate" 
+                              value={calculateProgress(project.date_ordre, project.date_fin)} 
+                              sx={{ height: 10, borderRadius: 5 }}
+                            />
+                          </Box>
+                          <Box sx={{ minWidth: 35 }}>
+                            <Typography variant="body2" color="text.secondary">
+                              {`${Math.round(calculateProgress(project.date_ordre, project.date_fin))}%`}
+                            </Typography>
+                          </Box>
+                        </Box>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )}
+        </CardContent>
+      </Card>
     </Container>
   );
 }

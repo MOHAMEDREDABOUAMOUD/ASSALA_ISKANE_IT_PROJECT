@@ -19,4 +19,10 @@ public class OuvrierService implements OuvrierServiceInterface{
 	public List<Ouvrier> getOuvriers(String id_projet) {
 		return ouvrierDao.getOuvriers(id_projet);
 	}
+
+	@Override
+	public void AddOuvrier(String id, String id_projet, String nom, String prenom, String numero) {
+		ouvrierDao.AddOuvrier(id,  id_projet,  nom,  prenom,  numero);
+	}
+	
 }

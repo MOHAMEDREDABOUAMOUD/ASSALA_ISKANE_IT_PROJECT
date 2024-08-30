@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, IconButton,
   Box, Tooltip, Container, Card, CardContent, Chip, LinearProgress, useTheme, useMediaQuery
@@ -9,20 +10,20 @@ import {
   Business as BusinessIcon
 } from '@mui/icons-material';
 import axios from 'axios';
-import { useNavigate, useParams } from 'react-router';
+import { useParams } from 'react-router';
 
-export default function ListProjects() {
+export default function AllProjectsListMarchandise() {
   const { id_resp } = useParams();
-  const navigate = useNavigate();
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const navigate = useNavigate();
 
   // Fetch projects data from backend
   useEffect(() => {
     setLoading(true);
-    axios.get(`http://localhost:9092/assalaiskane/getProjets?id_resp=${id_resp}`)
+    axios.get('http://localhost:9092/assalaiskane/getProjets')
       .then(response => {
         setProjects(response.data);
         setLoading(false);
@@ -31,7 +32,7 @@ export default function ListProjects() {
         console.error('There was an error fetching the projects data!', error);
         setLoading(false);
       });
-  }, [id_resp]); // Added id_resp to dependency array
+  }, []);
 
   const calculateProgress = (startDate, endDate) => {
     const start = new Date(startDate);
@@ -42,9 +43,10 @@ export default function ListProjects() {
     return Math.min(Math.max((daysElapsed / totalDays) * 100, 0), 100);
   };
 
-  // Function to handle row click
-  const handleRowClick = (project) => {
-    navigate(`/HomePage_ChefDeProjet/${id_resp}/${project.id}`);
+  const handleProjectClick = (projectId) => {
+    // Navigate to HomePage_RespComptabiliter with the selected project ID
+    // Note: You'll need to replace 'id_resp' with the actual ID of the responsible person
+    navigate(`/HomePage_RespMarchandise/${id_resp}/${projectId}`);
   };
 
   return (
@@ -77,8 +79,11 @@ export default function ListProjects() {
                   {projects.map(project => (
                     <TableRow 
                       key={project.id} 
-                      sx={{ '&:hover': { backgroundColor: theme.palette.action.hover, cursor: 'pointer' } }}
-                      onClick={() => handleRowClick(project)}
+                      sx={{ 
+                        '&:hover': { backgroundColor: theme.palette.action.hover },
+                        cursor: 'pointer'
+                      }}
+                      onClick={() => handleProjectClick(project.id)}
                     >
                       <TableCell>
                         <Typography variant="subtitle1" fontWeight="bold">{project.nom}</Typography>

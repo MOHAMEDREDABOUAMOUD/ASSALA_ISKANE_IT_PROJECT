@@ -33,6 +33,7 @@ import Progress from './Progress';
 import ListMaterials from '../Chef_Chantier_Components/ListMaterials';
 import ListNeeds from './ListNeeds';
 import ListFiles from './ListFiles';
+import { useParams } from 'react-router';
 
 
 const drawerWidth = 280;
@@ -56,7 +57,10 @@ const menuItems = [
 <Route path="/list-needs" element={<ListNeeds />} />
 <Route path="/list-files" element={<ListFiles />} />
 */
-export default function HomePage_ResponsableDeProjet({ id_projet, id_resp }) {
+export default function HomePage_ResponsableDeProjet() {
+  const { id_resp, id_projet } = useParams();
+  //get from backend id_projet when they shose project:
+  //const id_projet ='P001';
   const navigate = useNavigate();
   const location = useLocation();
   const theme = useTheme();
@@ -70,7 +74,7 @@ export default function HomePage_ResponsableDeProjet({ id_projet, id_resp }) {
 
   const handleMenuClick = (path) => {
     setSelectedOption(path);
-    navigate(`/${path}`);
+    navigate(`/${path}/${id_resp}/${id_projet}`);
     if (isMobile) {
       setMobileOpen(false);
     }
@@ -79,19 +83,19 @@ export default function HomePage_ResponsableDeProjet({ id_projet, id_resp }) {
   const renderSelectedComponent = () => {
     switch (selectedOption) {
       case 'list-projects':
-        return <ListProjects/>;
+        navigate("/list-projects/"+id_resp+"/"+id_projet);
       case 'weekly-reports':
-        return <WeeklyReports id_projet={id_projet} id_resp={id_resp} />;
+        navigate("/weekly-reports/"+id_resp+"/"+id_projet)
       case 'daily-reports':
-        return <DailyReports id_projet={id_projet} id_resp={id_resp} />;
+        navigate("/daily-reports/"+id_resp+"/"+id_projet)
       case 'progress':
-        return <Progress id_projet={id_projet} id_resp={id_resp} />;
+        navigate("/progress/"+id_resp+"/"+id_projet)
       case 'list-materials':
-        return <ListMaterials id_projet={id_projet} id_resp={id_resp} />;
+        navigate("/list-materials/"+id_resp+"/"+id_projet)
       case 'list-needs':
-        return <ListNeeds id_projet={id_projet} id_resp={id_resp} />;
+        navigate("/list-needs/"+id_resp+"/"+id_projet)
       case 'list-files':
-        return <ListFiles id_projet={id_projet} id_resp={id_resp} />;
+        navigate("/list-files/"+id_resp+"/"+id_projet)
                     
       default:
         return <Typography variant="h6">Please select an option from the menu.</Typography>;

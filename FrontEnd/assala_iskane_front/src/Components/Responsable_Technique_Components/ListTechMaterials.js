@@ -1,80 +1,137 @@
-import React, { useState } from 'react';
+
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Container,
   Typography,
-  List,
-  ListItem,
-  ListItemText,
-  Divider,
-  TextField,
-  InputAdornment,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Box,
+  Button,
 } from '@mui/material';
-import { Inventory, Search } from '@mui/icons-material';
+import axios from 'axios';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import InventoryIcon from '@mui/icons-material/Inventory';
+import ConstructionIcon from '@mui/icons-material/Construction';
+import { useParams } from 'react-router';
 
 export default function ListTechMaterials() {
-  // Sample data representing materials and their quantities
-  const [materials, setMaterials] = useState([
-    {
-      id: 1,
-      name: 'Bétonnière',
-      chantier: 'Chantier A',
-      quantity: 3,
-      unit: 'unités',
-      location: 'Zone 1',
-    },
-    {
-      id: 2,
-      name: 'Fer à béton',
-      chantier: 'Chantier B',
-      quantity: 500,
-      unit: 'kg',
-      location: 'Zone 2',
-    },
-    // More materials...
-  ]);
+  const { id_resp, id_projet } = useParams();
+  const [materials, setMaterials] = useState([]);
+  const [chantierMaterials, setChantierMaterials] = useState([]);
+  const navigate = useNavigate();
 
-  const [searchTerm, setSearchTerm] = useState('');
+  // Function to format prices with "DH" currency
+  const formatPrice = (price) => {
+    return new Intl.NumberFormat('fr-MA', {
+      style: 'currency',
+      currency: 'MAD',
+      currencyDisplay: 'symbol',
+    }).format(price);
+  };
 
-  // Filter materials based on search term
-  const filteredMaterials = materials.filter(material =>
-    material.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    material.chantier.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  useEffect(() => {
+    // Fetch materials in stock from the backend
+    const fetchMaterials = async () => {
+      try {
+        const response = await axios.get(`http://localhost:9092/assalaiskane/getMaterielsChantiers?id_projet=${id_projet}`);
+        setMaterials(response.data);
+      } catch (error) {
+        console.error('Error fetching materials:', error);
+      }
+    };
+
+    // Fetch chantier materials from the backend
+    const fetchChantierMaterials = async () => {
+      try {
+        const response = await axios.get(`http://localhost:9092/assalaiskane/getMateriauxChantiers?id_projet=${id_projet}`);
+        setChantierMaterials(response.data);
+      } catch (error) {
+        console.error('Error fetching chantier materials:', error);
+      }
+    };
+
+    fetchMaterials();
+    fetchChantierMaterials();
+  }, [id_projet]);
+
+  const handleReturn = () => {
+    navigate(-1); // This will navigate back to the previous page
+  };
 
   return (
     <Container>
-      <Typography variant="h4" gutterBottom>
-        Lister la quantité des matériels et des matériaux disponibles
-      </Typography>
+      <Box display="flex" alignItems="center" mb={2}>
+        <Button startIcon={<ArrowBackIcon />} onClick={handleReturn} variant="outlined">
+          Retour
+        </Button>
+        <Typography variant="h4" component="h1" ml={2}>
+          Gestion des Matériaux
+        </Typography>
+      </Box>
 
-      <TextField
-        label="Rechercher un matériel ou matériau"
-        variant="outlined"
-        fullWidth
-        margin="normal"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <Search />
-            </InputAdornment>
-          ),
-        }}
-      />
+      <Box mb={4}>
+        <Typography variant="h5" component="h2" gutterBottom display="flex" alignItems="center">
+          <InventoryIcon sx={{ mr: 1 }} /> Liste des Matérieles
+        </Typography>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>ID</TableCell>
+                <TableCell>Nom</TableCell>
+                <TableCell>Quantité</TableCell>
+                <TableCell>Prix</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {materials.map((material) => (
+                <TableRow key={material.id}>
+                  <TableCell>{material.id}</TableCell>
+                  <TableCell>{material.nom}</TableCell>
+                  <TableCell>{material.qte}</TableCell>
+                  <TableCell>{formatPrice(material.prix)}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
 
-      <Divider sx={{ marginBottom: 2 }} />
-
-      <List>
-        {filteredMaterials.map((material) => (
-          <ListItem key={material.id} divider>
-            <ListItemText
-              primary={material.name}
-              secondary={`Chantier: ${material.chantier} | Quantité: ${material.quantity} ${material.unit} | Localisation: ${material.location}`}
-            />
-          </ListItem>
-        ))}
-      </List>
+      <Box>
+        <Typography variant="h5" component="h2" gutterBottom display="flex" alignItems="center">
+          <ConstructionIcon sx={{ mr: 1 }} /> Liste des Matériaux de Chantier
+        </Typography>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>ID</TableCell>
+                <TableCell>Nom</TableCell>
+                <TableCell>Quantité</TableCell>
+                <TableCell>Type</TableCell>
+                <TableCell>Prix</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {chantierMaterials.map((material) => (
+                <TableRow key={material.id_materiaux}>
+                  <TableCell>{material.id}</TableCell>
+                  <TableCell>{material.nom}</TableCell>
+                  <TableCell>{material.qte}</TableCell>
+                  <TableCell>{material.type}</TableCell>
+                  <TableCell>{formatPrice(material.prix)}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
     </Container>
   );
 }

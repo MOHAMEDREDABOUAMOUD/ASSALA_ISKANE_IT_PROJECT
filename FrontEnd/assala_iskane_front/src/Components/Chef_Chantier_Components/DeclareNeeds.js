@@ -25,8 +25,10 @@ import DateRangeIcon from '@mui/icons-material/DateRange';
 import BusinessIcon from '@mui/icons-material/Business';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router';
 
-export default function DeclareNeeds({ id_projet }) {
+export default function DeclareNeeds() {
+  const { id_resp, id_projet } = useParams();
   const [needs, setNeeds] = useState([]);
   const [newNeed, setNewNeed] = useState({
     nom: '',
@@ -35,7 +37,7 @@ export default function DeclareNeeds({ id_projet }) {
     chantier: '',
   });
   const navigate = useNavigate();
-  const id_resp = 'U001'; // Replace with the actual responsible user's ID
+  //const id_resp = 'U001'; // Replace with the actual responsible user's ID
   const id_chantier = 1; // Replace with the actual chantier ID
   
   const handleReturn = () => {

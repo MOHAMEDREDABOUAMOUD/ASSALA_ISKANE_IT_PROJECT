@@ -3,15 +3,17 @@ import axios from 'axios';
 import { IconButton, InputBase, Paper, List, ListItem, ListItemText, ListItemSecondaryAction, Divider, Button } from '@mui/material';
 import DownloadIcon from '@mui/icons-material/Download';
 import SearchIcon from '@mui/icons-material/Search';
+import { useParams } from 'react-router';
 
-export default function ListFiles() {
+export default function ListServiceFiles() {
+  const { id_resp, id_projet } = useParams();
   const [files, setFiles] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
 
   // Fetch the list of files from the backend
   useEffect(() => {
-    axios.get('http://localhost:9092/assalaiskane/getFichiersProjet?id_projet=P001')
+    axios.get(`http://localhost:9092/assalaiskane/getFichiersProjet?id_projet=${id_projet}`)
       .then(response => {
         setFiles(response.data);
       })
@@ -33,7 +35,7 @@ export default function ListFiles() {
         const formData = new FormData();
         formData.append('nom', selectedFile.name); // Use the real name of the file
         formData.append('fichier', selectedFile);
-        formData.append('id_projet', 'P001');
+        formData.append('id_projet', id_projet);
         
         setFiles([...files, {'nom':selectedFile.name, 'fichier':selectedFile}]);
 
