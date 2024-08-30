@@ -4,14 +4,14 @@ import { IconButton, InputBase, Paper, List, ListItem, ListItemText, ListItemSec
 import DownloadIcon from '@mui/icons-material/Download';
 import SearchIcon from '@mui/icons-material/Search';
 
-export default function ListFiles() {
+export default function ListServiceFiles({id_projet}) {
   const [files, setFiles] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
 
   // Fetch the list of files from the backend
   useEffect(() => {
-    axios.get('http://localhost:9092/assalaiskane/getFichiersProjet?id_projet=P001')
+    axios.get(`http://localhost:9092/assalaiskane/getFichiersProjet?id_projet=${id_projet}`)
       .then(response => {
         setFiles(response.data);
       })

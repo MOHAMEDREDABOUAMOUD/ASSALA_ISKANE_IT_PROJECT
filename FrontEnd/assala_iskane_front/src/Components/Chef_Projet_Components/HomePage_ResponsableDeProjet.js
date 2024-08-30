@@ -56,7 +56,9 @@ const menuItems = [
 <Route path="/list-needs" element={<ListNeeds />} />
 <Route path="/list-files" element={<ListFiles />} />
 */
-export default function HomePage_ResponsableDeProjet({ id_projet, id_resp }) {
+export default function HomePage_ResponsableDeProjet({id_resp }) {
+  //get from backend id_projet when they shose project:
+  const id_projet ='P001';
   const navigate = useNavigate();
   const location = useLocation();
   const theme = useTheme();

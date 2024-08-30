@@ -4,7 +4,7 @@ import { IconButton, InputBase, Paper, List, ListItem, ListItemText, ListItemSec
 import DownloadIcon from '@mui/icons-material/Download';
 import SearchIcon from '@mui/icons-material/Search';
 
-export default function ListFiles() {
+export default function ListFiles({id_projet}) {
   const [files, setFiles] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);

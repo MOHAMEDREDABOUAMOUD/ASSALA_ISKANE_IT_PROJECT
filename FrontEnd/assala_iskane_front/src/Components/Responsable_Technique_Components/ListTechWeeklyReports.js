@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import { Description as DescriptionIcon, DateRange as DateRangeIcon } from '@mui/icons-material';
 
-export default function ListTechWeeklyReports() {
+export default function ListTechWeeklyReports({id_projet}) {
   // Sample data representing weekly reports
   const [reports, setReports] = useState([
     {

@@ -14,44 +14,72 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [user, setUser] = useState({});
-
   const handleLoginClick = (e) => {
     e.preventDefault();
+    //LIIIIIDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    //LIIIIIDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    
+    /* Matestetch hadchi drt ghi logique jani n3as kml 
+      li 9diti 3lih o siftli les notes
+       
+      1-tester hdchi wch khdam o 9ad labanlk chi error sahl
+      2-sawb Get Project By id bch nsawb wahed l3iba  bch lakhtaro chi wahed fihom i afficher 
+         les actions 3la dak projets smit components dyalo --: AllProjectsList.js 
+         bch ndir 3lih l3ibat khsni w9t gheda ana sawbto ghi fresponsable 
+         Comptabiliter bch tester o tchof wch mzn nhbto 3la kolchi !!!!!!!!
+      2- sawb acces l  URL mymknch lmknch User Authentifier --
+    */
 
+    //LIIIIIDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    //LIIIIIDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    //-------------------------------------
+    
     if (id && password) {
       axios.get(`http://localhost:9092/assalaiskane/authenticate?id=${id}&pass=${password}`)
         .then(response => {
-          setUser(response.data); // Wrap the response in an array
+          setUser(response.data);
           if (response.data) {
-            // Navigate to different pages based on the user's role
-            switch (response.data.fonction) {
-              case 'ChefChantier':
-                navigate('/HomePage_ChefChantier');
-                break;
-              case 'responsable_comptabiliter':
-                navigate('/HomePage_RespComptabiliter');
-                break;
-              case 'responsable_marchandise':
-                navigate('/HomePage_RespMarchandise');
-                break;
-              case 'responsable_projet':
-                navigate('/HomePage_ResponsableDeProjet');
-                break;
-              case 'responsable_technique':
-                navigate('/HomePage_RespTechnique');
-                break;
-              case 'service_technique':
-                navigate('/HomePage_ServiceTechnique');
-                break;
-              case 'chef_technique':
-                navigate('/HomePage_ChefTechnique');
-                break;
-              case 'chef_projet':
-                navigate('/HomePage_ChefDeProjet');
-                break;
-              default:
-                setError('Role not recognized');
-                break;
+            const { id: userId, fonction } = response.data;
+  
+            if (fonction === 'ChefChantier') {
+              // Fetch the project ID for ChefChantier
+              axios.get('http://localhost:9092/assalaiskane/getProjet?id_resp={id_resp}')
+                .then(projetResponse => {
+                  const id_projet = projetResponse[0].resp.id;
+                  navigate('/HomePage_ChefChantier', { state: { userId, id_projet } });
+                })
+                .catch(error => {
+                  console.error('Error fetching project ID:', error);
+                  setError('An error occurred while fetching project ID');
+                });
+            } else {
+              const id_resp = id; // Using the entered ID as the responsible ID for other roles
+              switch (fonction) {
+                case 'responsable_comptabiliter':
+                  navigate('/HomePage_RespComptabiliter', { state: { id_resp } });
+                  break;
+                case 'responsable_marchandise':
+                  navigate('/HomePage_RespMarchandise', { state: { id_resp } });
+                  break;
+                case 'responsable_projet':
+                  navigate('/HomePage_ResponsableDeProjet', { state: { id_resp } });
+                  break;
+                case 'responsable_technique':
+                  navigate('/HomePage_RespTechnique', { state: { id_resp } });
+                  break;
+                case 'service_technique':
+                  navigate('/HomePage_ServiceTechnique', { state: { id_resp } });
+                  break;
+                case 'chef_technique':
+                  navigate('/HomePage_ChefTechnique', { state: { id_resp } });
+                  break;
+                case 'chef_projet':
+                  navigate('/HomePage_ChefDeProjet', { state: { id_resp } });
+                  break;
+                default:
+                  setError('Role not recognized');
+                  break;
+              }
             }
           } else {
             setError('Invalid ID or password');
@@ -65,7 +93,7 @@ function Login() {
       setError('Please enter both ID and password');
     }
   };
-
+  
   return (
     <Container component="main" maxWidth="xs" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 8 }}>
       <Avatar sx={{ m: 1, bgcolor: 'transparent', border: '2px solid', borderColor: 'primary.main' }}>

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, IconButton,
   Box, Tooltip, Container, Card, CardContent, Chip, LinearProgress, useTheme, useMediaQuery
@@ -10,12 +11,12 @@ import {
 } from '@mui/icons-material';
 import axios from 'axios';
 
-export default function ListServiceProjects() {
-  
+export default function AllProjectsList() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const navigate = useNavigate();
 
   // Fetch projects data from backend
   useEffect(() => {
@@ -38,6 +39,12 @@ export default function ListServiceProjects() {
     const totalDays = (end - start) / (1000 * 60 * 60 * 24);
     const daysElapsed = (today - start) / (1000 * 60 * 60 * 24);
     return Math.min(Math.max((daysElapsed / totalDays) * 100, 0), 100);
+  };
+
+  const handleProjectClick = (projectId) => {
+    // Navigate to HomePage_RespComptabiliter with the selected project ID
+    // Note: You'll need to replace 'id_resp' with the actual ID of the responsible person
+    navigate(`/HomePage_RespComptabiliter/${projectId}`);
   };
 
   return (
@@ -68,7 +75,14 @@ export default function ListServiceProjects() {
                 </TableHead>
                 <TableBody>
                   {projects.map(project => (
-                    <TableRow key={project.id} sx={{ '&:hover': { backgroundColor: theme.palette.action.hover } }}>
+                    <TableRow 
+                      key={project.id} 
+                      sx={{ 
+                        '&:hover': { backgroundColor: theme.palette.action.hover },
+                        cursor: 'pointer'
+                      }}
+                      onClick={() => handleProjectClick(project.id)}
+                    >
                       <TableCell>
                         <Typography variant="subtitle1" fontWeight="bold">{project.nom}</Typography>
                       </TableCell>

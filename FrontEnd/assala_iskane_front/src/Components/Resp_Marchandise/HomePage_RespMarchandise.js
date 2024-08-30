@@ -26,7 +26,6 @@ import {
   Inventory, 
   Menu as MenuIcon 
 } from '@mui/icons-material';
-import './HomePage_RespMarchandise.css';
 import ListAllOuvrier from '../Resp_Comptabiliter/ListAllOuvrier';
 import ListFilesMar from './ListFilesMarchandise';
 import ListServiceValidatedNeedsMar from './ListValidatedNeedsMar';
@@ -37,7 +36,9 @@ const menuItems = [
   { text: 'Lister les besoins validés', icon: <Inventory />, path: '/listValidatedNeedsMarchandise' }
 ];
 
-export default function HomePage_RespMarchandise({id_projet,id_resp}) {
+export default function HomePage_RespMarchandise({id_resp}) {
+  //get from backend id_projet when they shose project:
+  const id_projet ='P001';
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));

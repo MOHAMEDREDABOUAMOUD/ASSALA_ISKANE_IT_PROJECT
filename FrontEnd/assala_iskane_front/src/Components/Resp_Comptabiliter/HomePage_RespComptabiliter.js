@@ -33,7 +33,9 @@ const menuItems = [
   { text: 'Lister les besoins validés', icon: <CheckCircleIcon />, path: '/listValidatedNeedsCompta' },
 ];
 
-export default function HomePage_RespComptabiliter({id_projet, id_resp }) {
+export default function HomePage_RespComptabiliter({ id_resp }) {
+  //get from backend id_projet when they shose project:
+  const id_projet ='P001';
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
