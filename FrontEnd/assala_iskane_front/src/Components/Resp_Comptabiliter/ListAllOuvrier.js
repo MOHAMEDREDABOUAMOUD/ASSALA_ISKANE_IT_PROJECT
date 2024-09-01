@@ -12,7 +12,7 @@ import { format, differenceInDays, addDays } from 'date-fns';
 import axios from 'axios';
 import { useParams } from 'react-router';
 
-export default function ListAllOuvrier() {
+export default function ListAllOuvrier({sidebarContent}) {
   const { id_resp, id_projet } = useParams();
   const [ouvriers, setOuvriers] = useState([]);
   const [startDate, setStartDate] = useState('');
@@ -75,6 +75,7 @@ export default function ListAllOuvrier() {
 
   return (
     <Box sx={{ padding: '24px', maxWidth: '1200px', margin: 'auto' }}>
+     
       <Card elevation={3}>
         <CardContent>
           <Typography variant="h4" component="h1" gutterBottom sx={{ display: 'flex', alignItems: 'center' }}>

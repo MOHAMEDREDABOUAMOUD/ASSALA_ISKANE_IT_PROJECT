@@ -17,7 +17,7 @@ import ListMaterials from './Components/Chef_Chantier_Components/ListMaterials';
 import DeclareNeeds from './Components/Chef_Chantier_Components/DeclareNeeds';
 import WeeklyReports from './Components/Chef_Projet_Components/WeeklyReports';
 import Progress from './Components/Chef_Projet_Components/Progress';
-import ListNeeds from './Components/Chef_Projet_Components/ListNeeds';
+import ListNeeds from './Components/Chef_Projet_Components/ListNeedsChefProjet';
 import ListTechProjects from './Components/Responsable_Technique_Components/ListTechProjects';
 import ListTechWorkersWithAbsence from './Components/Responsable_Technique_Components/ListTechWorkersWithAbsence';
 import ListTechDailyReports from './Components/Responsable_Technique_Components/ListTechDailyReports';
@@ -42,6 +42,9 @@ import ListFilesMar from './Components/Resp_Marchandise/ListFilesMarchandise';
 import ListServiceValidatedNeedsMar from './Components/Resp_Marchandise/ListValidatedNeedsMar';
 import AllProjectsList from './Components/Resp_Comptabiliter/AllProjectsList';
 import AllProjectsListMarchandise from './Components/Resp_Marchandise/AllProjectsListMarchandise';
+import ListNeedsChefProjet from './Components/Chef_Projet_Components/ListNeedsChefProjet';
+import ListMaterialsChefProjet from './Components/Chef_Projet_Components/ListMaterialsChefProjet';
+import ListOuvrierChefProjet from './Components/Chef_Projet_Components/ListOuvrierChefProjet';
 
 
 
@@ -103,8 +106,9 @@ function App() {
         <Route path="/daily-reports/:id_resp/:id_projet" element={<DailyReports />} />
         <Route path="/weekly-reports/:id_resp/:id_projet" element={<WeeklyReports />} />
         <Route path="/progress/:id_resp/:id_projet" element={<Progress />} />
-        <Route path="/list-materials/:id_resp/:id_projet" element={<ListMaterials />} />
-        <Route path="/list-needs/:id_resp/:id_projet" element={<ListNeeds />} />
+        <Route path="/list-materials-chefProjet/:id_resp/:id_projet" element={<ListMaterialsChefProjet />} />
+        <Route path="/list-workers-listOuvrierChefProjet/:id_resp/:id_projet" element={<ListOuvrierChefProjet />}/>
+        <Route path="/list-needs-chefProjet/:id_resp/:id_projet" element={<ListNeedsChefProjet />} />
         <Route path="/list-files/:id_resp/:id_projet" element={<ListFiles />} />
         {/*-------------------------------*/}
 

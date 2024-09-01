@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
-  Container,
   Typography,
   Table,
   TableBody,
@@ -12,9 +11,7 @@ import {
   Paper,
   Box,
   Button,
-  AppBar,
   Toolbar,
-  IconButton,
   useTheme,
   useMediaQuery,
   CssBaseline,
@@ -23,11 +20,13 @@ import axios from 'axios';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import ConstructionIcon from '@mui/icons-material/Construction';
+import SideBar from './SideBar';
+import { AppBar, IconButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 
 const drawerWidth = 280;
 
-export default function ListMaterials() {
+export default function ListMaterialsChefProjet() {
   const { id_projet, id_resp } = useParams();
   const [materials, setMaterials] = useState([]);
   const [chantierMaterials, setChantierMaterials] = useState([]);
@@ -35,7 +34,7 @@ export default function ListMaterials() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState('list-materials');
+  const [selectedOption, setSelectedOption] = useState('list-materials-ChefProjet');
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat('fr-MA', {
@@ -88,31 +87,56 @@ export default function ListMaterials() {
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar
-        position="fixed"
-        sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
-        }}
-      >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Gestion des Matériaux
-          </Typography>
-        </Toolbar>
-      </AppBar>
+  position="fixed"
+  sx={{
+    width: { sm: `calc(100% - ${drawerWidth}px)` },
+    ml: { sm: `${drawerWidth}px` },
+    boxShadow: 3, // Add shadow for depth
+    backgroundColor: '#e5e7e6', // Updated background color
+  }}
+>
+  <Toolbar
+    sx={{
+      display: 'flex',
+      justifyContent: 'space-between', // Space out the content
+      alignItems: 'center', // Center items vertically
+      px: 2, // Add horizontal padding
+    }}
+  >
+    <IconButton
+      color="inherit"
+      aria-label="open drawer"
+      edge="start"
+      onClick={handleDrawerToggle}
+      sx={{ 
+        display: { sm: 'none' }, // Hide on larger screens
+        '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.1)' }, // Add hover effect
+      }}
+    >
+      <MenuIcon />
+    </IconButton>
+    <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1, color: 'black' }}>
+      Gestion des Matériaux
+    </Typography>
+    <Box
+      sx={{
+        display: { xs: 'none', sm: 'block' }, // Hide on smaller screens
+      }}
+    >
+      {/* You can add additional items here if needed */}
+    </Box>
+  </Toolbar>
+</AppBar>
+      <SideBar
+        mobileOpen={mobileOpen}
+        handleDrawerToggle={handleDrawerToggle}
+        selectedOption={selectedOption}
+        handleMenuClick={handleMenuClick}
+      />
       
       <Box
         component="main"
-        sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
+        sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` }, marginTop: '64px' }}
       >
         <Toolbar />
         <Box display="flex" alignItems="center" mb={2}>
