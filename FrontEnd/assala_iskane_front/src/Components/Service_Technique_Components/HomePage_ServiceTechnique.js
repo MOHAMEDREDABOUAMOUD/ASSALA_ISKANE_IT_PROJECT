@@ -27,6 +27,7 @@ import ListServiceValidatedNeeds from './ListServiceValidatedNeeds';
 import ListServiceFiles from './ListServiceFiles';
 import ListServiceMaterials from './ListServiceMaterials';
 import AjouterOuvrier from './AjouterOuvrier';
+import { useParams } from 'react-router';
 
 const drawerWidth = 240;
 
@@ -38,10 +39,8 @@ const menuItems = [
   { text: 'Lister les matériels', icon: <CategoryIcon />, path: '/list-service-materials' },
 ];
 
-export default function HomePage_ServiceTechnique({ id_resp }) {
-
- //get from backend id_projet when they shose project:
-  const id_projet ='P001';
+export default function HomePage_ServiceTechnique() {
+  const { id_resp, id_projet } = useParams();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [selectedPath, setSelectedPath] = useState(menuItems[0].path); // Initialize with the first menu item's path
@@ -61,15 +60,15 @@ export default function HomePage_ServiceTechnique({ id_resp }) {
   const renderSelectedComponent = () => {
     switch (selectedPath) {
       case '/list-service-projects':
-        return <ListServiceProjects />;
+        navigate('/list-service-projects/'+id_resp+"/"+id_projet);
       case '/list-service-validated-needs':
-        return <ListServiceValidatedNeeds id_projet={id_projet} id_resp={id_resp} />;
+        navigate('/list-service-validated-needs/'+id_resp+"/"+id_projet);
       case '/list-service-files':
-        return <ListServiceFiles id_projet={id_projet} />;
+        navigate('/list-service-files/'+id_resp+"/"+id_projet);
       case '/list-service-materials':
-        return <ListServiceMaterials id_projet={id_projet} />;
+        navigate('/list-service-materials/'+id_resp+"/"+id_projet);
       case '/ajouter-ouvrier':
-        return <AjouterOuvrier />;
+        navigate('/ajouter-ouvrier/'+id_resp+"/"+id_projet);
       default:
         return <Typography variant="h6">Please select an option from the menu.</Typography>;
     }

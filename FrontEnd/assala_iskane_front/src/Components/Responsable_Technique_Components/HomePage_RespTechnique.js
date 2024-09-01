@@ -32,6 +32,7 @@ import ListTechProjects from './ListTechProjects';
 import ListTechWeeklyReports from './ListTechWeeklyReports';
 import ListTechWorkersWithAbsence from './ListTechWorkersWithAbsence';
 import ListValidatedNeeds from './ListValidatedNeeds';
+import { useParams } from 'react-router';
 
 const drawerWidth = 240;
 
@@ -47,9 +48,10 @@ const menuItems = [
   { text: 'Fichiers', icon: <FileUploadIcon />, path: '/list-tech-files' },
 ];
 
-export default function ResponsiveTechDashboard({ id_resp }) {
+export default function ResponsiveTechDashboard() {
+  const { id_resp, id_projet } = useParams();
   //get from backend id_projet when they shose project:
-  const id_projet ='P001';
+  //const id_projet ='P001';
   const [mobileOpen, setMobileOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [selectedPath, setSelectedPath] = useState(menuItems[0].path); // Initialize with the first menu item's path
@@ -69,21 +71,21 @@ export default function ResponsiveTechDashboard({ id_resp }) {
   const renderSelectedComponent = () => {
     switch (selectedPath) {
       case '/list-tech-daily-reports':
-        return <ListTechDailyReports id_projet={id_projet} />;
+        navigate("/list-tech-daily-reports/"+id_resp+"/"+id_projet);
       case '/list-tech-files':
-        return <ListFiles id_projet={id_projet} />;
+        navigate("/list-tech-files/"+id_resp+"/"+id_projet);
       case '/list-tech-materials':
-        return <ListTechMaterials id_projet={id_projet} />;
+        navigate("/list-tech-materials/"+id_resp+"/"+id_projet);
       case '/list-tech-progress':
-        return <ListTechProgress id_projet={id_projet} />;
+        navigate("/list-tech-progress/"+id_resp+"/"+id_projet);
       case '/list-tech-projects':
-        return <ListTechProjects />;
+        navigate("/list-tech-progress/"+id_resp+"/"+id_projet);
       case '/list-tech-weekly-reports':
-        return <ListTechWeeklyReports id_projet={id_projet} />;
+        navigate("/list-tech-weekly-reports/"+id_resp+"/"+id_projet);
       case '/list-tech-workers':
-        return <ListTechWorkersWithAbsence id_projet={id_projet} />;
+        navigate("/list-tech-workers/"+id_resp+"/"+id_projet);
       case '/list-tech-validated-needs':
-        return <ListValidatedNeeds id_projet={id_projet} id_resp={id_resp} />;
+        navigate("/list-tech-validated-needs/"+id_resp+"/"+id_projet);
       default:
         return <Typography variant="h6">Please select an option from the menu.</Typography>;
     }

@@ -29,6 +29,7 @@ import {
 import ListAllOuvrier from '../Resp_Comptabiliter/ListAllOuvrier';
 import ListFilesMar from './ListFilesMarchandise';
 import ListServiceValidatedNeedsMar from './ListValidatedNeedsMar';
+import { useParams } from 'react-router';
 
 const menuItems = [
   { text: 'Lister tous les ouvriers', icon: <ListAlt />, path: '/listAllOuvriers' },
@@ -36,9 +37,10 @@ const menuItems = [
   { text: 'Lister les besoins validés', icon: <Inventory />, path: '/listValidatedNeedsMarchandise' }
 ];
 
-export default function HomePage_RespMarchandise({id_resp}) {
+export default function HomePage_RespMarchandise() {
+  const { id_resp, id_projet } = useParams();
   //get from backend id_projet when they shose project:
-  const id_projet ='P001';
+  //const id_projet ='P001';
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -52,11 +54,11 @@ export default function HomePage_RespMarchandise({id_resp}) {
   const renderSelectedComponent = () => {
     switch (selectedOption) {
       case '/listAllOuvriers':
-        return <ListAllOuvrier id_projet={id_projet}/>;
+        navigate("/listAllOuvriers/"+id_resp+"/"+id_projet);
       case '/listFilesMarchandise':
-        return <ListFilesMar id_projet={id_projet} />;
+        navigate("/listFilesMarchandise/"+id_resp+"/"+id_projet);
       case '/listValidatedNeedsMarchandise':
-        return <ListServiceValidatedNeedsMar id_projet={id_projet} id_resp={id_resp} />;
+        navigate("/listValidatedNeedsMarchandise/"+id_resp+"/"+id_projet);
       default:
         return <Typography variant="h6">Please select an option from the menu.</Typography>;
     }

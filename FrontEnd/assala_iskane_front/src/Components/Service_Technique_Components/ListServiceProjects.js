@@ -9,9 +9,11 @@ import {
   Business as BusinessIcon
 } from '@mui/icons-material';
 import axios from 'axios';
+import { useNavigate, useParams } from 'react-router';
 
 export default function ListServiceProjects() {
-  
+  const { id_resp } = useParams();
+  const navigate = useNavigate();
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const theme = useTheme();
@@ -20,7 +22,7 @@ export default function ListServiceProjects() {
   // Fetch projects data from backend
   useEffect(() => {
     setLoading(true);
-    axios.get('http://localhost:9092/assalaiskane/getProjets')
+    axios.get(`http://localhost:9092/assalaiskane/getProjets`)
       .then(response => {
         setProjects(response.data);
         setLoading(false);
@@ -29,7 +31,7 @@ export default function ListServiceProjects() {
         console.error('There was an error fetching the projects data!', error);
         setLoading(false);
       });
-  }, []);
+  }, []); // Add id_projet to dependency array
 
   const calculateProgress = (startDate, endDate) => {
     const start = new Date(startDate);
@@ -38,6 +40,12 @@ export default function ListServiceProjects() {
     const totalDays = (end - start) / (1000 * 60 * 60 * 24);
     const daysElapsed = (today - start) / (1000 * 60 * 60 * 24);
     return Math.min(Math.max((daysElapsed / totalDays) * 100, 0), 100);
+  };
+
+  // Function to handle row click
+  const handleRowClick = (project) => {
+    // Implement your logic here, e.g., navigate to a detailed page or display more info
+    navigate(`/HomePage_ServiceTechnique/${id_resp}/${project.id}`);
   };
 
   return (
@@ -68,7 +76,11 @@ export default function ListServiceProjects() {
                 </TableHead>
                 <TableBody>
                   {projects.map(project => (
-                    <TableRow key={project.id} sx={{ '&:hover': { backgroundColor: theme.palette.action.hover } }}>
+                    <TableRow 
+                      key={project.id} 
+                      sx={{ '&:hover': { backgroundColor: theme.palette.action.hover, cursor: 'pointer' } }}
+                      onClick={() => handleRowClick(project)} // Add onClick event handler
+                    >
                       <TableCell>
                         <Typography variant="subtitle1" fontWeight="bold">{project.nom}</Typography>
                       </TableCell>

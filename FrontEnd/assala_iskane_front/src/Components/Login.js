@@ -39,42 +39,37 @@ function Login() {
         .then(response => {
           setUser(response.data);
           if (response.data) {
-            const { id: userId, fonction } = response.data;
+            const user = response.data;
   
-            if (fonction === 'ChefChantier') {
+            if (user.fonction === 'ChefChantier') {
+              const id_resp = user.id;
               // Fetch the project ID for ChefChantier
-              axios.get('http://localhost:9092/assalaiskane/getProjet?id_resp={id_resp}')
+              axios.get(`http://localhost:9092/assalaiskane/getProjet?id_resp=${user.id}`)
                 .then(projetResponse => {
-                  const id_projet = projetResponse[0].resp.id;
-                  navigate('/HomePage_ChefChantier', { state: { userId, id_projet } });
+                  const id_projet = projetResponse.data[0].id;
+                  navigate('/HomePage_ChefChantier/'+id_resp+'/'+id_projet);
                 })
                 .catch(error => {
                   console.error('Error fetching project ID:', error);
                   setError('An error occurred while fetching project ID');
                 });
             } else {
-              const id_resp = id; // Using the entered ID as the responsible ID for other roles
-              switch (fonction) {
+              const id_resp = user.id; // Using the entered ID as the responsible ID for other roles
+              switch (user.fonction) {
                 case 'responsable_comptabiliter':
-                  navigate('/HomePage_RespComptabiliter', { state: { id_resp } });
+                  navigate('/AllProjectsList/'+id_resp);
                   break;
                 case 'responsable_marchandise':
-                  navigate('/HomePage_RespMarchandise', { state: { id_resp } });
+                  navigate('/listProjectsMarchandise/'+id_resp);
                   break;
                 case 'responsable_projet':
-                  navigate('/HomePage_ResponsableDeProjet', { state: { id_resp } });
+                  navigate('/list-projects/'+id_resp);
                   break;
                 case 'responsable_technique':
-                  navigate('/HomePage_RespTechnique', { state: { id_resp } });
+                  navigate('/list-tech-projects/'+id_resp);
                   break;
                 case 'service_technique':
-                  navigate('/HomePage_ServiceTechnique', { state: { id_resp } });
-                  break;
-                case 'chef_technique':
-                  navigate('/HomePage_ChefTechnique', { state: { id_resp } });
-                  break;
-                case 'chef_projet':
-                  navigate('/HomePage_ChefDeProjet', { state: { id_resp } });
+                  navigate('/list-service-projects/'+id_resp);
                   break;
                 default:
                   setError('Role not recognized');

@@ -81,4 +81,29 @@ public class ProjetService implements ProjetServiceInterface{
 		return projetDao.getAbsences(id_projet, date_debut, date_fin);
 	}
 
+	@Override
+	public List<Besoin> getBesoinsCC(String id_projet) {
+		return projetDao.getBesoinsCC(id_projet);
+	}
+
+	@Override
+	public List<Besoin> getBesoinsRP(String id_projet) {
+		return projetDao.getBesoinsRP(id_projet);
+	}
+
+	@Override
+	public List<Besoin> getBesoinsRT(String id_projet) {
+		return projetDao.getBesoinsRT(id_projet);
+	}
+
+	@Override
+	public List<Besoin> getBesoinsST(String id_projet) {
+		return projetDao.getBesoinsST(id_projet);
+	}
+
+	@Override
+	public void validateBesoin(String id_resp, String id_besoin) {
+		projetDao.validateBesoins(id_resp, id_besoin);
+	}
+
 }

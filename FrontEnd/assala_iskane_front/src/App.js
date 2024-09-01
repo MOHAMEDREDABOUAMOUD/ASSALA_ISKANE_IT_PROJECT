@@ -41,6 +41,7 @@ import ListValidatedNeedsCompta from './Components/Resp_Comptabiliter/ListValida
 import ListFilesMar from './Components/Resp_Marchandise/ListFilesMarchandise';
 import ListServiceValidatedNeedsMar from './Components/Resp_Marchandise/ListValidatedNeedsMar';
 import AllProjectsList from './Components/Resp_Comptabiliter/AllProjectsList';
+import AllProjectsListMarchandise from './Components/Resp_Marchandise/AllProjectsListMarchandise';
 
 
 
@@ -76,63 +77,64 @@ function App() {
         {/*--------------------------------------*/}
 
         {/*Chef Technique Service Technique*/}
-        <Route path="/HomePage_ServiceTechnique" element={<HomePage_ServiceTechnique/>} />
-        <Route path="/list-service-projects" element={<ListServiceProjects />} />
-        <Route path="/list-service-validated-needs" element={<ListServiceValidatedNeeds />} />
-        <Route path="/list-service-files" element={<ListServiceFiles />} />
-        <Route path="/ajouter-ouvrier" element={<AjouterOuvrier />} />
-        <Route path="/list-service-Materials" element={<AjouterOuvrier />} />
+        <Route path="/HomePage_ServiceTechnique/:id_resp/:id_projet" element={<HomePage_ServiceTechnique/>} />
+        <Route path="/list-service-projects/:id_projet" element={<ListServiceProjects />} />
+        <Route path="/list-service-validated-needs/:id_resp/:id_projet" element={<ListServiceValidatedNeeds />} />
+        <Route path="/list-service-files/:id_resp/:id_projet" element={<ListServiceFiles />} />
+        <Route path="/ajouter-ouvrier/:id_resp/:id_projet" element={<AjouterOuvrier />} />
+        <Route path="/list-service-Materials/:id_resp/:id_projet" element={<AjouterOuvrier />} />
         {/*--------------------------------------*/}
         
         {/*Responsable Technique*/}
-        <Route path="/HomePage_RespTechnique" element={<HomePage_RespTechnique/>} />
-        <Route path="/list-tech-projects" element={<ListTechProjects />} />
-        <Route path="/list-tech-workers" element={<ListTechWorkersWithAbsence />} />
-        <Route path="/list-tech-daily-reports" element={<ListTechDailyReports />} />
-        <Route path="/list-tech-weekly-reports" element={<ListTechWeeklyReports />} />
-        <Route path="/list-tech-progress" element={<ListTechProgress />} />
-        <Route path="/list-tech-materials" element={<ListTechMaterials />} />
-        <Route path="/list-tech-validated-needs" element={<ListValidatedNeeds />} />
-        <Route path="/list-tech-files" element={<ListTechFiles />} />
+        <Route path="/HomePage_RespTechnique/:id_resp/:id_projet" element={<HomePage_RespTechnique/>} />
+        <Route path="/list-tech-projects/:id_projet" element={<ListTechProjects />} />
+        <Route path="/list-tech-workers/:id_resp/:id_projet" element={<ListTechWorkersWithAbsence />} />
+        <Route path="/list-tech-daily-reports/:id_resp/:id_projet" element={<ListTechDailyReports />} />
+        <Route path="/list-tech-weekly-reports/:id_resp/:id_projet" element={<ListTechWeeklyReports />} />
+        <Route path="/list-tech-progress/:id_resp/:id_projet" element={<ListTechProgress />} />
+        <Route path="/list-tech-materials/:id_resp/:id_projet" element={<ListTechMaterials />} />
+        <Route path="/list-tech-validated-needs/:id_resp/:id_projet" element={<ListValidatedNeeds />} />
+        <Route path="/list-tech-files/:id_resp/:id_projet" element={<ListTechFiles />} />
         {/*--------------------------------------*/}
 
         {/*Chef De Projet  */}
-        <Route path="/HomePage_ChefDeProjet" element={<HomePage_ResponsableDeProjet />} />
-        <Route path="/list-projects" element={<ListProjects />} />
-        <Route path="/daily-reports" element={<DailyReports />} />
-        <Route path="/weekly-reports" element={<WeeklyReports />} />
-        <Route path="/progress" element={<Progress />} />
-        <Route path="/list-materials" element={<ListMaterials />} />
-        <Route path="/list-needs" element={<ListNeeds />} />
-        <Route path="/list-files" element={<ListFiles />} />
+        <Route path="/HomePage_ChefDeProjet/:id_resp/:id_projet" element={<HomePage_ResponsableDeProjet />} />
+        <Route path="/list-projects/:id_resp" element={<ListProjects />} />
+        <Route path="/daily-reports/:id_resp/:id_projet" element={<DailyReports />} />
+        <Route path="/weekly-reports/:id_resp/:id_projet" element={<WeeklyReports />} />
+        <Route path="/progress/:id_resp/:id_projet" element={<Progress />} />
+        <Route path="/list-materials/:id_resp/:id_projet" element={<ListMaterials />} />
+        <Route path="/list-needs/:id_resp/:id_projet" element={<ListNeeds />} />
+        <Route path="/list-files/:id_resp/:id_projet" element={<ListFiles />} />
         {/*-------------------------------*/}
 
         {/*Chef Chantier  */}
-        <Route path="/HomePage_ChefChantier" element={<HomePage_ChefChantier/>} />
-        <Route path="/list-workers" element={<ListOuvrier />} />
-        <Route path="/list-materials" element={<ListMaterials />} />
-        <Route path="/declare-needs" element={<DeclareNeeds />} />
+        <Route path="/HomePage_ChefChantier/:id_resp/:id_projet" element={<HomePage_ChefChantier/>} />
+        <Route path="/list-workers/:id_resp/:id_projet" element={<ListOuvrier />} />
+        <Route path="/list-materials/:id_resp/:id_projet" element={<ListMaterials />} />
+        <Route path="/declare-needs/:id_resp/:id_projet" element={<DeclareNeeds />} />
         {/*-------------------------------*/}
 
         {/*Responsable Comptabiliter*/}
-        <Route path="/HomePage_RespComptabiliter" element={<HomePage_RespComptabiliter/>} />
-        <Route path="/listAllOuvriers" element={<ListAllOuvrier />} />
-        <Route path="/listFilesCompta" element={<ListFilesCompta />} />
-        <Route path="/listValidatedNeedsCompta" element={<ListValidatedNeedsCompta />} />
-        <Route path="/AllProjectsList" element={<AllProjectsList />} />
+        <Route path="/HomePage_RespComptabiliter/:id_resp/:id_projet" element={<HomePage_RespComptabiliter/>} />
+        <Route path="/listAllOuvriers/:id_resp/:id_projet" element={<ListAllOuvrier />} />
+        <Route path="/listFilesCompta/:id_resp/:id_projet" element={<ListFilesCompta />} />
+        <Route path="/listValidatedNeedsCompta/:id_resp/:id_projet" element={<ListValidatedNeedsCompta />} />
+        <Route path="/AllProjectsList/:id_projet/:id_resp/:id_projet" element={<AllProjectsList />} />
         
         
         {/*-------------------------------*/}
 
         {/*Responsable Marchandise*/}
-        <Route path="/HomePage_RespMarchandise" element={<HomePage_RespMarchandise/>} />
-        <Route path="/listAllOuvriers" element={<ListAllOuvrier />} />
-        <Route path="/listFilesMarchandise" element={<ListFilesMar />} />
-        <Route path="/listValidatedNeedsMarchandise" element={<ListServiceValidatedNeedsMar />} />
+        <Route path="/HomePage_RespMarchandise/:id_resp/:id_projet" element={<HomePage_RespMarchandise/>} />
+        <Route path="/listAllOuvriers/:id_resp/:id_projet" element={<ListAllOuvrier />} />
+        <Route path="/listFilesMarchandise/:id_resp/:id_projet" element={<ListFilesMar />} />
+        <Route path="/listValidatedNeedsMarchandise/:id_resp/:id_projet" element={<ListServiceValidatedNeedsMar />} />
+        <Route path="/listProjectsMarchandise/:id_projet" element={<AllProjectsListMarchandise />} />
         {/*-------------------------------*/}
         
-        {/*Responsable Technique*/}
-        <Route path="/ResponsableTechnique" element={<HomePage_RespTechnique/>} />
+        {/*Responsable Technique
+        <Route path="/ResponsableTechnique" element={<HomePage_RespTechnique/>} />*/}
         {/*-------------------------------*/}
       </Routes>
       </div>

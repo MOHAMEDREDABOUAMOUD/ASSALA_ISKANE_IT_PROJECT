@@ -10,9 +10,10 @@ import {
 } from '@mui/icons-material';
 import { format, differenceInDays, addDays } from 'date-fns';
 import axios from 'axios';
+import { useParams } from 'react-router';
 
-export default function ListAllOuvrier({id_projet}) {
-  
+export default function ListAllOuvrier() {
+  const { id_resp, id_projet } = useParams();
   const [ouvriers, setOuvriers] = useState([]);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');

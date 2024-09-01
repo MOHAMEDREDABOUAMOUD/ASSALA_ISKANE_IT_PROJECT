@@ -4,14 +4,16 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 import axios from 'axios'; 
+import { useParams } from 'react-router';
 
-export default function ListValidatedNeedsCompta({id_projet,id_resp}) {
+export default function ListValidatedNeedsCompta() {
+  const { id_resp, id_projet } = useParams();
   const [needs, setNeeds] = useState([]);
  
   useEffect(() => {
     const fetchNeeds = async () => {
       try {
-        const response = await axios.get(`http://localhost:9092/assalaiskane/getBesoins?id_resp=${id_resp}&id_projet=${id_projet}`);
+        const response = await axios.get(`http://localhost:9092/assalaiskane/getBesoinsST?id_projet=${id_projet}`);
         setNeeds(response.data);
       } catch (error) {
         console.error('Error fetching needs:', error);

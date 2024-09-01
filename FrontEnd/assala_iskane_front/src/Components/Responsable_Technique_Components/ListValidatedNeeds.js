@@ -20,14 +20,16 @@ import { CheckCircle as CheckCircleIcon, Cancel as CancelIcon, Info as InfoIcon 
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 import axios from 'axios'; 
+import { useParams } from 'react-router';
 
-export default function ListValidatedNeeds({id_projet,id_resp}) {
+export default function ListValidatedNeeds() {
+  const { id_resp, id_projet } = useParams();
   const [needs, setNeeds] = useState([]);
  
   useEffect(() => {
     const fetchNeeds = async () => {
       try {
-        const response = await axios.get(`http://localhost:9092/assalaiskane/getBesoins?id_resp=${id_resp}&id_projet=${id_projet}`);
+        const response = await axios.get(`http://localhost:9092/assalaiskane/getBesoinsRT?id_projet=${id_projet}`);
         setNeeds(response.data);
       } catch (error) {
         console.error('Error fetching needs:', error);
@@ -40,7 +42,7 @@ export default function ListValidatedNeeds({id_projet,id_resp}) {
   
   const handleValidate = async (needId) => {
     try {
-      await axios.post(`/api/needs/validate/${needId}`);
+      await axios.post(`http://localhost:9092/assalaiskane/validateBesoin?id_resp=${id_resp}&id_besoin=${needId}`);
   
       // Update the UI after validation
       setNeeds(needs.map(need => need.id === needId ? { ...need, validated: true } : need));

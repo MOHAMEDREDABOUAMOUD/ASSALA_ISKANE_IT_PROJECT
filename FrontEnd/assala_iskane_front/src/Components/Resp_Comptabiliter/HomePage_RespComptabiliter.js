@@ -24,6 +24,7 @@ import {
 import ListFilesCompta from './ListFilesCompta';
 import ListValidatedNeedsCompta from './ListValidatedNeedsCompta';
 import ListAllOuvrier from './ListAllOuvrier';
+import { useParams } from 'react-router';
 
 const drawerWidth = 240;
 
@@ -33,9 +34,10 @@ const menuItems = [
   { text: 'Lister les besoins validés', icon: <CheckCircleIcon />, path: '/listValidatedNeedsCompta' },
 ];
 
-export default function HomePage_RespComptabiliter({ id_resp }) {
+export default function HomePage_RespComptabiliter() {
+  const { id_resp, id_projet } = useParams();
   //get from backend id_projet when they shose project:
-  const id_projet ='P001';
+  //const id_projet ='P001';
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -49,11 +51,11 @@ export default function HomePage_RespComptabiliter({ id_resp }) {
   const renderSelectedComponent = () => {
     switch (selectedOption) {
       case 'listAllOuvriers':
-        return <ListAllOuvrier id_projet={id_projet}/>;
+        navigate("listAllOuvriers/"+id_resp+"/"+id_projet);
       case 'listFilesCompta':
-        return <ListFilesCompta id_projet={id_projet}/>;
+        navigate("listFilesCompta/"+id_resp+"/"+id_projet);
       case 'listValidatedNeedsCompta':
-        return <ListValidatedNeedsCompta id_projet={id_projet} id_resp={id_resp} />;     
+        navigate("listValidatedNeedsCompta/"+id_resp+"/"+id_projet);     
       default:
         return <Typography variant="h6">Please select an option from the menu.</Typography>;
     }
