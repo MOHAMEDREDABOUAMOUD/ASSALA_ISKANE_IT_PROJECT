@@ -45,6 +45,11 @@ import AllProjectsListMarchandise from './Components/Resp_Marchandise/AllProject
 import ListNeedsChefProjet from './Components/Chef_Projet_Components/ListNeedsChefProjet';
 import ListMaterialsChefProjet from './Components/Chef_Projet_Components/ListMaterialsChefProjet';
 import ListOuvrierChefProjet from './Components/Chef_Projet_Components/ListOuvrierChefProjet';
+import ListAllOuvrierRespMarchandise from './Components/Resp_Marchandise/ListAllOuvrierRespMarchandise';
+import DashboardRespMarchandise from './Components/Resp_Marchandise/DashboardRespMarchandise';
+import ListerMaterialRespMarchandise from './Components/Resp_Marchandise/ListerMaterialRespMarchandise';
+import ListMaterialsNeedChefProjet from './Components/Chef_Projet_Components/ListNeedsChefProjet';
+import ListMaterialsNeedRespMarchandise from './Components/Resp_Marchandise/ListValidatedNeedsMar';
 
 
 
@@ -108,7 +113,7 @@ function App() {
         <Route path="/progress/:id_resp/:id_projet" element={<Progress />} />
         <Route path="/list-materials-chefProjet/:id_resp/:id_projet" element={<ListMaterialsChefProjet />} />
         <Route path="/list-workers-listOuvrierChefProjet/:id_resp/:id_projet" element={<ListOuvrierChefProjet />}/>
-        <Route path="/list-needs-chefProjet/:id_resp/:id_projet" element={<ListNeedsChefProjet />} />
+        <Route path="/ListMaterialsNeedChefProjet/:id_resp/:id_projet" element={<ListMaterialsNeedChefProjet />} />
         <Route path="/list-files/:id_resp/:id_projet" element={<ListFiles />} />
         {/*-------------------------------*/}
 
@@ -117,6 +122,7 @@ function App() {
         <Route path="/list-workers/:id_resp/:id_projet" element={<ListOuvrier />} />
         <Route path="/list-materials/:id_resp/:id_projet" element={<ListMaterials />} />
         <Route path="/declare-needs/:id_resp/:id_projet" element={<DeclareNeeds />} />
+        
         {/*-------------------------------*/}
 
         {/*Responsable Comptabiliter*/}
@@ -131,10 +137,13 @@ function App() {
 
         {/*Responsable Marchandise*/}
         <Route path="/HomePage_RespMarchandise/:id_resp/:id_projet" element={<HomePage_RespMarchandise/>} />
-        <Route path="/listAllOuvriers/:id_resp/:id_projet" element={<ListAllOuvrier />} />
+        <Route path="/ListAllOuvrierRespMarchandise/:id_resp/:id_projet" element={<ListAllOuvrierRespMarchandise/>} />
         <Route path="/listFilesMarchandise/:id_resp/:id_projet" element={<ListFilesMar />} />
         <Route path="/listValidatedNeedsMarchandise/:id_resp/:id_projet" element={<ListServiceValidatedNeedsMar />} />
-        <Route path="/listProjectsMarchandise/:id_projet" element={<AllProjectsListMarchandise />} />
+        <Route path="/AllProjectsListMarchandise/:id_resp" element={<AllProjectsListMarchandise />} />
+        <Route path="/DashboardRespMarchandise" element={<DashboardRespMarchandise/>} />
+        <Route path="/ListMaterialsNeedRespMarchandise/:id_resp/:id_projet" element={<ListMaterialsNeedRespMarchandise />} />
+        
         {/*-------------------------------*/}
         
         {/*Responsable Technique

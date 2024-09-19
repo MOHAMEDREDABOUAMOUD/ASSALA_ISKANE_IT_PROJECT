@@ -60,7 +60,7 @@ function Login() {
                   navigate('/AllProjectsList/'+id_resp);
                   break;
                 case 'responsable_marchandise':
-                  navigate('/listProjectsMarchandise/'+id_resp);
+                  navigate('/AllProjectsListMarchandise/'+id_resp);
                   break;
                 case 'responsable_projet':
                   navigate('/list-projects/'+id_resp);

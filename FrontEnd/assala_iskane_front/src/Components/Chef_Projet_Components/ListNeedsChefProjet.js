@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import {
   Container,
   Typography,
+  TextField,
+  Button,
   Table,
   TableBody,
   TableCell,
@@ -11,180 +12,133 @@ import {
   TableRow,
   Paper,
   Box,
-  Button,
-  AppBar,
-  Toolbar,
-  IconButton,
-  useTheme,
-  useMediaQuery,
-  CssBaseline,
+  Grid,
+  Card,
+  CardContent,
+  Divider,
 } from '@mui/material';
 import axios from 'axios';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import BuildIcon from '@mui/icons-material/Build';
+import DateRangeIcon from '@mui/icons-material/DateRange';
+import BusinessIcon from '@mui/icons-material/Business';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import InventoryIcon from '@mui/icons-material/Inventory';
-import ConstructionIcon from '@mui/icons-material/Construction';
-import MenuIcon from '@mui/icons-material/Menu';
-import SideBar from './SideBar'; // Ensure you have this component
+import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router';
 
-const drawerWidth = 280;
-
-export default function ListMaterialsChefProjet() {
-  const { id_projet, id_resp } = useParams();
-  const [materials, setMaterials] = useState([]);
-  const [chantierMaterials, setChantierMaterials] = useState([]);
+export default function ListMaterialsNeedChefProjet() {
+  const { id_resp, id_projet } = useParams();
+  const [needs, setNeeds] = useState([]);
+  const [newNeed, setNewNeed] = useState({
+    nom: '',
+    qte: '',
+    date_demande: '',
+    chantier: '',
+  });
   const navigate = useNavigate();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState('list-materials-chefProjet');
-
-  const formatPrice = (price) => {
-    return new Intl.NumberFormat('fr-MA', {
-      style: 'currency',
-      currency: 'MAD',
-      currencyDisplay: 'symbol',
-    }).format(price);
+  //const id_resp = 'U001'; // Replace with the actual responsible user's ID
+  const id_chantier = 1; // Replace with the actual chantier ID
+  
+  const handleReturn = () => {
+    navigate(-1); // This will navigate back to the previous page
   };
-
   useEffect(() => {
-    const fetchMaterials = async () => {
+    const fetchNeeds = async () => {
       try {
-        const response = await axios.get(`http://localhost:9092/assalaiskane/getMaterielsChantiers?id_projet=${id_projet}`);
-        setMaterials(response.data);
+        const response = await axios.get(`http://localhost:9092/assalaiskane/getBesoinsCC?id_projet=${id_projet}`);
+        setNeeds(response.data);
       } catch (error) {
-        console.error('Error fetching materials:', error);
+        console.error('Error fetching needs:', error);
       }
     };
 
-    const fetchChantierMaterials = async () => {
-      try {
-        const response = await axios.get(`http://localhost:9092/assalaiskane/getMateriauxChantiers?id_projet=${id_projet}`);
-        setChantierMaterials(response.data);
-      } catch (error) {
-        console.error('Error fetching chantier materials:', error);
-      }
-    };
+    fetchNeeds();
+  }, []);
 
-    fetchMaterials();
-    fetchChantierMaterials();
-  }, [id_projet]);
-
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
+  const handleChange = (e) => {
+    setNewNeed({
+      ...newNeed,
+      [e.target.name]: e.target.value,
+    });
   };
 
-  const handleMenuClick = (path) => {
-    setSelectedOption(path);
-    navigate(`/${path}/${id_resp}/${id_projet}`);
-    if (isMobile) {
-      setMobileOpen(false);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (newNeed.nom && newNeed.qte && newNeed.date_demande && newNeed.chantier) {
+      try {
+        await axios.post(`http://localhost:9092/assalaiskane/AddBesoin?nom=${newNeed.nom}&date_demande=${newNeed.date_demande}&qte=${newNeed.qte}&valide_par=${id_resp}&id_chantier=${id_chantier}`);
+
+        const response = await axios.get(`http://localhost:9092/assalaiskane/getBesoins?id_resp=${id_resp}&id_projet=${id_projet}`);
+        setNeeds(response.data);
+
+        setNewNeed({
+          nom: '',
+          qte: '',
+          date_demande: '',
+          chantier: '',
+        });
+      } catch (error) {
+        console.error('Error adding need:', error);
+      }
+    } else {
+      alert('Veuillez remplir tous les champs');
     }
   };
 
-  const handleReturn = () => {
-    navigate(-1);
-  };
-
   return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      <AppBar
-        position="fixed"
-        sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
-        }}
-      >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Gestion des Matériaux
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <SideBar
-        mobileOpen={mobileOpen}
-        handleDrawerToggle={handleDrawerToggle}
-        selectedOption={selectedOption}
-        handleMenuClick={handleMenuClick}
-      />
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
-      >
-        <Toolbar />
-        <Box display="flex" alignItems="center" mb={2}>
-          <Button startIcon={<ArrowBackIcon />} onClick={handleReturn} variant="outlined">
-            Retour
-          </Button>
-        </Box>
-
-        <Box mb={4}>
-          <Typography variant="h5" component="h2" gutterBottom display="flex" alignItems="center">
-            <InventoryIcon sx={{ mr: 1 }} /> Liste des Matériaux
-          </Typography>
-          <TableContainer component={Paper}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>ID</TableCell>
-                  <TableCell>Nom</TableCell>
-                  <TableCell>Quantité</TableCell>
-                  <TableCell>Prix</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {materials.map((material) => (
-                  <TableRow key={material.id}>
-                    <TableCell>{material.id}</TableCell>
-                    <TableCell>{material.nom}</TableCell>
-                    <TableCell>{material.qte}</TableCell>
-                    <TableCell>{formatPrice(material.prix)}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Box>
-
-        <Box>
-          <Typography variant="h5" component="h2" gutterBottom display="flex" alignItems="center">
-            <ConstructionIcon sx={{ mr: 1 }} /> Liste des Matériaux de Chantier
-          </Typography>
-          <TableContainer component={Paper}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>ID</TableCell>
-                  <TableCell>Nom</TableCell>
-                  <TableCell>Quantité</TableCell>
-                  <TableCell>Type</TableCell>
-                  <TableCell>Prix</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {chantierMaterials.map((material) => (
-                  <TableRow key={material.id_materiaux}>
-                    <TableCell>{material.id}</TableCell>
-                    <TableCell>{material.nom}</TableCell>
-                    <TableCell>{material.qte}</TableCell>
-                    <TableCell>{material.type}</TableCell>
-                    <TableCell>{formatPrice(material.prix)}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Box>
+    <Container maxWidth="lg">
+      <Box display="flex" alignItems="center" mb={2}>
+        <Button startIcon={<ArrowBackIcon />} onClick={handleReturn} variant="outlined">
+          Retour
+        </Button>
+        <Typography variant="h4" component="h1" ml={2}>
+        <BuildIcon fontSize="large" style={{ verticalAlign: 'middle', marginRight: '10px' }} />
+        Gestion des Besoins
+        </Typography>
       </Box>
-    </Box>
+
+     
+
+        <Grid item xs={12} md={7}>
+          <Card elevation={3}>
+            <CardContent>
+              <Typography variant="h5" component="h2" gutterBottom color="secondary">
+                <ListAltIcon fontSize="small" style={{ verticalAlign: 'middle', marginRight: '5px' }} />
+                Liste des Besoins Déclarés
+              </Typography>
+              <TableContainer>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell><BuildIcon fontSize="small" /> Matériau</TableCell>
+                      <TableCell align="right"><AddCircleOutlineIcon fontSize="small" /> Quantité</TableCell>
+                      <TableCell align="right"><DateRangeIcon fontSize="small" /> Date de Demande</TableCell>
+                      <TableCell align="right"><BusinessIcon fontSize="small" /> Chantier</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {Array.isArray(needs) && needs.length > 0 ? (
+                      needs.map((need) => (
+                        <TableRow key={need.id}>
+                          <TableCell component="th" scope="row">{need.nom}</TableCell>
+                          <TableCell align="right">{need.qte}</TableCell>
+                          <TableCell align="right">{new Date(need.date_demande).toLocaleDateString()}</TableCell>
+                          <TableCell align="right">{need.chantier?.name || 'N/A'}</TableCell>
+                        </TableRow>
+                      ))
+                    ) : (
+                      <TableRow>
+                        <TableCell colSpan={4} align="center">Aucune donnée disponible</TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </CardContent>
+          </Card>
+        </Grid>
+     
+    </Container>
   );
 }

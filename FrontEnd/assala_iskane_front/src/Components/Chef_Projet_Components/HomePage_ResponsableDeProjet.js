@@ -40,7 +40,7 @@ const menuItems = [
   { text: 'Lister/Ajouter les rapports hebdomadaires', icon: <CalendarViewMonthIcon />, path: 'weekly-reports' },
   { text: 'Lister/Ajouter les avancements', icon: <TrendingUpIcon />, path: 'progress' },
   { text: 'Lister la quantité des matériels', icon: <InventoryIcon />, path: 'list-materials' },
-  { text: 'Lister/Valider les besoins du chef chantier', icon: <FolderIcon />, path: 'declare-needs' },
+  { text: 'Lister/Valider les besoins du chef chantier', icon: <FolderIcon />, path: 'ListMaterialsNeedChefProjet' },
   { text: 'Lister/Ajouter des fichiers', icon: <FolderIcon />, path: 'list-files' },
 ];
 

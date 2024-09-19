@@ -24,11 +24,11 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import ConstructionIcon from '@mui/icons-material/Construction';
 import MenuIcon from '@mui/icons-material/Menu';
-import SideBar from '../Resp_Marchandise/SideBar';
+import SideBar from './SideBar'; // Ensure you have this component
 
 const drawerWidth = 280;
 
-export default function ListMaterials() {
+export default function ListerMaterialRespMarchandise() {
   const { id_projet, id_resp } = useParams();
   const [materials, setMaterials] = useState([]);
   const [chantierMaterials, setChantierMaterials] = useState([]);
@@ -36,7 +36,7 @@ export default function ListMaterials() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState('list-materials');
+  const [selectedOption, setSelectedOption] = useState('list-materials-chefProjet');
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat('fr-MA', {
@@ -106,7 +106,7 @@ export default function ListMaterials() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-          <h2>Lister/Ajouter des fichiers</h2>
+            Gestion des Matériaux
           </Typography>
         </Toolbar>
       </AppBar>
@@ -116,7 +116,6 @@ export default function ListMaterials() {
         selectedOption={selectedOption}
         handleMenuClick={handleMenuClick}
       />
-      
       <Box
         component="main"
         sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
@@ -130,7 +129,7 @@ export default function ListMaterials() {
 
         <Box mb={4}>
           <Typography variant="h5" component="h2" gutterBottom display="flex" alignItems="center">
-            <InventoryIcon sx={{ mr: 1 }} /> Liste des Matérieles
+            <InventoryIcon sx={{ mr: 1 }} /> Liste des Matériaux
           </Typography>
           <TableContainer component={Paper}>
             <Table>

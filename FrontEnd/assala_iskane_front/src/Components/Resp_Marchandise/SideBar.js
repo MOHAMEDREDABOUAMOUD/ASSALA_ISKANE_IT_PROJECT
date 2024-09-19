@@ -22,13 +22,13 @@ import {
 const drawerWidth = 280;
 
 const menuItems = [
-  { text: 'Lister tous les projets', icon: <ListIcon />, path: 'list-projects' },
-  { text: 'Lister les ouvriers avec l\'absence', icon: <GroupIcon />, path: 'list-workers-listOuvrierChefProjet' },
+  { text: 'Lister tous les projets', icon: <ListIcon />, path: 'AllProjectsListMarchandise' },
+  { text: 'Lister tous les ouvriers', icon: <GroupIcon />, path: '/ListAllOuvrierRespMarchandise' },
   { text: 'Lister/Ajouter les rapports du jour', icon: <ReportIcon />, path: 'daily-reports' },
   { text: 'Lister/Ajouter les rapports hebdomadaires', icon: <CalendarViewMonthIcon />, path: 'weekly-reports' },
   { text: 'Lister/Ajouter les avancements', icon: <TrendingUpIcon />, path: 'progress' },
-  { text: 'Lister la quantité des matériels', icon: <InventoryIcon />, path: 'list-materials-chefProjet' },
-  { text: 'Lister/Valider les besoins du chef chantier', icon: <FolderIcon />, path: 'ListMaterialsNeedChefProjet' },
+  { text: 'Lister la quantité des matériels', icon: <InventoryIcon />, path: 'ListMaterialsNeedRespMarchandise' },
+  { text: 'Lister/Valider les besoins', icon: <FolderIcon />, path: 'ListServiceValidatedNeedsMar' },
   { text: 'Lister/Ajouter des fichiers', icon: <FolderIcon />, path: 'list-files' },
 ];
 
