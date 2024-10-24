@@ -27,11 +27,12 @@ import { DataGrid } from '@mui/x-data-grid';
 import { Checkbox } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router';
-import SideBar from './SideBar';
+import SideBarCompta from './SideBarCompta';
 const drawerWidth = 280;
 
-export default function ListOuvrierChefProjet() {
-  const { id_projet, id_resp } = useParams();
+
+export default function ListAllOuvrierRespCompta() {
+    const { id_projet, id_resp } = useParams();
 
     const navigate = useNavigate();
     //const id_projet = "P001";
@@ -40,7 +41,7 @@ export default function ListOuvrierChefProjet() {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const [mobileOpen, setMobileOpen] = useState(false);
-    const [selectedOption, setSelectedOption] = useState('list-workers-listOuvrierChefProjet');
+    const [selectedOption, setSelectedOption] = useState('ListAllOuvrierRespMarchandise');
 
 
     useEffect(() => {
@@ -140,7 +141,7 @@ export default function ListOuvrierChefProjet() {
             console.log("Navigating to HomePage_ChefChantier");
             navigate('/HomePage_ChefChantier');
     };
-    
+        
     
     return (
         <Container maxWidth="lg">
@@ -166,7 +167,7 @@ export default function ListOuvrierChefProjet() {
           </Typography>
         </Toolbar>
       </AppBar>
-      <SideBar
+      <SideBarCompta
         mobileOpen={mobileOpen}
         handleDrawerToggle={handleDrawerToggle}
         selectedOption={selectedOption}

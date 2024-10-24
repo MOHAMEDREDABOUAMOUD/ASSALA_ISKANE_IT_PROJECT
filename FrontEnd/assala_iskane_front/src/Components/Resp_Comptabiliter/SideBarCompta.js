@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link as RouterLink, useParams } from 'react-router-dom';
 import {
   Drawer,
   List,
@@ -10,29 +11,22 @@ import {
   Divider,
 } from '@mui/material';
 import {
-  List as ListIcon,
   Group as GroupIcon,
-  Report as ReportIcon,
-  CalendarViewMonth as CalendarViewMonthIcon,
-  TrendingUp as TrendingUpIcon,
-  Inventory as InventoryIcon,
   Folder as FolderIcon,
+  CheckCircle as CheckCircleIcon,
 } from '@mui/icons-material';
 
 const drawerWidth = 280;
 
-const menuItems = [
+const SideBarCompta = ({ mobileOpen, handleDrawerToggle, selectedOption, handleMenuClick }) => {
+  const { id_resp, id_projet } = useParams();
 
-  { text: 'Lister tous les ouvriers', icon: <GroupIcon />, path: '/ListAllOuvrierRespMarchandise' },
-  { text: 'Lister/Ajouter les rapports du jour', icon: <ReportIcon />, path: 'daily-reports' },
-  { text: 'Lister/Ajouter les rapports hebdomadaires', icon: <CalendarViewMonthIcon />, path: 'weekly-reports' },
-  { text: 'Lister/Ajouter les avancements', icon: <TrendingUpIcon />, path: 'progress' },
-  { text: 'Lister la quantité des matériels', icon: <InventoryIcon />, path: 'ListMaterialsNeedRespMarchandise' },
-  { text: 'Lister/Valider les besoins', icon: <FolderIcon />, path: 'ListServiceValidatedNeedsMar' },
-  { text: 'Lister/Ajouter des fichiers', icon: <FolderIcon />, path: 'ListFilesMar' },
-];
+  const menuItems = [
+    { text: 'Lister tous les ouvriers', icon: <GroupIcon />, path: `/ListAllOuvrierRespCompta/${id_resp}/${id_projet}` },
+    { text: 'Lister les fichiers comptables', icon: <FolderIcon />, path: `/listFilesCompta/${id_resp}/${id_projet}` },
+    { text: 'Lister les besoins validés', icon: <CheckCircleIcon />, path: `/ListValidatedNeedsCompta/${id_resp}/${id_projet}` },
+  ];
 
-const SideBar = ({ mobileOpen, handleDrawerToggle, selectedOption, handleMenuClick }) => {
   const drawer = (
     <div>
       <Toolbar>
@@ -48,6 +42,8 @@ const SideBar = ({ mobileOpen, handleDrawerToggle, selectedOption, handleMenuCli
             key={item.text}
             selected={selectedOption === item.path}
             onClick={() => handleMenuClick(item.path)}
+            component={RouterLink}
+            to={item.path}
           >
             <ListItemIcon>{item.icon}</ListItemIcon>
             <ListItemText primary={item.text} />
@@ -87,4 +83,4 @@ const SideBar = ({ mobileOpen, handleDrawerToggle, selectedOption, handleMenuCli
   );
 };
 
-export default SideBar;
+export default SideBarCompta;
