@@ -21,7 +21,7 @@ function Login() {
     
     /* Matestetch hadchi drt ghi logique jani n3as kml 
       li 9diti 3lih o siftli les notes
-       
+
       1-tester hdchi wch khdam o 9ad labanlk chi error sahl
       2-sawb Get Project By id bch nsawb wahed l3iba  bch lakhtaro chi wahed fihom i afficher 
          les actions 3la dak projets smit components dyalo --: AllProjectsList.js 
@@ -60,7 +60,7 @@ function Login() {
                   navigate('/AllProjectsList/'+id_resp);
                   break;
                 case 'responsable_marchandise':
-                  navigate('/listProjectsMarchandise/'+id_resp);
+                  navigate('/AllProjectsListMarchandise/'+id_resp);
                   break;
                 case 'responsable_projet':
                   navigate('/list-projects/'+id_resp);

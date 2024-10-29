@@ -44,8 +44,6 @@ export default function AllProjectsListMarchandise() {
   };
 
   const handleProjectClick = (projectId) => {
-    // Navigate to HomePage_RespComptabiliter with the selected project ID
-    // Note: You'll need to replace 'id_resp' with the actual ID of the responsible person
     navigate(`/HomePage_RespMarchandise/${id_resp}/${projectId}`);
   };
 

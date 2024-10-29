@@ -1,15 +1,53 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { IconButton, InputBase, Paper, List, ListItem, ListItemText, ListItemSecondaryAction, Divider, Button } from '@mui/material';
 import DownloadIcon from '@mui/icons-material/Download';
 import SearchIcon from '@mui/icons-material/Search';
-import { useParams } from 'react-router';
+import { useParams, useNavigate } from 'react-router-dom';
+import SideBarCompta from './SideBarCompta';
+import MenuIcon from '@mui/icons-material/Menu';
+
+import { 
+  IconButton, 
+  InputBase,
+  List, 
+  ListItem, 
+  ListItemText,
+  ListItemSecondaryAction, 
+  Typography, 
+  Button, 
+  Paper,
+  Divider,
+  AppBar,
+  Toolbar,
+  useTheme,
+  useMediaQuery,
+  Box,
+} from '@mui/material';
+
+const drawerWidth = 280;
 
 export default function ListFilesCompta() {
   const { id_resp, id_projet } = useParams();
   const [files, setFiles] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
+  const navigate = useNavigate();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState('/listFilesCompta');
+  
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
+  const handleMenuClick = (path) => {
+    setSelectedOption(path);
+    navigate(path);
+    if (isMobile) {
+      setMobileOpen(false);
+    }
+  };
 
   // Fetch the list of files from the backend
   useEffect(() => {
@@ -83,45 +121,77 @@ export default function ListFilesCompta() {
   );
 
   return (
-    <div>
-      <h2>Lister/Ajouter des fichiers</h2>
+    <Box sx={{ display: 'flex' }}>
+      <AppBar
+        position="fixed"
+        sx={{
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+          ml: { sm: `${drawerWidth}px` },
+        }}
+      >
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+            sx={{ mr: 2, display: { sm: 'none' } }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" noWrap component="div">
+            Gestion des Fichiers Comptables
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <SideBarCompta
+        mobileOpen={mobileOpen}
+        handleDrawerToggle={handleDrawerToggle}
+        selectedOption={selectedOption}
+        handleMenuClick={handleMenuClick}
+      />
+      <Box
+        component="main"
+        sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
+      >
+        <Toolbar />
+        {/* File Upload */}
+        <input type="file" onChange={handleFileChange} />
+        <Button variant="contained" color="primary" onClick={handleFileUpload}>
+          Upload
+        </Button>
 
-      {/* File Upload */}
-      <input type="file" onChange={handleFileChange} />
-      <Button variant="contained" color="primary" onClick={handleFileUpload}>
-        Upload
-      </Button>
+        {/* Search Bar */}
+        <Paper component="form" style={{ padding: '2px 4px', marginBottom: '16px', display: 'flex', alignItems: 'center', width: '100%' }}>
+          <IconButton sx={{ p: '10px' }} aria-label="search">
+            <SearchIcon />
+          </IconButton>
+          <InputBase
+            style={{ marginLeft: 8, flex: 1 }}
+            placeholder="Rechercher un fichier"
+            inputProps={{ 'aria-label': 'search files' }}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </Paper>
 
-      {/* Search Bar */}
-      <Paper component="form" style={{ padding: '2px 4px', marginBottom: '16px', display: 'flex', alignItems: 'center', width: '100%' }}>
-        <IconButton sx={{ p: '10px' }} aria-label="search">
-          <SearchIcon />
-        </IconButton>
-        <InputBase
-          style={{ marginLeft: 8, flex: 1 }}
-          placeholder="Rechercher un fichier"
-          inputProps={{ 'aria-label': 'search files' }}
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </Paper>
-
-      {/* List of Files */}
-      <List>
-        {filteredFiles.map((file) => (
-          <div key={file.id}>
-            <ListItem>
-              <ListItemText primary={file.nom} />
-              <ListItemSecondaryAction>
-                <IconButton edge="end" aria-label="download" onClick={() => handleDownload(file)}>
-                  <DownloadIcon />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-            <Divider />
-          </div>
-        ))}
-      </List>
-    </div>
+        {/* List of Files */}
+        <List>
+          {filteredFiles.map((file) => (
+            <div key={file.id}>
+              <ListItem>
+                <ListItemText primary={file.nom} />
+                <ListItemSecondaryAction>
+                  <IconButton edge="end" aria-label="download" onClick={() => handleDownload(file)}>
+                    <DownloadIcon />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+              <Divider />
+            </div>
+          ))}
+        </List>
+      </Box>
+    </Box>
   );
 }
