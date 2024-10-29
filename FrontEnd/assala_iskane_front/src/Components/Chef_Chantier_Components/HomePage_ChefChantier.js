@@ -34,6 +34,8 @@ import ListOuvrier from './ListOuvrier';
 import ListMaterials from './ListMaterials';
 import DeclareNeeds from './DeclareNeeds';
 import { useParams } from 'react-router';
+import { getName, getPROJECTID, getUSERID } from '../constants';
+import NavBar2 from '../NavBar2.js';
 
 const chefChantierInfo = {
   id: 'USR002',
@@ -71,7 +73,8 @@ export default function HomePage_ChefChantier() {
 
   const handleMenuClick = (option) => {
     setSelectedOption(option);
-    navigate(`?option=${option}`);
+    //navigate(`?option=${option}`);
+    //renderSelectedComponent();
     if (isMobile) {
       setMobileOpen(false);
     }
@@ -86,11 +89,14 @@ export default function HomePage_ChefChantier() {
   const renderSelectedComponent = () => {
     switch (selectedOption) {
       case 'list-workers':
-        navigate('/list-workers/'+id_resp+'/'+id_projet);
+        navigate('/list-workers/' + getUSERID() + '/' + getPROJECTID());
+        return null; // ou vous pouvez retourner un élément par défaut si nécessaire
       case 'list-materials':
-        navigate('/list-materials/'+id_resp+'/'+id_projet);
+        navigate('/list-materials/' + getUSERID() + '/' + getPROJECTID());
+        return null; // ou retournez un élément par défaut
       case 'declare-needs':
-        navigate('/declare-needs/'+id_resp+'/'+id_projet);
+        navigate('/declare-needs/' + getUSERID() + '/' + getPROJECTID());
+        return null; // ou retournez un élément par défaut
       default:
         return (
           <Card elevation={3}>
@@ -132,19 +138,20 @@ export default function HomePage_ChefChantier() {
           </Card>
         );
     }
-  };
+  };  
 
   const drawer = (
     <div>
+      <NavBar2 menuLabel={getName()} />
       <Toolbar />
       <Divider />
       <List>
-        <ListItem button onClick={() => handleMenuClick('profile')}>
+        {/* <ListItem button onClick={() => handleMenuClick('profile')}>
           <ListItemIcon>
             <PersonIcon />
           </ListItemIcon>
           <ListItemText primary="Profile" />
-        </ListItem>
+        </ListItem> */}
         <ListItem button onClick={() => handleMenuClick('list-workers')}>
           <ListItemIcon>
             <ListAltIcon />
@@ -163,9 +170,6 @@ export default function HomePage_ChefChantier() {
           </ListItemIcon>
           <ListItemText primary="Declare Needs" />
         </ListItem>
-      </List>
-      <Divider />
-      <List>
         <ListItem button onClick={() => handleMenuClicklogout()}>
           <ListItemIcon>
             <ExitToAppIcon />
@@ -179,7 +183,7 @@ export default function HomePage_ChefChantier() {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+      {/* <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -200,7 +204,7 @@ export default function HomePage_ChefChantier() {
             </IconButton>
           </Tooltip>
         </Toolbar>
-      </AppBar>
+      </AppBar> */}
       <Box
         component="nav"
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
