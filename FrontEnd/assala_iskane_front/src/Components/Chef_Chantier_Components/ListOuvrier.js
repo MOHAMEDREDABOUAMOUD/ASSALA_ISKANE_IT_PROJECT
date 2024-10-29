@@ -1,39 +1,60 @@
 import React, { useEffect, useState } from 'react';
-import { 
-  Container, 
-  Typography, 
-  Button, 
-  IconButton, 
-  Tooltip, 
-  Box,
-  Paper,
-  Divider,
-  Chip
+import {
+    Container,
+    Typography,
+    Button,
+    IconButton,
+    Tooltip,
+    Box,
+    Paper,
+    Divider,
+    Chip,
+    AppBar,
+    Toolbar,
+    Drawer,
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+    useTheme,
+    CssBaseline,
+    useMediaQuery
 } from '@mui/material';
-import { 
-  CheckBox as CheckBoxIcon, 
-  CheckBoxOutlineBlank as CheckBoxOutlineBlankIcon, 
-  ArrowBack as ArrowBackIcon,
-  People as PeopleIcon,
-  EventBusy as EventBusyIcon
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import BuildIcon from '@mui/icons-material/Build';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import {
+    CheckBox as CheckBoxIcon,
+    CheckBoxOutlineBlank as CheckBoxOutlineBlankIcon,
+    ArrowBack as ArrowBackIcon,
+    People as PeopleIcon,
+    EventBusy as EventBusyIcon,
+    Menu as MenuIcon,
+    Inventory as InventoryIcon,
+    Construction as ConstructionIcon
 } from '@mui/icons-material';
 import axios from 'axios';
 import { DataGrid } from '@mui/x-data-grid';
 import { Checkbox } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
+import { getName, getPROJECTID, getUSERID } from '../constants';
+import NavBar2 from '../NavBar2.js';
+
+const drawerWidth = 280;
 
 export default function ListOuvrier() {
-  const { id_projet } = useParams();
+    const { id_projet } = useParams();
     const navigate = useNavigate();
-    //const id_projet = "P001";
     const [ouvriers, setOuvriers] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [mobileOpen, setMobileOpen] = useState(false);
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     useEffect(() => {
         const fetchOuvriers = async () => {
             try {
-                const response = await axios.get(`http://localhost:9092/assalaiskane/getOuvriers?id_projet=${id_projet}`);
+                const response = await axios.get(`http://localhost:9092/assalaiskane/getOuvriers?id_projet=${getPROJECTID()}`);
                 const extractedData = response.data.map(ouvrier => ({
                     id: ouvrier.id,
                     nom: ouvrier.nom,
@@ -56,15 +77,15 @@ export default function ListOuvrier() {
         { field: 'id', headerName: 'ID', width: 100 },
         { field: 'nom', headerName: 'Nom', width: 150 },
         { field: 'prenom', headerName: 'Prénom', width: 150 },
-        { 
-            field: 'numero', 
-            headerName: 'Numéro de Téléphone', 
+        {
+            field: 'numero',
+            headerName: 'Numéro de Téléphone',
             width: 200,
             renderCell: (params) => (
-                <Chip 
-                    label={params.value} 
-                    variant="outlined" 
-                    size="small" 
+                <Chip
+                    label={params.value}
+                    variant="outlined"
+                    size="small"
                     color="primary"
                 />
             ),
@@ -84,7 +105,7 @@ export default function ListOuvrier() {
 
     const handleRowClick = (params) => {
         const id = params.id;
-        setOuvriers(prevOuvriers => prevOuvriers.map(ouvrier => 
+        setOuvriers(prevOuvriers => prevOuvriers.map(ouvrier =>
             ouvrier.id === id ? { ...ouvrier, selected: !ouvrier.selected } : ouvrier
         ));
     };
@@ -112,15 +133,90 @@ export default function ListOuvrier() {
         setOuvriers(prevOuvriers => prevOuvriers.map(ouvrier => ({ ...ouvrier, selected: false })));
     };
 
-   
     const handleRetour = () => {
-            console.log("Navigating to HomePage_ChefChantier");
-            navigate('/HomePage_ChefChantier');
+        console.log("Navigating to HomePage_ChefChantier");
+        navigate('/HomePage_ChefChantier');
     };
-        
-    
+
+    const handleDrawerToggle = () => {
+        setMobileOpen(!mobileOpen);
+    };
+
+    const handleMenuClick = (path) => {
+        navigate(`/${path}/${getUSERID()}/${getPROJECTID()}`);
+        if (isMobile) {
+            setMobileOpen(false);
+        }
+    };
+
+    const drawer = (
+        <div>
+            <NavBar2 menuLabel={getName()} />
+            <Toolbar />
+            <Divider />
+            <List>
+                {/* <ListItem button onClick={() => handleMenuClick('profile')}>
+          <ListItemIcon>
+            <InventoryIcon />
+          </ListItemIcon>
+          <ListItemText primary="Profile" />
+        </ListItem> */}
+                <ListItem button onClick={() => handleMenuClick('list-workers')}>
+                    <ListItemIcon>
+                        <ListAltIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="List Workers" />
+                </ListItem>
+                <ListItem button onClick={() => handleMenuClick('list-materials')}>
+                    <ListItemIcon>
+                        <BuildIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="List Materials" />
+                </ListItem>
+                <ListItem button onClick={() => handleMenuClick('declare-needs')}>
+                    <ListItemIcon>
+                        <AddShoppingCartIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Declare Needs" />
+                </ListItem>
+                <ListItem button onClick={() => handleMenuClick('logout')}>
+                    <ListItemIcon>
+                        <ArrowBackIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Logout" />
+                </ListItem>
+            </List>
+        </div>
+    );
+
     return (
         <Container maxWidth="lg">
+            <CssBaseline />
+            <Drawer
+                variant="temporary"
+                open={mobileOpen}
+                onClose={handleDrawerToggle}
+                ModalProps={{
+                    keepMounted: true,
+                }}
+                sx={{
+                    display: { xs: 'block', sm: 'none' },
+                    '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                }}
+            >
+                {drawer}
+            </Drawer>
+            <Drawer
+                variant="permanent"
+                sx={{
+                    display: { xs: 'none', sm: 'block' },
+                    '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                }}
+                open
+            >
+                {drawer}
+            </Drawer>
+
             <Paper elevation={3} sx={{ p: 3, mt: 3 }}>
                 <Box display="flex" alignItems="center" mb={2}>
                     <Tooltip title="Retour">
@@ -128,14 +224,10 @@ export default function ListOuvrier() {
                             <ArrowBackIcon />
                         </IconButton>
                     </Tooltip>
-                    <Typography variant="h4" component="h1" sx={{ flexGrow: 1 }}>
-                        <PeopleIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
-                        Liste des Ouvriers
-                    </Typography>
-                    <Chip 
-                        icon={<EventBusyIcon />} 
-                        label="Déclarer Absence" 
-                        color="primary" 
+                    <Chip
+                        icon={<EventBusyIcon />}
+                        label="Déclarer Absence"
+                        color="primary"
                         variant="outlined"
                     />
                 </Box>

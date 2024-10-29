@@ -18,12 +18,23 @@ import {
   useTheme,
   useMediaQuery,
   CssBaseline,
+  Drawer,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Divider
 } from '@mui/material';
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import BuildIcon from '@mui/icons-material/Build';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import axios from 'axios';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import ConstructionIcon from '@mui/icons-material/Construction';
 import MenuIcon from '@mui/icons-material/Menu';
+import { getName, getPROJECTID } from '../constants';
+import NavBar2 from '../NavBar2.js';
 import SideBar from '../Resp_Marchandise/SideBar';
 
 const drawerWidth = 280;
@@ -49,7 +60,7 @@ export default function ListMaterials() {
   useEffect(() => {
     const fetchMaterials = async () => {
       try {
-        const response = await axios.get(`http://localhost:9092/assalaiskane/getMaterielsChantiers?id_projet=${id_projet}`);
+        const response = await axios.get(`http://localhost:9092/assalaiskane/getMaterielsChantiers?id_projet=${getPROJECTID()}`);
         setMaterials(response.data);
       } catch (error) {
         console.error('Error fetching materials:', error);
@@ -58,7 +69,7 @@ export default function ListMaterials() {
 
     const fetchChantierMaterials = async () => {
       try {
-        const response = await axios.get(`http://localhost:9092/assalaiskane/getMateriauxChantiers?id_projet=${id_projet}`);
+        const response = await axios.get(`http://localhost:9092/assalaiskane/getMateriauxChantiers?id_projet=${getPROJECTID()}`);
         setChantierMaterials(response.data);
       } catch (error) {
         console.error('Error fetching chantier materials:', error);
@@ -85,38 +96,74 @@ export default function ListMaterials() {
     navigate(-1);
   };
 
+  const drawer = (
+    <div>
+      <NavBar2 menuLabel={getName()} />
+      <Toolbar />
+      <Divider />
+      <List>
+        {/* <ListItem button onClick={() => handleMenuClick('profile')}>
+          <ListItemIcon>
+            <InventoryIcon />
+          </ListItemIcon>
+          <ListItemText primary="Profile" />
+        </ListItem> */}
+        <ListItem button onClick={() => handleMenuClick('list-workers')}>
+          <ListItemIcon>
+            <ListAltIcon />
+          </ListItemIcon>
+          <ListItemText primary="List Workers" />
+        </ListItem>
+        <ListItem button onClick={() => handleMenuClick('list-materials')}>
+          <ListItemIcon>
+            <BuildIcon />
+          </ListItemIcon>
+          <ListItemText primary="List Materials" />
+        </ListItem>
+        <ListItem button onClick={() => handleMenuClick('declare-needs')}>
+          <ListItemIcon>
+            <AddShoppingCartIcon />
+          </ListItemIcon>
+          <ListItemText primary="Declare Needs" />
+        </ListItem>
+        <ListItem button onClick={() => handleMenuClick('logout')}>
+          <ListItemIcon>
+            <ArrowBackIcon />
+          </ListItemIcon>
+          <ListItemText primary="Logout" />
+        </ListItem>
+      </List>
+    </div>
+  );
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar
-        position="fixed"
+      <Drawer
+        variant="temporary"
+        open={mobileOpen}
+        onClose={handleDrawerToggle}
+        ModalProps={{
+          keepMounted: true, // Better open performance on mobile.
+        }}
         sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
+          display: { xs: 'block', sm: 'none' },
+          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
         }}
       >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-          <h2>Lister/Ajouter des fichiers</h2>
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <SideBar
-        mobileOpen={mobileOpen}
-        handleDrawerToggle={handleDrawerToggle}
-        selectedOption={selectedOption}
-        handleMenuClick={handleMenuClick}
-      />
-      
+        {drawer}
+      </Drawer>
+      <Drawer
+        variant="permanent"
+        sx={{
+          display: { xs: 'none', sm: 'block' },
+          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+        }}
+        open
+      >
+        {drawer}
+      </Drawer>
+
       <Box
         component="main"
         sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
@@ -130,7 +177,7 @@ export default function ListMaterials() {
 
         <Box mb={4}>
           <Typography variant="h5" component="h2" gutterBottom display="flex" alignItems="center">
-            <InventoryIcon sx={{ mr: 1 }} /> Liste des Matérieles
+            <InventoryIcon sx={{ mr: 1 }} /> Liste des Matériels
           </Typography>
           <TableContainer component={Paper}>
             <Table>
