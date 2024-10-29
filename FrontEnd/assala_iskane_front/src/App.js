@@ -55,6 +55,7 @@ import ListAllOuvrierRespCompta from './Components/Resp_Comptabiliter/ListAllOuv
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
+  const [userName, setUserName] = useState(null);
   const theme = createTheme();
   useEffect(() => {
       const timer = setTimeout(() => {
@@ -68,16 +69,21 @@ function App() {
       return <Loading />;
   }
 
+  // Pass user's name to the NavBar2 component if they are logged in
+  const handleLoginSuccess = (name) => {
+    setUserName(name); // Set name after login
+  };
+
   return (
     <ThemeProvider theme={theme}>
       {/* Your app components */}
 
     <Router>
-    <NavBar />
+    {/* <NavBar /> */}
     <div className="App">
       <Routes>
         <Route path="/" element={<Home/>} />
-        <Route path="/Login" element={<Login/>} />
+        <Route path="/Login" element={<Login onLoginSuccess={handleLoginSuccess} />} />
         <Route path="/logout" element={<Login/>} />
         <Route path="/SignUP" element={<SignUp/>} />
 

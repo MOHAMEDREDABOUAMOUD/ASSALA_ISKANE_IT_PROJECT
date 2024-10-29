@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import NavBar from './NavBar.js';
 import {
   AppBar,
   Toolbar,
@@ -55,6 +56,7 @@ export default function Home() {
 
   return (
     <ThemeProvider theme={theme}>
+    <NavBar />
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" style={{ flexGrow: 1 }}>
