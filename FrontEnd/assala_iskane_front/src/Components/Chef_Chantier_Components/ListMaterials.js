@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   Container,
   Typography,
@@ -12,20 +12,32 @@ import {
   Paper,
   Box,
   Button,
+  AppBar,
+  Toolbar,
+  IconButton,
+  useTheme,
+  useMediaQuery,
+  CssBaseline,
 } from '@mui/material';
 import axios from 'axios';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import ConstructionIcon from '@mui/icons-material/Construction';
-import { useParams } from 'react-router';
+import MenuIcon from '@mui/icons-material/Menu';
+import SideBar from '../Resp_Marchandise/SideBar';
+
+const drawerWidth = 280;
 
 export default function ListMaterials() {
-  const { id_projet } = useParams();
+  const { id_projet, id_resp } = useParams();
   const [materials, setMaterials] = useState([]);
   const [chantierMaterials, setChantierMaterials] = useState([]);
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState('list-materials');
 
-  // Function to format prices with "DH" currency
   const formatPrice = (price) => {
     return new Intl.NumberFormat('fr-MA', {
       style: 'currency',
@@ -35,7 +47,6 @@ export default function ListMaterials() {
   };
 
   useEffect(() => {
-    // Fetch materials in stock from the backend
     const fetchMaterials = async () => {
       try {
         const response = await axios.get(`http://localhost:9092/assalaiskane/getMaterielsChantiers?id_projet=${id_projet}`);
@@ -45,7 +56,6 @@ export default function ListMaterials() {
       }
     };
 
-    // Fetch chantier materials from the backend
     const fetchChantierMaterials = async () => {
       try {
         const response = await axios.get(`http://localhost:9092/assalaiskane/getMateriauxChantiers?id_projet=${id_projet}`);
@@ -59,78 +69,123 @@ export default function ListMaterials() {
     fetchChantierMaterials();
   }, [id_projet]);
 
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
+  const handleMenuClick = (path) => {
+    setSelectedOption(path);
+    navigate(`/${path}/${id_resp}/${id_projet}`);
+    if (isMobile) {
+      setMobileOpen(false);
+    }
+  };
+
   const handleReturn = () => {
-    navigate(-1); // This will navigate back to the previous page
+    navigate(-1);
   };
 
   return (
-    <Container>
-      <Box display="flex" alignItems="center" mb={2}>
-        <Button startIcon={<ArrowBackIcon />} onClick={handleReturn} variant="outlined">
-          Retour
-        </Button>
-        <Typography variant="h4" component="h1" ml={2}>
-          Gestion des Matériaux
-        </Typography>
-      </Box>
+    <Box sx={{ display: 'flex' }}>
+      <CssBaseline />
+      <AppBar
+        position="fixed"
+        sx={{
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+          ml: { sm: `${drawerWidth}px` },
+        }}
+      >
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+            sx={{ mr: 2, display: { sm: 'none' } }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" noWrap component="div">
+          <h2>Lister/Ajouter des fichiers</h2>
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <SideBar
+        mobileOpen={mobileOpen}
+        handleDrawerToggle={handleDrawerToggle}
+        selectedOption={selectedOption}
+        handleMenuClick={handleMenuClick}
+      />
+      
+      <Box
+        component="main"
+        sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
+      >
+        <Toolbar />
+        <Box display="flex" alignItems="center" mb={2}>
+          <Button startIcon={<ArrowBackIcon />} onClick={handleReturn} variant="outlined">
+            Retour
+          </Button>
+        </Box>
 
-      <Box mb={4}>
-        <Typography variant="h5" component="h2" gutterBottom display="flex" alignItems="center">
-          <InventoryIcon sx={{ mr: 1 }} /> Liste des Matérieles
-        </Typography>
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>ID</TableCell>
-                <TableCell>Nom</TableCell>
-                <TableCell>Quantité</TableCell>
-                <TableCell>Prix</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {materials.map((material) => (
-                <TableRow key={material.id}>
-                  <TableCell>{material.id}</TableCell>
-                  <TableCell>{material.nom}</TableCell>
-                  <TableCell>{material.qte}</TableCell>
-                  <TableCell>{formatPrice(material.prix)}</TableCell>
+        <Box mb={4}>
+          <Typography variant="h5" component="h2" gutterBottom display="flex" alignItems="center">
+            <InventoryIcon sx={{ mr: 1 }} /> Liste des Matérieles
+          </Typography>
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>ID</TableCell>
+                  <TableCell>Nom</TableCell>
+                  <TableCell>Quantité</TableCell>
+                  <TableCell>Prix</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Box>
+              </TableHead>
+              <TableBody>
+                {materials.map((material) => (
+                  <TableRow key={material.id}>
+                    <TableCell>{material.id}</TableCell>
+                    <TableCell>{material.nom}</TableCell>
+                    <TableCell>{material.qte}</TableCell>
+                    <TableCell>{formatPrice(material.prix)}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
 
-      <Box>
-        <Typography variant="h5" component="h2" gutterBottom display="flex" alignItems="center">
-          <ConstructionIcon sx={{ mr: 1 }} /> Liste des Matériaux de Chantier
-        </Typography>
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>ID</TableCell>
-                <TableCell>Nom</TableCell>
-                <TableCell>Quantité</TableCell>
-                <TableCell>Type</TableCell>
-                <TableCell>Prix</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {chantierMaterials.map((material) => (
-                <TableRow key={material.id_materiaux}>
-                  <TableCell>{material.id}</TableCell>
-                  <TableCell>{material.nom}</TableCell>
-                  <TableCell>{material.qte}</TableCell>
-                  <TableCell>{material.type}</TableCell>
-                  <TableCell>{formatPrice(material.prix)}</TableCell>
+        <Box>
+          <Typography variant="h5" component="h2" gutterBottom display="flex" alignItems="center">
+            <ConstructionIcon sx={{ mr: 1 }} /> Liste des Matériaux de Chantier
+          </Typography>
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>ID</TableCell>
+                  <TableCell>Nom</TableCell>
+                  <TableCell>Quantité</TableCell>
+                  <TableCell>Type</TableCell>
+                  <TableCell>Prix</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+              </TableHead>
+              <TableBody>
+                {chantierMaterials.map((material) => (
+                  <TableRow key={material.id_materiaux}>
+                    <TableCell>{material.id}</TableCell>
+                    <TableCell>{material.nom}</TableCell>
+                    <TableCell>{material.qte}</TableCell>
+                    <TableCell>{material.type}</TableCell>
+                    <TableCell>{formatPrice(material.prix)}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
       </Box>
-    </Container>
+    </Box>
   );
 }

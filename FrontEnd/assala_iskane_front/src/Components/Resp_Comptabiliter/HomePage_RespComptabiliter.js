@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation, useParams, Routes, Route } from 'react-router-dom';
 import { 
   Drawer, 
   List, 
@@ -23,45 +23,37 @@ import {
 } from '@mui/icons-material';
 import ListFilesCompta from './ListFilesCompta';
 import ListValidatedNeedsCompta from './ListValidatedNeedsCompta';
-import ListAllOuvrier from './ListAllOuvrier';
-import { useParams } from 'react-router';
+import ListAllOuvrierRespCompta from './ListAllOuvrierRespCompta';
 
 const drawerWidth = 240;
 
 const menuItems = [
-  { text: 'Lister tous les ouvriers', icon: <GroupIcon />, path: '/listAllOuvriers' },
-  { text: 'Lister les fichiers comptables', icon: <FolderIcon />, path: '/listFilesCompta' },
-  { text: 'Lister les besoins validés', icon: <CheckCircleIcon />, path: '/listValidatedNeedsCompta' },
+  { text: 'Lister tous les ouvriers', icon: <GroupIcon />, path: 'ListAllOuvrierRespCompta' },
+  { text: 'Lister les fichiers comptables', icon: <FolderIcon />, path: 'listFilesCompta' },
+  { text: 'Lister les besoins validés', icon: <CheckCircleIcon />, path: 'ListValidatedNeedsCompta' },
 ];
 
 export default function HomePage_RespComptabiliter() {
   const { id_resp, id_projet } = useParams();
-  //get from backend id_projet when they shose project:
-  //const id_projet ='P001';
   const navigate = useNavigate();
+  const location = useLocation();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(menuItems[0].path); // Default selection
+  const [selectedOption, setSelectedOption] = useState('');
+
+  useEffect(() => {
+    const currentPath = location.pathname.split('/')[1];
+    setSelectedOption(currentPath || menuItems[0].path);
+  }, [location]);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
-  const renderSelectedComponent = () => {
-    switch (selectedOption) {
-      case 'listAllOuvriers':
-        navigate("listAllOuvriers/"+id_resp+"/"+id_projet);
-      case 'listFilesCompta':
-        navigate("listFilesCompta/"+id_resp+"/"+id_projet);
-      case 'listValidatedNeedsCompta':
-        navigate("listValidatedNeedsCompta/"+id_resp+"/"+id_projet);     
-      default:
-        return <Typography variant="h6">Please select an option from the menu.</Typography>;
-    }
-  };
   const handleMenuClick = (path) => {
-    navigate(path);
+    setSelectedOption(path);
+    navigate(`/${path}/${id_resp}/${id_projet}`);
     if (isMobile) {
       setMobileOpen(false);
     }
@@ -72,7 +64,12 @@ export default function HomePage_RespComptabiliter() {
       <Toolbar />
       <List>
         {menuItems.map((item) => (
-          <ListItem button key={item.text} onClick={() => handleMenuClick(item.path)}>
+          <ListItem 
+            button 
+            key={item.text} 
+            onClick={() => handleMenuClick(item.path)}
+            selected={selectedOption === item.path}
+          >
             <ListItemIcon>{item.icon}</ListItemIcon>
             <ListItemText primary={item.text} />
           </ListItem>
@@ -116,7 +113,7 @@ export default function HomePage_RespComptabiliter() {
           open={mobileOpen}
           onClose={handleDrawerToggle}
           ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
+            keepMounted: true,
           }}
           sx={{
             display: { xs: 'block', sm: 'none' },
@@ -141,10 +138,16 @@ export default function HomePage_RespComptabiliter() {
         sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
       >
         <Toolbar />
-        <Typography paragraph>
-          Welcome to the Responsable Comptabilité Dashboard. Select an option from the menu to get started.
-        </Typography>
-        {renderSelectedComponent()}
+        <Routes>
+          <Route path="ListAllOuvrierRespCompta" element={<ListAllOuvrierRespCompta />} />
+          <Route path="listFilesCompta" element={<ListFilesCompta />} />
+          <Route path="ListValidatedNeedsCompta" element={<ListValidatedNeedsCompta />} />
+          <Route path="/" element={
+            <Typography paragraph>
+              Welcome to the Responsable Comptabilité Dashboard. Select an option from the menu to get started.
+            </Typography>
+          } />
+        </Routes>
       </Box>
     </Box>
   );

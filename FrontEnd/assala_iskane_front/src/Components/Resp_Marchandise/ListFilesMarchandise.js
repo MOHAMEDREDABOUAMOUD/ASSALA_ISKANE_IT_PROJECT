@@ -1,15 +1,53 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { IconButton, InputBase, Paper, List, ListItem, ListItemText, ListItemSecondaryAction, Divider, Button } from '@mui/material';
+import { IconButton, InputBase, Paper, List, ListItem, ListItemText, ListItemSecondaryAction, Divider, Button, useTheme, useMediaQuery } from '@mui/material';
 import DownloadIcon from '@mui/icons-material/Download';
 import SearchIcon from '@mui/icons-material/Search';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router-dom';
+import {
+  Container,
+  Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Box,
+  AppBar,
+  Toolbar,
+  CssBaseline,
+} from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import SideBar from './SideBar'; // Ensure you have this component
+
+const drawerWidth = 280;
+
 
 export default function ListFilesMar() {
   const { id_resp, id_projet } = useParams();
   const [files, setFiles] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
+
+  const navigate = useNavigate();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState('ListFilesMar');
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
+  const handleMenuClick = (path) => {
+      setSelectedOption(path);
+      navigate(`/${path}/${id_resp}/${id_projet}`);
+      if (isMobile) {
+        setMobileOpen(false);
+      }
+  };
+  
 
   // Fetch the list of files from the backend
   useEffect(() => {
@@ -85,7 +123,34 @@ export default function ListFilesMar() {
   return (
     <div>
       <h2>Lister/Ajouter des fichiers</h2>
-
+      <AppBar
+        position="fixed"
+        sx={{
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+          ml: { sm: `${drawerWidth}px` },
+        }}
+      >
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+            sx={{ mr: 2, display: { sm: 'none' } }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" noWrap component="div">
+            Gestion des Matériaux
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <SideBar
+        mobileOpen={mobileOpen}
+        handleDrawerToggle={handleDrawerToggle}
+        selectedOption={selectedOption}
+        handleMenuClick={handleMenuClick}
+      />
       {/* File Upload */}
       <input type="file" onChange={handleFileChange} />
       <Button variant="contained" color="primary" onClick={handleFileUpload}>

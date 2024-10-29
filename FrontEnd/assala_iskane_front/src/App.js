@@ -17,7 +17,6 @@ import ListMaterials from './Components/Chef_Chantier_Components/ListMaterials';
 import DeclareNeeds from './Components/Chef_Chantier_Components/DeclareNeeds';
 import WeeklyReports from './Components/Chef_Projet_Components/WeeklyReports';
 import Progress from './Components/Chef_Projet_Components/Progress';
-import ListNeeds from './Components/Chef_Projet_Components/ListNeeds';
 import ListTechProjects from './Components/Responsable_Technique_Components/ListTechProjects';
 import ListTechWorkersWithAbsence from './Components/Responsable_Technique_Components/ListTechWorkersWithAbsence';
 import ListTechDailyReports from './Components/Responsable_Technique_Components/ListTechDailyReports';
@@ -33,7 +32,6 @@ import AjouterOuvrier from './Components/Service_Technique_Components/AjouterOuv
 import ListFiles from './Components/Chef_Projet_Components/ListFiles';
 import DailyReports from './Components/Chef_Projet_Components/DailyReports';
 import ListProjects from './Components/Chef_Projet_Components/ListProjects';
-import ListAllOuvrier from './Components/Resp_Comptabiliter/ListAllOuvrier';
 import { ThemeProvider } from '@mui/material/styles';
 import { createTheme } from '@mui/material/styles';
 import ListFilesCompta from './Components/Resp_Comptabiliter/ListFilesCompta';
@@ -42,6 +40,15 @@ import ListFilesMar from './Components/Resp_Marchandise/ListFilesMarchandise';
 import ListServiceValidatedNeedsMar from './Components/Resp_Marchandise/ListValidatedNeedsMar';
 import AllProjectsList from './Components/Resp_Comptabiliter/AllProjectsList';
 import AllProjectsListMarchandise from './Components/Resp_Marchandise/AllProjectsListMarchandise';
+import ListNeedsChefProjet from './Components/Chef_Projet_Components/ListNeedsChefProjet';
+import ListMaterialsChefProjet from './Components/Chef_Projet_Components/ListMaterialsChefProjet';
+import ListOuvrierChefProjet from './Components/Chef_Projet_Components/ListOuvrierChefProjet';
+import ListAllOuvrierRespMarchandise from './Components/Resp_Marchandise/ListAllOuvrierRespMarchandise';
+import DashboardRespMarchandise from './Components/Resp_Marchandise/DashboardRespMarchandise';
+import ListerMaterialRespMarchandise from './Components/Resp_Marchandise/ListerMaterialRespMarchandise';
+import ListMaterialsNeedChefProjet from './Components/Chef_Projet_Components/ListNeedsChefProjet';
+import ListMaterialsNeedRespMarchandise from './Components/Resp_Marchandise/ListValidatedNeedsMar';
+import ListAllOuvrierRespCompta from './Components/Resp_Comptabiliter/ListAllOuvrierRespCompta';
 
 
 
@@ -64,7 +71,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       {/* Your app components */}
-    
+
     <Router>
     <NavBar />
     <div className="App">
@@ -73,10 +80,10 @@ function App() {
         <Route path="/Login" element={<Login/>} />
         <Route path="/logout" element={<Login/>} />
         <Route path="/SignUP" element={<SignUp/>} />
-        
+
         {/*--------------------------------------*/}
 
-        {/*Chef Technique Service Technique*/}
+        {/*Chef Service Technique*/}
         <Route path="/HomePage_ServiceTechnique/:id_resp/:id_projet" element={<HomePage_ServiceTechnique/>} />
         <Route path="/list-service-projects/:id_projet" element={<ListServiceProjects />} />
         <Route path="/list-service-validated-needs/:id_resp/:id_projet" element={<ListServiceValidatedNeeds />} />
@@ -84,7 +91,7 @@ function App() {
         <Route path="/ajouter-ouvrier/:id_resp/:id_projet" element={<AjouterOuvrier />} />
         <Route path="/list-service-Materials/:id_resp/:id_projet" element={<AjouterOuvrier />} />
         {/*--------------------------------------*/}
-        
+
         {/*Responsable Technique*/}
         <Route path="/HomePage_RespTechnique/:id_resp/:id_projet" element={<HomePage_RespTechnique/>} />
         <Route path="/list-tech-projects/:id_projet" element={<ListTechProjects />} />
@@ -103,8 +110,9 @@ function App() {
         <Route path="/daily-reports/:id_resp/:id_projet" element={<DailyReports />} />
         <Route path="/weekly-reports/:id_resp/:id_projet" element={<WeeklyReports />} />
         <Route path="/progress/:id_resp/:id_projet" element={<Progress />} />
-        <Route path="/list-materials/:id_resp/:id_projet" element={<ListMaterials />} />
-        <Route path="/list-needs/:id_resp/:id_projet" element={<ListNeeds />} />
+        <Route path="/list-materials-chefProjet/:id_resp/:id_projet" element={<ListMaterialsChefProjet />} />
+        <Route path="/list-workers-listOuvrierChefProjet/:id_resp/:id_projet" element={<ListOuvrierChefProjet />}/>
+        <Route path="/ListMaterialsNeedChefProjet/:id_resp/:id_projet" element={<ListMaterialsNeedChefProjet />} />
         <Route path="/list-files/:id_resp/:id_projet" element={<ListFiles />} />
         {/*-------------------------------*/}
 
@@ -113,26 +121,29 @@ function App() {
         <Route path="/list-workers/:id_resp/:id_projet" element={<ListOuvrier />} />
         <Route path="/list-materials/:id_resp/:id_projet" element={<ListMaterials />} />
         <Route path="/declare-needs/:id_resp/:id_projet" element={<DeclareNeeds />} />
+
         {/*-------------------------------*/}
 
         {/*Responsable Comptabiliter*/}
         <Route path="/HomePage_RespComptabiliter/:id_resp/:id_projet" element={<HomePage_RespComptabiliter/>} />
-        <Route path="/listAllOuvriers/:id_resp/:id_projet" element={<ListAllOuvrier />} />
+        <Route path="/ListAllOuvrierRespCompta/:id_resp/:id_projet" element={<ListAllOuvrierRespCompta />} />
         <Route path="/listFilesCompta/:id_resp/:id_projet" element={<ListFilesCompta />} />
-        <Route path="/listValidatedNeedsCompta/:id_resp/:id_projet" element={<ListValidatedNeedsCompta />} />
-        <Route path="/AllProjectsList/:id_projet/:id_resp/:id_projet" element={<AllProjectsList />} />
-        
-        
+        <Route path="/ListValidatedNeedsCompta/:id_resp/:id_projet" element={<ListValidatedNeedsCompta />} />
+        <Route path="/AllProjectsList/:id_resp" element={<AllProjectsList />} />
+
         {/*-------------------------------*/}
 
         {/*Responsable Marchandise*/}
         <Route path="/HomePage_RespMarchandise/:id_resp/:id_projet" element={<HomePage_RespMarchandise/>} />
-        <Route path="/listAllOuvriers/:id_resp/:id_projet" element={<ListAllOuvrier />} />
+        <Route path="/ListAllOuvrierRespMarchandise/:id_resp/:id_projet" element={<ListAllOuvrierRespMarchandise/>} />
         <Route path="/listFilesMarchandise/:id_resp/:id_projet" element={<ListFilesMar />} />
         <Route path="/listValidatedNeedsMarchandise/:id_resp/:id_projet" element={<ListServiceValidatedNeedsMar />} />
-        <Route path="/listProjectsMarchandise/:id_projet" element={<AllProjectsListMarchandise />} />
+        <Route path="/AllProjectsListMarchandise/:id_resp" element={<AllProjectsListMarchandise />} />
+        <Route path="/DashboardRespMarchandise" element={<DashboardRespMarchandise/>} />
+        <Route path="/ListMaterialsNeedRespMarchandise/:id_resp/:id_projet" element={<ListMaterialsNeedRespMarchandise />} />
+        <Route path="/ListFilesMar/:id_resp/:id_projet" element={<ListFilesMar />} />
         {/*-------------------------------*/}
-        
+
         {/*Responsable Technique
         <Route path="/ResponsableTechnique" element={<HomePage_RespTechnique/>} />*/}
         {/*-------------------------------*/}
