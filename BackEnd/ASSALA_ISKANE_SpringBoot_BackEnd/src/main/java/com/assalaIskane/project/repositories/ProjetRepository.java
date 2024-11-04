@@ -12,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.assalaIskane.project.models.Absence;
 import com.assalaIskane.project.models.Besoin;
+import com.assalaIskane.project.models.Chantier;
 import com.assalaIskane.project.models.Fichier_projet;
 import com.assalaIskane.project.models.Materiaux;
 import com.assalaIskane.project.models.Materiel;
@@ -72,6 +73,9 @@ public interface ProjetRepository extends JpaRepository<Projet, String> {
 	
 	@Query("SELECT b FROM Besoin b WHERE b.valide_par.fonction <> 'service_technique' AND b.chantier.projet.id = :id_projet")
 	List<Besoin> getBesoinsCC(@Param("id_projet") String id_projet);
+	
+	@Query("SELECT c FROM Chantier c WHERE c.projet.id = :id_projet")
+	Chantier getChantier(@Param("id_projet") String id_projet);
 	
 	@Query("SELECT b FROM Besoin b WHERE b.valide_par.fonction = 'ChefChantier' AND b.chantier.projet.id = :id_projet")
 	List<Besoin> getBesoinsRP(@Param("id_projet") String id_projet);
