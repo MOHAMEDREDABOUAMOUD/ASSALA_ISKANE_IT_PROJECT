@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.assalaIskane.project.models.Absence;
 import com.assalaIskane.project.models.Besoin;
+import com.assalaIskane.project.models.Chantier;
 import com.assalaIskane.project.models.Fichier_projet;
 import com.assalaIskane.project.models.Materiaux;
 import com.assalaIskane.project.models.Materiaux_chantier;
@@ -67,8 +68,9 @@ public class ProjetService implements ProjetServiceInterface{
 	}
 
 	@Override
-	public void addBesoin(String nom, Date date_demande, String qte, String valide_par, int id_chantier) {
-		projetDao.addBesoin(nom, date_demande, qte, valide_par, id_chantier);
+	public void addBesoin(String nom, Date date_demande, String qte, String valide_par, String id_projet) {
+		Chantier c = projetDao.getChantier(id_projet);
+		projetDao.addBesoin(nom, date_demande, qte, valide_par, c.getId());
 	}
 
 	@Override

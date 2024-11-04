@@ -23,7 +23,7 @@ public interface ProjetServiceInterface {
 	List<Projet> getProjets();
 	List<Materiel> getMaterielsChantiers(String id_projet);
 	List<Materiaux> getMateriauxChantiers(String id_projet);
-	void addBesoin(String nom, Date date_demande, String qte, String valide_par, int id_chantier);
+	void addBesoin(String nom, Date date_demande, String qte, String valide_par, String id_projet);
 	List<Besoin> getBesoins(String id_resp, String id_projet);
 	List<Besoin> getBesoinsCC(String id_projet);
 	List<Besoin> getBesoinsRP(String id_projet);

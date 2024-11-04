@@ -50,7 +50,6 @@ export default function DeclareNeeds() {
     nom: '',
     qte: '',
     date_demande: '',
-    chantier: '',
   });
   const navigate = useNavigate();
   const theme = useTheme();
@@ -76,12 +75,12 @@ export default function DeclareNeeds() {
   const handleChange = (e) => setNewNeed({ ...newNeed, [e.target.name]: e.target.value });
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (newNeed.nom && newNeed.qte && newNeed.date_demande && newNeed.chantier) {
+    if (newNeed.nom && newNeed.qte && newNeed.date_demande) {
       try {
-        await axios.post(`http://localhost:9092/assalaiskane/AddBesoin?nom=${newNeed.nom}&date_demande=${newNeed.date_demande}&qte=${newNeed.qte}&valide_par=${id_resp}&id_chantier=1`);
+        await axios.post(`http://localhost:9092/assalaiskane/AddBesoin?nom=${newNeed.nom}&date_demande=${newNeed.date_demande}&qte=${newNeed.qte}&valide_par=${id_resp}&id_projet=${getPROJECTID()}`);
         const response = await axios.get(`http://localhost:9092/assalaiskane/getBesoins?id_resp=${id_resp}&id_projet=${id_projet}`);
         setNeeds(response.data);
-        setNewNeed({ nom: '', qte: '', date_demande: '', chantier: '' });
+        setNewNeed({ nom: '', qte: '', date_demande: ''});
       } catch (error) {
         console.error('Error adding need:', error);
       }
@@ -162,8 +161,7 @@ export default function DeclareNeeds() {
           <form onSubmit={handleSubmit}>
             <TextField label="Nom du Besoin" name="nom" value={newNeed.nom} onChange={handleChange} fullWidth margin="normal" required />
             <TextField label="Quantité" name="qte" value={newNeed.qte} onChange={handleChange} fullWidth margin="normal" required />
-            <TextField type="date" label="Date de Demande" name="date_demande" value={newNeed.date_demande} onChange={handleChange} fullWidth margin="normal" required />
-            <TextField label="Chantier" name="chantier" value={newNeed.chantier} onChange={handleChange} fullWidth margin="normal" required />
+            <TextField type="date" name="date_demande" value={newNeed.date_demande} onChange={handleChange} fullWidth margin="normal" required />
             <Button type="submit" variant="contained" color="primary" startIcon={<AddCircleOutlineIcon />}>Ajouter Besoin</Button>
           </form>
 
@@ -177,7 +175,6 @@ export default function DeclareNeeds() {
                   <TableCell>Nom</TableCell>
                   <TableCell>Quantité</TableCell>
                   <TableCell>Date de Demande</TableCell>
-                  <TableCell>Chantier</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -186,7 +183,6 @@ export default function DeclareNeeds() {
                     <TableCell>{need.nom?.toString() || ''}</TableCell>
                     <TableCell>{need.qte?.toString() || ''}</TableCell>
                     <TableCell>{need.date_demande?.toString() || ''}</TableCell>
-                    <TableCell>{need.chantier?.toString() || ''}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
