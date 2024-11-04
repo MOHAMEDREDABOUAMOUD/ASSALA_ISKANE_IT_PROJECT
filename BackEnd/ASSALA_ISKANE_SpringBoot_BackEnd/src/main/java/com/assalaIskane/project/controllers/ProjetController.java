@@ -71,8 +71,8 @@ public class ProjetController {
 		return service.getMateriauxChantiers(id_projet);
 	}
 	@PostMapping("/AddBesoin")
-	void addBesoin(@RequestParam String nom, @RequestParam String date_demande, @RequestParam String qte, @RequestParam String valide_par, @RequestParam int id_chantier) throws ParseException {
-		service.addBesoin(nom, new SimpleDateFormat("yyyy-MM-dd").parse(date_demande), qte, valide_par, id_chantier);
+	void addBesoin(@RequestParam String nom, @RequestParam String date_demande, @RequestParam String qte, @RequestParam String valide_par, @RequestParam String id_projet) throws ParseException {
+		service.addBesoin(nom, new SimpleDateFormat("yyyy-MM-dd").parse(date_demande), qte, valide_par, id_projet);
 	}
 	@GetMapping("/getBesoins")
 	List<Besoin> getBesoins(@RequestParam String id_resp, @RequestParam String id_projet){
