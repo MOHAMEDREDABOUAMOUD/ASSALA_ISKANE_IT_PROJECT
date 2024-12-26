@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { 
-  Container, 
-  Typography, 
-  Button, 
-  IconButton, 
-  Tooltip, 
+import {
+  Container,
+  Typography,
+  Button,
+  IconButton,
+  Tooltip,
   Box,
   Paper,
   Divider,
@@ -14,9 +14,9 @@ import {
   useTheme,
   useMediaQuery
 } from '@mui/material';
-import { 
-  CheckBox as CheckBoxIcon, 
-  CheckBoxOutlineBlank as CheckBoxOutlineBlankIcon, 
+import {
+  CheckBox as CheckBoxIcon,
+  CheckBoxOutlineBlank as CheckBoxOutlineBlankIcon,
   ArrowBack as ArrowBackIcon,
   People as PeopleIcon,
   EventBusy as EventBusyIcon
@@ -28,6 +28,7 @@ import { Checkbox } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router';
 import SideBar from './SideBar';
+import StyledAppBar from './StyledAppBar';
 const drawerWidth = 280;
 
 export default function ListOuvrierChefProjet() {
@@ -69,15 +70,15 @@ export default function ListOuvrierChefProjet() {
         { field: 'id', headerName: 'ID', width: 100 },
         { field: 'nom', headerName: 'Nom', width: 150 },
         { field: 'prenom', headerName: 'Prénom', width: 150 },
-        { 
-            field: 'numero', 
-            headerName: 'Numéro de Téléphone', 
+        {
+            field: 'numero',
+            headerName: 'Numéro de Téléphone',
             width: 200,
             renderCell: (params) => (
-                <Chip 
-                    label={params.value} 
-                    variant="outlined" 
-                    size="small" 
+                <Chip
+                    label={params.value}
+                    variant="outlined"
+                    size="small"
                     color="primary"
                 />
             ),
@@ -97,7 +98,7 @@ export default function ListOuvrierChefProjet() {
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
       };
-    
+
     const handleMenuClick = (path) => {
         setSelectedOption(path);
         navigate(`/${path}/${id_resp}/${id_projet}`);
@@ -107,7 +108,7 @@ export default function ListOuvrierChefProjet() {
     };
     const handleRowClick = (params) => {
         const id = params.id;
-        setOuvriers(prevOuvriers => prevOuvriers.map(ouvrier => 
+        setOuvriers(prevOuvriers => prevOuvriers.map(ouvrier =>
             ouvrier.id === id ? { ...ouvrier, selected: !ouvrier.selected } : ouvrier
         ));
     };
@@ -135,37 +136,16 @@ export default function ListOuvrierChefProjet() {
         setOuvriers(prevOuvriers => prevOuvriers.map(ouvrier => ({ ...ouvrier, selected: false })));
     };
 
-   
+
     const handleRetour = () => {
             console.log("Navigating to HomePage_ChefChantier");
             navigate('/HomePage_ChefChantier');
     };
-    
-    
+
+
     return (
         <Container maxWidth="lg">
-            <AppBar
-        position="fixed"
-        sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
-        }}
-      >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Gestion des Matériaux
-          </Typography>
-        </Toolbar>
-      </AppBar>
+           <StyledAppBar Titre={'List Ouvrier'}/>
       <SideBar
         mobileOpen={mobileOpen}
         handleDrawerToggle={handleDrawerToggle}
@@ -183,10 +163,10 @@ export default function ListOuvrierChefProjet() {
                         <PeopleIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
                         Liste des Ouvriers
                     </Typography>
-                    <Chip 
-                        icon={<EventBusyIcon />} 
-                        label="Déclarer Absence" 
-                        color="primary" 
+                    <Chip
+                        icon={<EventBusyIcon />}
+                        label="Déclarer Absence"
+                        color="primary"
                         variant="outlined"
                     />
                 </Box>

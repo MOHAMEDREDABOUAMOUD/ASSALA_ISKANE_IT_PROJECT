@@ -33,13 +33,14 @@ const StyledDrawer = styled(Drawer)(({ theme }) => ({
 }));
 
 const menuItems = [
-  { text: 'Tableau de Bord', icon: <DashboardIcon />, path: 'HomePage_RespComptabiliter' },
-  { text: 'Liste des Ouvriers', icon: <GroupIcon />, path: 'ListAllOuvrierRespCompta' },
-  { text: 'Fichiers Comptables', icon: <FolderIcon />, path: 'listFilesCompta' },
-  { text: 'Besoins Validés', icon: <CheckCircleIcon />, path: 'ListValidatedNeedsCompta' },
+  { text: 'List Materiels', icon: <DashboardIcon />, path: 'list-materials' },
+  { text: 'Liste des Ouvriers', icon: <GroupIcon />, path: 'list-workers' },
+  { text: 'Declarer Besoin', icon: <CheckCircleIcon />, path: 'declare-needs' },
+
 ];
 
-export default function SideBarCompta() {
+
+export default function SideBarChefChantier() {
   const theme = useTheme();
   const { id_resp, id_projet } = useParams();
   const navigate = useNavigate();
@@ -61,7 +62,7 @@ export default function SideBarCompta() {
       <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
         <Toolbar sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <Typography variant="h6" sx={{ fontWeight: 700, color: theme.palette.primary.main }}>
-            Comptabilité
+            Chef Chantier
           </Typography>
         </Toolbar>
         <List sx={{ flexGrow: 1, pt: 2 }}>
