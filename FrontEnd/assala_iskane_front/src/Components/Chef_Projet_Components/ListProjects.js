@@ -75,8 +75,8 @@ export default function ListProjects() {
                 </TableHead>
                 <TableBody>
                   {projects.map(project => (
-                    <TableRow 
-                      key={project.id} 
+                    <TableRow
+                      key={project.id}
                       sx={{ '&:hover': { backgroundColor: theme.palette.action.hover, cursor: 'pointer' } }}
                       onClick={() => handleRowClick(project)}
                     >
@@ -87,8 +87,8 @@ export default function ListProjects() {
                       {!isMobile && <TableCell>{project.objet}</TableCell>}
                       <TableCell>
                         <Tooltip title={`Début: ${new Date(project.date_ordre).toLocaleDateString('fr-FR')}`}>
-                          <Chip 
-                            icon={<DateRangeIcon />} 
+                          <Chip
+                            icon={<DateRangeIcon />}
                             label={new Date(project.date_fin).toLocaleDateString('fr-FR')}
                             size="small"
                             color="primary"
@@ -111,9 +111,9 @@ export default function ListProjects() {
                       <TableCell>
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
                           <Box sx={{ width: '100%', mr: 1 }}>
-                            <LinearProgress 
-                              variant="determinate" 
-                              value={calculateProgress(project.date_ordre, project.date_fin)} 
+                            <LinearProgress
+                              variant="determinate"
+                              value={calculateProgress(project.date_ordre, project.date_fin)}
                               sx={{ height: 10, borderRadius: 5 }}
                             />
                           </Box>

@@ -1,63 +1,71 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import {
-  Button,
-  Container,
-  Typography,
   Box,
-  AppBar,
   Toolbar,
-  IconButton,
-  Avatar,
-  Tooltip,
-  Card,
-  CardContent,
-  Grid,
-  Divider,
+  Typography,
+  CssBaseline,
   useTheme,
   useMediaQuery,
-  Drawer,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  CssBaseline
+  createTheme,
+  styled,
+  ThemeProvider,
+  Button
 } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import ListAltIcon from '@mui/icons-material/ListAlt';
-import BuildIcon from '@mui/icons-material/Build';
-import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import PersonIcon from '@mui/icons-material/Person';
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import ListOuvrier from './ListOuvrier';
-import ListMaterials from './ListMaterials';
-import DeclareNeeds from './DeclareNeeds';
-import { useParams } from 'react-router';
-import { getName, getPROJECTID, getUSERID } from '../constants';
-import NavBar2 from '../NavBar2.js';
 
-const chefChantierInfo = {
-  id: 'USR002',
-  lastName: 'Benjelloun',
-  firstName: 'Ahmed',
-  role: 'Chef Chantier',
-  phone: '0678901234',
-  email: 'ahmed.benjelloun@example.com',
-  password: 'password2'
-};
+import AppBar from '@mui/material/AppBar';
+import SideBarChefChantier from './SideBarChefChantier';
+import DashBoardChefChantier from './DashBoardChefChantier';
+import { Logout as LogoutIcon } from '@mui/icons-material';
+import Logo from "../../images/logo00.png"; // Import your logo
+// import other icons/components as needed
+// import { getName, getPROJECTID, getUSERID } from '../constants'; // if you need these
 
-const drawerWidth = 240;
+// --------------------- THEME SETUP ---------------------
+const myTheme = createTheme({
+  palette: {
+    primary: { main: '#1976d2' },
+    secondary: { main: '#42a5f5' },
+    background: { default: '#ffffff', paper: '#ffffff' },
+    text: { primary: '#2c3345' }
+  },
+  typography: {
+    fontFamily: 'Inter, Arial, sans-serif',
+    h5: { fontWeight: 600 },
+    h6: { fontWeight: 500 }
+  },
+  components: {
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          boxShadow: '0 4px 6px rgba(0,0,0,0.07)',
+          borderRadius: 16
+        }
+      }
+    }
+  }
+});
+
+// ------------------- STYLED APP BAR --------------------
+const drawerWidth = 280;
+
+const StyledAppBar = styled(AppBar)(({ theme }) => ({
+  zIndex: theme.zIndex.drawer + 1,
+  width: `calc(100% - ${drawerWidth}px)`,
+  backgroundColor: '#ffffff',
+  boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.05)'
+}));
+
+
 
 export default function HomePage_ChefChantier() {
   const { id_resp, id_projet } = useParams();
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const navigate = useNavigate();
   const location = useLocation();
-  //const id_projet = 'P001'; // Example project ID
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  const [selectedOption, setSelectedOption] = useState(null);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -67,181 +75,96 @@ export default function HomePage_ChefChantier() {
     }
   }, [location.search]);
 
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
-
+  // Example for handling menu clicks
   const handleMenuClick = (option) => {
     setSelectedOption(option);
-    //navigate(`?option=${option}`);
-    //renderSelectedComponent();
-    if (isMobile) {
-      setMobileOpen(false);
-    }
-  };
-  const handleMenuClicklogout= () => {
-    navigate(`/logout`);
-    if (isMobile) {
-      setMobileOpen(false);
-    }
+    // Navigate or handle logic accordingly
+    // e.g. navigate(`?option=${option}`);
   };
 
+
+  const handleLogout = () => {
+    console.log("Logout clicked");
+    navigate('/logout');
+  };
+
+  // The content that changes based on selectedOption
   const renderSelectedComponent = () => {
     switch (selectedOption) {
       case 'list-workers':
-        navigate('/list-workers/' + getUSERID() + '/' + getPROJECTID());
-        return null; // ou vous pouvez retourner un élément par défaut si nécessaire
+        // Example: navigate to /list-workers
+        // navigate('/list-workers/' + getUSERID() + '/' + getPROJECTID());
+        return null;
       case 'list-materials':
-        navigate('/list-materials/' + getUSERID() + '/' + getPROJECTID());
-        return null; // ou retournez un élément par défaut
+        // Example: navigate to /list-materials
+        return null;
       case 'declare-needs':
-        navigate('/declare-needs/' + getUSERID() + '/' + getPROJECTID());
-        return null; // ou retournez un élément par défaut
+        // Example: navigate to /declare-needs
+        return null;
       default:
+        // Default: show Chef Chantier info card
         return (
-          <Card elevation={3}>
-            <CardContent>
-              <Grid container spacing={3}>
-                <Grid item xs={12} md={4}>
-                  <Box sx={{ textAlign: 'center' }}>
-                    <Avatar
-                      sx={{ 
-                        width: theme.spacing(12),
-                        height: theme.spacing(12),
-                        margin: 'auto',
-                        bgcolor: theme.palette.primary.main,
-                        fontSize: theme.typography.h3.fontSize
-                      }}
-                    >
-                      {chefChantierInfo.firstName[0]}{chefChantierInfo.lastName[0]}
-                    </Avatar>
-                    <Typography variant="h5" sx={{ mt: 2 }}>
-                      {chefChantierInfo.firstName} {chefChantierInfo.lastName}
-                    </Typography>
-                    <Typography variant="subtitle1" color="textSecondary">
-                      {chefChantierInfo.role}
-                    </Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={12} md={8}>
-                  <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'center' }}>
-                    <Typography variant="body1">
-                      <strong>Phone:</strong> {chefChantierInfo.phone}
-                    </Typography>
-                    <Typography variant="body1">
-                      <strong>Email:</strong> {chefChantierInfo.email}
-                    </Typography>
-                  </Box>
-                </Grid>
-              </Grid>
-            </CardContent>
-          </Card>
+            <DashBoardChefChantier/>
         );
     }
-  };  
-
-  const drawer = (
-    <div>
-      <NavBar2 menuLabel={getName()} />
-      <Toolbar />
-      <Divider />
-      <List>
-        {/* <ListItem button onClick={() => handleMenuClick('profile')}>
-          <ListItemIcon>
-            <PersonIcon />
-          </ListItemIcon>
-          <ListItemText primary="Profile" />
-        </ListItem> */}
-        <ListItem button onClick={() => handleMenuClick('list-workers')}>
-          <ListItemIcon>
-            <ListAltIcon />
-          </ListItemIcon>
-          <ListItemText primary="List Workers" />
-        </ListItem>
-        <ListItem button onClick={() => handleMenuClick('list-materials')}>
-          <ListItemIcon>
-            <BuildIcon />
-          </ListItemIcon>
-          <ListItemText primary="List Materials" />
-        </ListItem>
-        <ListItem button onClick={() => handleMenuClick('declare-needs')}>
-          <ListItemIcon>
-            <AddShoppingCartIcon />
-          </ListItemIcon>
-          <ListItemText primary="Declare Needs" />
-        </ListItem>
-        <ListItem button onClick={() => handleMenuClicklogout()}>
-          <ListItemIcon>
-            <ExitToAppIcon />
-          </ListItemIcon>
-          <ListItemText primary="Logout" />
-        </ListItem>
-      </List>
-    </div>
-  );
+  };
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      {/* <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-            <DashboardIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
-            Chef Chantier Dashboard
+    <ThemeProvider theme={myTheme}>
+      <Box sx={{ display: 'flex', backgroundColor: '#ffffff' }}>
+        <CssBaseline />
+        {/* Sidebar on the left */}
+        <SideBarChefChantier
+          drawerWidth={drawerWidth}
+          onMenuClick={handleMenuClick}
+        />
+
+        {/* Main content area */}
+        <Box
+          component="main"
+          sx={{
+            backgroundColor: '#ffffff',
+            flexGrow: 1,
+            p: 3,
+            marginLeft: `${drawerWidth + 40}px`,  // a little extra space
+            marginTop: '80px'
+          }}
+        >
+          <StyledAppBar position="fixed">
+      <Toolbar sx={{ minHeight: 64 }}>
+        {/* Left: Logo */}
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <img
+            src={Logo}
+            alt="Entreprise Logo"
+            style={{ height: '50px' , width: '50px'}}
+          />
+
+        </Box>
+
+        {/* Center: Page Title */}
+        <Box sx={{ flexGrow: 1, textAlign: 'center' }}>
+          <Typography variant="h5" color="textPrimary">
+            Home Page Chef Chantier
           </Typography>
-          <Tooltip title="Profile">
-            <IconButton color="inherit" onClick={() => handleMenuClick('profile')}>
-              <Avatar sx={{ bgcolor: theme.palette.secondary.main }}>{chefChantierInfo.firstName[0]}</Avatar>
-            </IconButton>
-          </Tooltip>
-        </Toolbar>
-      </AppBar> */}
-      <Box
-        component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-        aria-label="mailbox folders"
-      >
-        <Drawer
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-          sx={{
-            display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-          }}
+        </Box>
+
+         {/* Right: Logout Button with Icon */}
+         <Button
+          color="primary"
+          variant="contained"
+          onClick={handleLogout}
+          startIcon={<LogoutIcon />}
         >
-          {drawer}
-        </Drawer>
-        <Drawer
-          variant="permanent"
-          sx={{
-            display: { xs: 'none', sm: 'block' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-          }}
-          open
-        >
-          {drawer}
-        </Drawer>
+          Logout
+        </Button>
+      </Toolbar>
+    </StyledAppBar>
+
+          {/* Render whichever content depends on selectedOption */}
+          {renderSelectedComponent()}
+        </Box>
       </Box>
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
-      >
-        <Toolbar />
-        {renderSelectedComponent()}
-      </Box>
-    </Box>
+    </ThemeProvider>
   );
 }

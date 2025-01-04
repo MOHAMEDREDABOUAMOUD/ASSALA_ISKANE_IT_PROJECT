@@ -10,8 +10,6 @@ import {
   useMediaQuery,
   Box,
   CssBaseline,
-  // Sidebar.js and HomePage_ResponsableDeProjet.js
-
 } from '@mui/material';
 // Sidebar.js and HomePage_ResponsableDeProjet.js
 import {
@@ -59,7 +57,10 @@ export default function HomePage_ResponsableDeProjet() {
 
   const handleMenuClick = (path) => {
     setSelectedOption(path);
-    navigate(`/${path}/${id_resp}/${id_projet}`);
+    if(path==='list-projects'){
+        navigate(`/${path}/${id_projet}`);
+    }
+    else navigate(`/${path}/${id_resp}/${id_projet}`);
     if (isMobile) {
       setMobileOpen(false);
     }
@@ -88,7 +89,7 @@ export default function HomePage_ResponsableDeProjet() {
       case 'list-files':
         navigate("/list-files/"+id_resp+"/"+id_projet)
         break;
-                    
+
       default:
         return <Typography variant="h6">Please select an option from the menu.</Typography>;
     }
@@ -154,6 +155,8 @@ export default function HomePage_ResponsableDeProjet() {
             menuItems={menuItems}
             selectedOption={selectedOption}
             handleMenuClick={handleMenuClick}
+            id_project={id_projet}
+            id_user={id_resp}
           />
         </Drawer>
       </Box>

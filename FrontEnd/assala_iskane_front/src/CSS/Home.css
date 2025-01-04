@@ -2,8 +2,9 @@
     display: flex;
     gap: 10px;
     margin-top: 20px;
+
   }
-  
+
   .menu button {
     padding: 10px 20px;
     font-size: 16px;
@@ -24,6 +25,7 @@ html {
   -webkit-tap-highlight-color: transparent;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+
 }
 
 body {
@@ -98,7 +100,7 @@ body {
     scrollbar-color: lawngreen #222;
     scrollbar-width: auto;
   }
-  
+
   #mz-gallery figure {
     position: relative;
     margin: 0;
@@ -108,14 +110,14 @@ body {
     overflow: hidden;
     transition: all 0.3s ease-in-out;
   }
-  
+
   #mz-gallery figure img {
     width: 100%; /* Ensure image fits the width of the figure container */
     height: 45%; /* Ensure image fits the height of the figure container */
     object-fit: cover; /* Maintain aspect ratio and cover the container */
     transition: all 0.3s ease-in-out;
   }
-  
+
   #mz-gallery figure figcaption {
     position: absolute;
     color: transparent;
@@ -135,6 +137,4 @@ body {
     pointer-events: none;
     transition: all 0.3s ease-in-out;
   }
-  
- 
   

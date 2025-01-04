@@ -76,9 +76,9 @@ function Login() {
       setError('Please enter both ID and password');
     }
   };
-  
+
   return (
-    <Container component="main" maxWidth="xs" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 8 }}> 
+    <Container component="main" maxWidth="xs" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 8 }}>
       <NavBar />
       <Avatar sx={{ m: 1, bgcolor: 'transparent', border: '2px solid', borderColor: 'primary.main' }}>
         <img src={Logo} alt="Logo" style={{ width: 60, height: 60 }} />

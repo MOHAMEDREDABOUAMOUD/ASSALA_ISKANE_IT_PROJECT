@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
-  Container,
   Typography,
   Table,
   TableBody,
@@ -14,29 +13,19 @@ import {
   Button,
   AppBar,
   Toolbar,
-  IconButton,
   useTheme,
   useMediaQuery,
   CssBaseline,
   Drawer,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Divider
+  styled
 } from '@mui/material';
-import ListAltIcon from '@mui/icons-material/ListAlt';
-import BuildIcon from '@mui/icons-material/Build';
-import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import axios from 'axios';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import ConstructionIcon from '@mui/icons-material/Construction';
-import MenuIcon from '@mui/icons-material/Menu';
 import { getName, getPROJECTID } from '../constants';
-import NavBar2 from '../NavBar2.js';
-import SideBar from '../Resp_Marchandise/SideBar';
-
+import SideBarChefChantier from './SideBarChefChantier.js';
+import { Logout as LogoutIcon } from '@mui/icons-material';
+import Logo from "../../images/logo00.png"; // Import your logo
 const drawerWidth = 280;
 
 export default function ListMaterials() {
@@ -48,6 +37,15 @@ export default function ListMaterials() {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [mobileOpen, setMobileOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState('list-materials');
+
+  const drawerWidth = 280;
+
+  const StyledAppBar = styled(AppBar)(({ theme }) => ({
+    zIndex: theme.zIndex.drawer + 1,
+    width: `calc(100% - ${drawerWidth}px)`,
+    backgroundColor: '#ffffff',
+    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.05)'
+  }));
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat('fr-MA', {
@@ -95,44 +93,44 @@ export default function ListMaterials() {
   const handleReturn = () => {
     navigate(-1);
   };
+  const handleLogout = () => {
+    console.log("Logout clicked");
+    navigate('/logout');
+  };
 
   const drawer = (
     <div>
-      <NavBar2 menuLabel={getName()} />
-      <Toolbar />
-      <Divider />
-      <List>
-        {/* <ListItem button onClick={() => handleMenuClick('profile')}>
-          <ListItemIcon>
-            <InventoryIcon />
-          </ListItemIcon>
-          <ListItemText primary="Profile" />
-        </ListItem> */}
-        <ListItem button onClick={() => handleMenuClick('list-workers')}>
-          <ListItemIcon>
-            <ListAltIcon />
-          </ListItemIcon>
-          <ListItemText primary="List Workers" />
-        </ListItem>
-        <ListItem button onClick={() => handleMenuClick('list-materials')}>
-          <ListItemIcon>
-            <BuildIcon />
-          </ListItemIcon>
-          <ListItemText primary="List Materials" />
-        </ListItem>
-        <ListItem button onClick={() => handleMenuClick('declare-needs')}>
-          <ListItemIcon>
-            <AddShoppingCartIcon />
-          </ListItemIcon>
-          <ListItemText primary="Declare Needs" />
-        </ListItem>
-        <ListItem button onClick={() => handleMenuClick('logout')}>
-          <ListItemIcon>
-            <ArrowBackIcon />
-          </ListItemIcon>
-          <ListItemText primary="Logout" />
-        </ListItem>
-      </List>
+         <StyledAppBar position="fixed">
+             <Toolbar sx={{ minHeight: 64 }}>
+               {/* Left: Logo */}
+               <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                 <img
+                   src={Logo}
+                   alt="Entreprise Logo"
+                   style={{ height: '50px' , width: '50px'}}
+                 />
+
+               </Box>
+
+               {/* Center: Page Title */}
+               <Box sx={{ flexGrow: 1, textAlign: 'center' }}>
+                 <Typography variant="h5" color="textPrimary">
+                   Lister Materials
+                 </Typography>
+               </Box>
+
+                {/* Right: Logout Button with Icon */}
+                <Button
+                 color="primary"
+                 variant="contained"
+                 onClick={handleLogout}
+                 startIcon={<LogoutIcon />}
+               >
+                 Logout
+               </Button>
+             </Toolbar>
+           </StyledAppBar>
+        <SideBarChefChantier/>
     </div>
   );
 
@@ -166,14 +164,11 @@ export default function ListMaterials() {
 
       <Box
         component="main"
-        sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
+        sx={{ flexGrow: 1, p: 3, width: '1000px' ,marginLeft: '280px',marginTop:'-200px'}}
+
       >
-        <Toolbar />
-        <Box display="flex" alignItems="center" mb={2}>
-          <Button startIcon={<ArrowBackIcon />} onClick={handleReturn} variant="outlined">
-            Retour
-          </Button>
-        </Box>
+
+
 
         <Box mb={4}>
           <Typography variant="h5" component="h2" gutterBottom display="flex" alignItems="center">

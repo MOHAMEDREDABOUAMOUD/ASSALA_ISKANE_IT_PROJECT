@@ -1,235 +1,262 @@
-import React, { useEffect, useState } from 'react';
-import { 
-  Container, 
-  Typography, 
-  Button, 
-  IconButton, 
-  Tooltip, 
-  Box,
-  Paper,
-  Divider,
-  Chip,
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router';
+import {
   AppBar,
   Toolbar,
+  Typography,
+  Box,
+  CssBaseline,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  useMediaQuery,
   useTheme,
-  useMediaQuery
+  createTheme,
+  styled,
+  ThemeProvider,
+  Card,
+  CardContent,
+  Tabs,
+  Tab,
+  Chip,
+  Stack
 } from '@mui/material';
-import { 
-  CheckBox as CheckBoxIcon, 
-  CheckBoxOutlineBlank as CheckBoxOutlineBlankIcon, 
-  ArrowBack as ArrowBackIcon,
-  People as PeopleIcon,
-  EventBusy as EventBusyIcon
-} from '@mui/icons-material';
-import MenuIcon from '@mui/icons-material/Menu';
+import { CalendarMonth, TrendingUp, Person } from '@mui/icons-material';
 import axios from 'axios';
-import { DataGrid } from '@mui/x-data-grid';
-import { Checkbox } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import { useParams } from 'react-router';
 import SideBarCompta from './SideBarCompta';
+
 const drawerWidth = 280;
 
-
-export default function ListAllOuvrierRespCompta() {
-    const { id_projet, id_resp } = useParams();
-
-    const navigate = useNavigate();
-    //const id_projet = "P001";
-    const [ouvriers, setOuvriers] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-    const [mobileOpen, setMobileOpen] = useState(false);
-    const [selectedOption, setSelectedOption] = useState('ListAllOuvrierRespMarchandise');
-
-
-    useEffect(() => {
-        const fetchOuvriers = async () => {
-            try {
-                const response = await axios.get(`http://localhost:9092/assalaiskane/getOuvriers?id_projet=${id_projet}`);
-                const extractedData = response.data.map(ouvrier => ({
-                    id: ouvrier.id,
-                    nom: ouvrier.nom,
-                    prenom: ouvrier.prenom,
-                    numero: ouvrier.numero,
-                    selected: false
-                }));
-                setOuvriers(extractedData);
-            } catch (error) {
-                console.error('Error fetching ouvriers:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchOuvriers();
-    }, [id_projet]);
-
-    const columns = [
-        { field: 'id', headerName: 'ID', width: 100 },
-        { field: 'nom', headerName: 'Nom', width: 150 },
-        { field: 'prenom', headerName: 'Prénom', width: 150 },
-        { 
-            field: 'numero', 
-            headerName: 'Numéro de Téléphone', 
-            width: 200,
-            renderCell: (params) => (
-                <Chip 
-                    label={params.value} 
-                    variant="outlined" 
-                    size="small" 
-                    color="primary"
-                />
-            ),
-        },
-        {
-            field: 'selected',
-            headerName: 'Absent',
-            width: 120,
-            renderCell: (params) => (
-                <Checkbox
-                    checked={params.row.selected}
-                    color="secondary"
-                />
-            ),
-        },
-    ];
-    const handleDrawerToggle = () => {
-        setMobileOpen(!mobileOpen);
-      };
-    
-    const handleMenuClick = (path) => {
-        setSelectedOption(path);
-        navigate(`/${path}/${id_resp}/${id_projet}`);
-        if (isMobile) {
-          setMobileOpen(false);
+const theme = createTheme({
+  palette: {
+    primary: { main: '#1976d2' },
+    secondary: { main: '#42a5f5' },
+    background: {
+      default: '#ffffff',
+      paper: '#ffffff'
+    },
+    text: { primary: '#2c3345' }
+  },
+  typography: {
+    fontFamily: 'Inter, Arial, sans-serif',
+    h5: {
+      fontWeight: 600
+    },
+    h6: {
+      fontWeight: 500
+    }
+  },
+  components: {
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          boxShadow: '0 4px 6px rgba(0,0,0,0.07)',
+          borderRadius: 16
         }
-    };
-    const handleRowClick = (params) => {
-        const id = params.id;
-        setOuvriers(prevOuvriers => prevOuvriers.map(ouvrier => 
-            ouvrier.id === id ? { ...ouvrier, selected: !ouvrier.selected } : ouvrier
-        ));
-    };
-
-    const handleDeclareAbsence = async () => {
-        const date_absence = new Date().toISOString().split('T')[0];
-        const id_chantier = 1;
-
-        for (const ouvrier of ouvriers) {
-            try {
-                await axios.post(
-                    `http://localhost:9092/assalaiskane/AddAbsence?id_ouvrier=${ouvrier.id}&date_absence=${date_absence}&id_chantier=${id_chantier}&absent=${ouvrier.selected ? 1 : 0}`
-                );
-            } catch (error) {
-                console.error(`Error declaring absence for ouvrier with ID ${ouvrier.id}:`, error.response ? error.response.data : error.message);
-            }
+      }
+    },
+    MuiChip: {
+      styleOverrides: {
+        root: {
+          borderRadius: 8
         }
-    };
+      }
+    }
+  }
+});
 
-    const handleSelectAll = () => {
-        setOuvriers(prevOuvriers => prevOuvriers.map(ouvrier => ({ ...ouvrier, selected: true })));
-    };
+const StyledAppBar = styled(AppBar)(({ theme }) => ({
+  zIndex: theme.zIndex.drawer + 1,
+  width: `calc(100% - ${drawerWidth}px)`,
+  backgroundColor: '#ffffff',
+  boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.05)'
+}));
 
-    const handleDeselectAll = () => {
-        setOuvriers(prevOuvriers => prevOuvriers.map(ouvrier => ({ ...ouvrier, selected: false })));
-    };
+export default function AbsenceTrackingSalary() {
+  const { id_projet } = useParams();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const [tabValue, setTabValue] = useState(0);
+  const [ouvriers, setOuvriers] = useState([]);
+  const [absenceSummary, setAbsenceSummary] = useState({
+    weeklyAbsences: {},
+    monthlyAbsences: {}
+  });
 
-   
-    const handleRetour = () => {
-            console.log("Navigating to HomePage_ChefChantier");
-            navigate('/HomePage_ChefChantier');
+  useEffect(() => {
+    const fetchOuvriers = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:9092/assalaiskane/getOuvriers?id_projet=${id_projet}`
+        );
+        const workers = response.data.map(ouvrier => ({
+          id: ouvrier.id,
+          nom: ouvrier.nom,
+          prenom: ouvrier.prenom,
+          numero: ouvrier.numero,
+          absences: {
+            weekly: Math.floor(Math.random() * 5), // Simulate weekly absences
+            monthly: Math.floor(Math.random() * 15) // Simulate monthly absences
+          }
+        }));
+        setOuvriers(workers);
+
+        // Calculate summary
+        const summary = workers.reduce((acc, worker) => {
+          acc.weeklyAbsences[worker.id] = worker.absences.weekly;
+          acc.monthlyAbsences[worker.id] = worker.absences.monthly;
+          return acc;
+        }, { weeklyAbsences: {}, monthlyAbsences: {} });
+
+        setAbsenceSummary(summary);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
     };
-        
-    
-    return (
-        <Container maxWidth="lg">
-            <AppBar
-        position="fixed"
-        sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
-        }}
-      >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Gestion des Matériaux
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <SideBarCompta
-        mobileOpen={mobileOpen}
-        handleDrawerToggle={handleDrawerToggle}
-        selectedOption={selectedOption}
-        handleMenuClick={handleMenuClick}
-      />
-            <Paper elevation={3} sx={{ p: 3, mt: 3 }}>
-                <Box display="flex" alignItems="center" mb={2}>
-                    <Tooltip title="Retour">
-                        <IconButton onClick={handleRetour} sx={{ mr: 2 }}>
-                            <ArrowBackIcon />
-                        </IconButton>
-                    </Tooltip>
-                    <Typography variant="h4" component="h1" sx={{ flexGrow: 1 }}>
-                        <PeopleIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
-                        Liste des Ouvriers
-                    </Typography>
-                    <Chip 
-                        icon={<EventBusyIcon />} 
-                        label="Déclarer Absence" 
-                        color="primary" 
-                        variant="outlined"
-                    />
-                </Box>
-                <Divider sx={{ mb: 2 }} />
-                <Box sx={{ height: 400, width: '100%', mb: 2 }}>
-                    <DataGrid
-                        rows={ouvriers}
-                        columns={columns}
-                        onRowClick={handleRowClick}
-                        loading={loading}
-                        disableSelectionOnClick
-                        sx={{
-                            '& .MuiDataGrid-cell:hover': {
-                                color: 'primary.main',
-                            },
-                        }}
-                    />
-                </Box>
-                <Box display="flex" justifyContent="space-between" alignItems="center">
-                    <Box>
-                        <Tooltip title="Select All">
-                            <IconButton onClick={handleSelectAll} color="primary">
-                                <CheckBoxIcon />
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Deselect All">
-                            <IconButton onClick={handleDeselectAll} color="secondary">
-                                <CheckBoxOutlineBlankIcon />
-                            </IconButton>
-                        </Tooltip>
-                    </Box>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={handleDeclareAbsence}
-                        startIcon={<EventBusyIcon />}
-                        size="large"
-                    >
-                        Déclarer Absence
-                    </Button>
-                </Box>
-            </Paper>
-        </Container>
-    );
+    fetchOuvriers();
+  }, [id_projet]);
+
+  const handleTabChange = (event, newValue) => {
+    setTabValue(newValue);
+  };
+
+  const getAbsenceStatus = (absences) => {
+    if (absences === 0) return { label: 'Aucune absence', color: 'success' };
+    if (absences <= 2) return { label: 'Peu d\'absences', color: 'info' };
+    if (absences <= 4) return { label: 'Absences modérées', color: 'warning' };
+    return { label: 'Absences élevées', color: 'error' };
+  };
+
+  return (
+    <ThemeProvider theme={theme}>
+      <Box sx={{ display: 'flex', backgroundColor: '#ffffff' }}>
+        <CssBaseline />
+        <SideBarCompta />
+        <Box
+          component="main"
+          sx={{
+            backgroundColor: '#ffffff',
+            flexGrow: 1,
+            p: 3,
+            marginLeft: '320px',
+            marginTop: '80px'
+          }}
+        >
+          <StyledAppBar position="fixed">
+            <Toolbar sx={{ justifyContent: 'center' }}>
+              <Typography variant="h5" color="textPrimary">
+                Suivi des Absences pour la Paie
+              </Typography>
+            </Toolbar>
+          </StyledAppBar>
+
+          <Tabs value={tabValue} onChange={handleTabChange} centered sx={{ mb: 4 }}>
+            <Tab icon={<CalendarMonth />} label="Cette Semaine" />
+            <Tab icon={<TrendingUp />} label="Ce Mois" />
+          </Tabs>
+
+          <TableContainer component={Paper} sx={{ mb: 4 }}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>
+                    <Typography variant="subtitle1" fontWeight="bold">Employé</Typography>
+                  </TableCell>
+                  <TableCell align="center">
+                    <Typography variant="subtitle1" fontWeight="bold">Jours d'absence</Typography>
+                  </TableCell>
+                  <TableCell align="center">
+                    <Typography variant="subtitle1" fontWeight="bold">Statut</Typography>
+                  </TableCell>
+                  <TableCell align="right">
+                    <Typography variant="subtitle1" fontWeight="bold">Impact sur le salaire</Typography>
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {ouvriers.map(ouvrier => {
+                  const absences = tabValue === 0 ? ouvrier.absences.weekly : ouvrier.absences.monthly;
+                  const status = getAbsenceStatus(absences);
+                  const salaryCut = absences * 200; // Example calculation
+
+                  return (
+                    <TableRow key={ouvrier.id} hover>
+                      <TableCell>
+                        <Stack direction="row" spacing={2} alignItems="center">
+                          <Person color="primary" />
+                          <div>
+                            <Typography variant="body1" fontWeight="medium">
+                              {ouvrier.nom} {ouvrier.prenom}
+                            </Typography>
+                            <Typography variant="caption" color="textSecondary">
+                              ID: {ouvrier.id}
+                            </Typography>
+                          </div>
+                        </Stack>
+                      </TableCell>
+                      <TableCell align="center">
+                        <Typography variant="h6">{absences}</Typography>
+                      </TableCell>
+                      <TableCell align="center">
+                        <Chip
+                          label={status.label}
+                          color={status.color}
+                          size="small"
+                        />
+                      </TableCell>
+                      <TableCell align="right">
+                        <Typography
+                          variant="body1"
+                          color="error"
+                          fontWeight="medium"
+                        >
+                          -{salaryCut} DH
+                        </Typography>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+
+          <Stack direction="row" spacing={3} sx={{ mt: 4 }}>
+            <Card sx={{ flex: 1 }}>
+              <CardContent>
+                <Typography variant="h6" gutterBottom>Total des absences</Typography>
+                <Typography variant="h4" color="primary">
+                  {tabValue === 0
+                    ? Object.values(absenceSummary.weeklyAbsences).reduce((a, b) => a + b, 0)
+                    : Object.values(absenceSummary.monthlyAbsences).reduce((a, b) => a + b, 0)
+                  }
+                </Typography>
+                <Typography variant="body2" color="textSecondary">
+                  {tabValue === 0 ? 'Cette semaine' : 'Ce mois'}
+                </Typography>
+              </CardContent>
+            </Card>
+
+            <Card sx={{ flex: 1 }}>
+              <CardContent>
+                <Typography variant="h6" gutterBottom>Impact total sur la paie</Typography>
+                <Typography variant="h4" color="error">
+                  -{tabValue === 0
+                    ? Object.values(absenceSummary.weeklyAbsences).reduce((a, b) => a + b, 0) * 200
+                    : Object.values(absenceSummary.monthlyAbsences).reduce((a, b) => a + b, 0) * 200
+                  } DH
+                </Typography>
+                <Typography variant="body2" color="textSecondary">
+                  Déductions salariales
+                </Typography>
+              </CardContent>
+            </Card>
+          </Stack>
+        </Box>
+      </Box>
+    </ThemeProvider>
+  );
 }

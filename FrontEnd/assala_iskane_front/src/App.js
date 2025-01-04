@@ -56,7 +56,16 @@ import ListAllOuvrierRespCompta from './Components/Resp_Comptabiliter/ListAllOuv
 function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [userName, setUserName] = useState(null);
-  const theme = createTheme();
+  const theme = createTheme(
+  {
+    palette: {
+        primary: { main: '#1976d2' },
+        secondary: { main: '#42a5f5' },
+        background: { default: '#ffffff', paper: '#ffffff' },
+        text: { primary: '#2c3345' }
+      },
+    }
+  );
   useEffect(() => {
       const timer = setTimeout(() => {
           setIsLoading(false);
@@ -80,7 +89,7 @@ function App() {
 
     <Router>
     {/* <NavBar /> */}
-    <div className="App">
+    <div className="App" sx={{ backgroundColor: 'white'}} >
       <Routes>
         <Route path="/" element={<Home/>} />
         <Route path="/Login" element={<Login onLoginSuccess={handleLoginSuccess} />} />
