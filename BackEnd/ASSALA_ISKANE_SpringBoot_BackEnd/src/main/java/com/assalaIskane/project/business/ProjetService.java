@@ -41,6 +41,11 @@ public class ProjetService implements ProjetServiceInterface{
 	public void addFichier(String nom, byte[] fichier, String id_projet) {
 		projetDao.addFichier(nom, fichier, id_projet);
 	}
+	
+	@Override
+	public void removeFichier(int id) {
+		projetDao.removeFichier(id);
+	}
 
 	@Override
 	public List<Fichier_projet> getFichiersProjet(String id_projet) {

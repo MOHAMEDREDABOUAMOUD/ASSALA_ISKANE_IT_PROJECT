@@ -41,7 +41,7 @@ const Login = () => {
               //navigate(`/AllProjectsListMarchandise/${userId}`);
               break;
             case 'responsable_projet':
-              //navigate(`/list-projects/${userId}`);
+              navigate(`/homeCP/`);
               break;
             case 'responsable_technique':
               //navigate(`/list-tech-projects/${userId}`);

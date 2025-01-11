@@ -19,6 +19,7 @@ public interface ProjetServiceInterface {
 	void createProjet(String id, String nom, String numero_marche, String objet, Date date_ordre, Date date_fin, int delai, String id_resp, String id_resp_chantier);
 	void AddAbsence( String id_ouvrier, Date date_absence, int id_chantier, int absent);
 	void addFichier(String nom, byte[] fichier, String id_projet);
+	void removeFichier(int id);
 	List<Fichier_projet> getFichiersProjet(String id_projet);
 	List<Projet> getProjets(String id_resp);
 	List<Projet> getProjets();

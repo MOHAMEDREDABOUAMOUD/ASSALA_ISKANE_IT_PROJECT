@@ -39,6 +39,11 @@ public interface ProjetRepository extends JpaRepository<Projet, String> {
 	@Transactional
 	@Query(value = "INSERT INTO fichier_projet (nom, fichier, id_projet) VALUES (:nom, :fichier, :id_projet)", nativeQuery = true)
 	void addFichier(@Param("nom") String nom, @Param("fichier") byte[] fichier, @Param("id_projet") String idProjet);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "delete from fichier_projet where id=:id", nativeQuery = true)
+	void removeFichier(@Param("id") int id);
 
 
 	@Query("SELECT f from Fichier_projet f where f.projet.id = :id_projet")
