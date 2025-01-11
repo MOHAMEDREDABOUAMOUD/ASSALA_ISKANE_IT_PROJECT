@@ -21,6 +21,7 @@ public class OuvrierController {
 	
 	@GetMapping("/getOuvriers")
 	public List<Ouvrier> getOuvriers(@RequestParam String id_projet){
+		System.out.println("getouvriers");
 		return service.getOuvriers(id_projet);
 	}
 	

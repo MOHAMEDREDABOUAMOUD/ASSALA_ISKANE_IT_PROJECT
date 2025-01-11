@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.assalaIskane.project.models.Absence;
 import com.assalaIskane.project.models.Besoin;
+import com.assalaIskane.project.models.Chantier;
 import com.assalaIskane.project.models.Fichier_projet;
 import com.assalaIskane.project.models.Materiaux;
 import com.assalaIskane.project.models.Materiaux_chantier;
@@ -29,6 +30,7 @@ public interface ProjetServiceInterface {
 	List<Besoin> getBesoinsRP(String id_projet);
 	List<Besoin> getBesoinsRT(String id_projet);
 	List<Besoin> getBesoinsST(String id_projet);
+	Chantier getChantier(String id_projet);
 	void validateBesoin(String id_resp, String id_besoin);
 	List<Absence> getAbsences(String id_projet, Date date_debut, Date date_fin);
 }
