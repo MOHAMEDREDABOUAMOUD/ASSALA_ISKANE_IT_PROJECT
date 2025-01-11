@@ -1,0 +1,580 @@
+/* Style global */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+  }
+  
+  /* Conteneur principal */
+  .home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  /* Barre de navigation */
+  .navbar {
+    width: 100%;
+    background-color: #333;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  .navbar .logo img {
+    height: 40px;
+  }
+  
+  .logo {
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  .menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+  }
+  
+  .menu li {
+    margin: 0 10px;
+  }
+  
+  .menu li a {
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+    transition: color 0.3s;
+  }
+  
+  .menu li a:hover {
+    color: #ffa500;
+  }
+  
+  /* Contenu principal de la page Home */
+  .main-content {
+    margin-top: 50px;
+    text-align: center;
+  }
+  
+  .big-logo {
+    font-size: 60px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  /* Conteneur principal de la page Login */
+  .auth-container {
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    margin: 50px auto;
+    text-align: center;
+  }
+  
+  /* Logo */
+  .logo-container {
+    margin-bottom: 20px;
+  }
+  
+  .logo {
+    width: 80px;
+    height: auto;
+  }
+  
+  /* Formulaire */
+  .auth-form h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+    text-align: left;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  input {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  
+  input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 3px rgba(0, 123, 255, 0.5);
+  }
+  
+  /* Bouton de connexion */
+  .login-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .login-button:hover {
+    background-color: #0056b3;
+  }
+  /* Conteneur principal de la page Contact */
+.contact-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f5f5f5;
+    min-height: 100vh;
+  }
+  
+  .contact-content {
+    text-align: center;
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin-top: 50px;
+  }
+  
+  .contact-content h1 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .contact-content p {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 20px;
+  }
+  
+  .contact-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .contact-list li {
+    font-size: 16px;
+    margin: 10px 0;
+    color: #555;
+    text-align: left;
+  }
+  
+  .contact-list li::before {
+    content: "👉 ";
+    color: #007bff;
+  }
+  /* Structure principale */
+.main-layout {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Barre de navigation */
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .navbar-logo img {
+    height: 40px;
+  }
+  
+  .navbar-menu {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .navbar-menu li {
+    margin-left: 20px;
+  }
+  
+  .navbar-menu li a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    transition: color 0.3s;
+  }
+  
+  .navbar-menu li a:hover {
+    color: #ffcc00;
+  }
+  
+  /* Contenu principal */
+  .content {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+  
+  /* Menu latéral gauche */
+  .sidebar {
+    width: 250px;
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .sidebar-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .sidebar-menu li {
+    margin: 15px 0;
+  }
+  
+  .sidebar-menu li a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    transition: color 0.3s;
+  }
+  
+  .sidebar-menu li a:hover {
+    color: #ffa500;
+  }
+  
+  /* Zone principale */
+  .main-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .main-logo {
+    max-width: 100%;
+    max-height: 100%;
+    height: auto;
+  }
+/* Tableau des ouvriers */
+.ouvriers-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  .ouvriers-table thead {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .ouvriers-table th,
+  .ouvriers-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .ouvriers-table th {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .ouvriers-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .ouvriers-table tbody tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  /* Bouton pour déclarer les absences */
+  .absence-button {
+    margin-left: 15px;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .absence-button:hover {
+    background-color: #0056b3;
+  }
+  /* Conteneur principal des absences */
+.absences-container {
+    margin: 20px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Titre de la section */
+  .absences-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  /* Filtres de date */
+  .date-filters {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .date-filters input {
+    width: 200px;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  
+  .date-filters input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    outline: none;
+  }
+  
+  .date-filters button {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .date-filters button:hover {
+    background-color: #218838;
+  }
+  
+  /* Tableau des absences */
+  .absences-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  .absences-table thead {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .absences-table th,
+  .absences-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .absences-table th {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .absences-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .absences-table tbody tr:hover {
+    background-color: #f1f1f1;
+  }
+ /* Style global pour le composant ListMaterials */
+.list-materials-container {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #007bff;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+/* Style pour les tableaux */
+.materials-table, .chantier-materials-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.materials-table th, .chantier-materials-table th,
+.materials-table td, .chantier-materials-table td {
+    padding: 15px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.materials-table th, .chantier-materials-table th {
+    background-color: #f8f9fa;
+    color: #333;
+    font-weight: bold;
+}
+
+.materials-table tr:nth-child(even), .chantier-materials-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.materials-table tr:hover, .chantier-materials-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Séparation des sections */
+.section {
+    margin-bottom: 40px;
+}
+
+/* Style pour le conteneur principal */
+.main-content {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.section-header {
+    font-size: 18px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #555;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+}
+.ouvriers-container{
+    width: 100%;
+}
+
+.needs-list-container {
+    width: 100%;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .add-need-form {
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .add-need-form label {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .add-need-form input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .add-need-form button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .add-need-form button:hover {
+    background-color: #0056b3;
+  }
+  
+  .needs-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .needs-table th,
+  .needs-table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  
+  .needs-table th {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .needs-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .needs-table tr:hover {
+    background-color: #f1f1f1;
+  }
+  

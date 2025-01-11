@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.print.attribute.standard.Severity;
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.assalaIskane.project.business.ProjetServiceInterface;
 import com.assalaIskane.project.models.Absence;
 import com.assalaIskane.project.models.Besoin;
+import com.assalaIskane.project.models.Chantier;
 import com.assalaIskane.project.models.Fichier_projet;
 import com.assalaIskane.project.models.Materiaux;
 import com.assalaIskane.project.models.Materiaux_chantier;
@@ -58,16 +60,22 @@ public class ProjetController {
 	List<Projet> getProjet(@RequestParam String id_resp) {
 		return service.getProjets(id_resp);
 	}
+	@GetMapping("/getChantier")
+	Chantier getChantier(@RequestParam String id_projet) {
+		return service.getChantier(id_projet);
+	}
 	@GetMapping("/getProjets")
 	List<Projet> getProjets() {
 		return service.getProjets();
 	}
 	@GetMapping("/getMaterielsChantiers")
 	List<Materiel> getMaterielsChantiers(@RequestParam String id_projet) {
+		System.out.println("els : "+service.getMaterielsChantiers(id_projet).get(0));
 		return service.getMaterielsChantiers(id_projet);
 	}
 	@GetMapping("/getMateriauxChantiers")
 	List<Materiaux> getMateriauxChantiers(@RequestParam String id_projet) {
+		System.out.println("aux : "+service.getMateriauxChantiers(id_projet).get(0));
 		return service.getMateriauxChantiers(id_projet);
 	}
 	@PostMapping("/AddBesoin")
@@ -96,6 +104,9 @@ public class ProjetController {
 	}
 	@GetMapping("/getAbsences")
 	List<Absence> getAbsences(@RequestParam String id_projet, @RequestParam String date_debut, @RequestParam String date_fin) throws ParseException{
+		for (Absence a : service.getAbsences(id_projet, new SimpleDateFormat("yyyy-MM-dd").parse(date_debut), new SimpleDateFormat("yyyy-MM-dd").parse(date_fin))) {
+			System.out.println(a);
+		}
 		return service.getAbsences(id_projet, new SimpleDateFormat("yyyy-MM-dd").parse(date_debut), new SimpleDateFormat("yyyy-MM-dd").parse(date_fin));
 	}
 	@PostMapping("/validateBesoin")

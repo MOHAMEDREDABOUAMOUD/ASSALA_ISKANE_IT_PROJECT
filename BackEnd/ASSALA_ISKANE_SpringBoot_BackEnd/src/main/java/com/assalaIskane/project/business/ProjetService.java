@@ -102,6 +102,11 @@ public class ProjetService implements ProjetServiceInterface{
 	public List<Besoin> getBesoinsST(String id_projet) {
 		return projetDao.getBesoinsST(id_projet);
 	}
+	
+	@Override
+	public Chantier getChantier(String id_projet) {
+		return projetDao.getChantier(id_projet);
+	}
 
 	@Override
 	public void validateBesoin(String id_resp, String id_besoin) {
