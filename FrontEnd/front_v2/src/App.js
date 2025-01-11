@@ -7,8 +7,13 @@ import Contact from './components/contact.js';
 import HomeCC from './components/chef_chantier/home.js';
 import OuvriersList from './components/chef_chantier/ouvriersList.js';
 import OuvriersAbsences from './components/chef_chantier/ouvriersListWA.js';
+import OuvriersAbsencesCP from './components/chef_projet/ouvriersListWA.js';
 import ListMaterials from './components/chef_chantier/list_materials.js';
+import ListMaterialsCP from './components/chef_projet/list_materials.js';
 import NeedsList from './components/chef_chantier/needsList.js';
+import HomeCP from './components/chef_projet/homeCP.js';
+import HomePCP from './components/chef_projet/homePCP.js';
+import FileList from './components/chef_projet/filesList.js';
 function App() {
   return (
     <Router>
@@ -22,6 +27,12 @@ function App() {
           <Route path="/absences/:idProjet" element={<OuvriersAbsences />} />
           <Route path="/materials/:idProjet" element={<ListMaterials />} />
           <Route path="/needs/:idProjet" element={<NeedsList />} />
+          
+          <Route path="/homeCP" element={<HomeCP />} />
+          <Route path="/homePCP/:idProjet" element={<HomePCP />} />
+          <Route path="/absencesCP/:idProjet" element={<OuvriersAbsencesCP />} />
+          <Route path="/materialsCP/:idProjet" element={<ListMaterialsCP />} />
+          <Route path="/files/:idProjet" element={<FileList />} />
         </Routes>
       </div>
     </Router>

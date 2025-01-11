@@ -52,6 +52,11 @@ public class ProjetController {
             return "File upload failed!";
         }
     }
+	@PostMapping("/RemoveFichier")
+    public String removeFile(@RequestParam("id") int id) throws IOException {
+        service.removeFichier(id);
+		return "File deleted successfully!";
+    }
 	@GetMapping("/getFichiersProjet")
 	List<Fichier_projet> getFichiersProjet(@RequestParam String id_projet) {
 		return service.getFichiersProjet(id_projet);
