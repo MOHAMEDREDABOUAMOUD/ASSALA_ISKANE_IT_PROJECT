@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import api from '../../utils/api';
 import logo from '../../images/logo00.png';
 
-const OuvriersAbsencesCP = () => {
+const OuvriersAbsencesRT = () => {
     const { idProjet } = useParams();
     const [dateStart, setDateStart] = useState('');
     const [dateEnd, setDateEnd] = useState('');
@@ -115,12 +115,12 @@ const OuvriersAbsencesCP = () => {
                 {/* Menu latéral gauche */}
                 <aside className="sidebar">
                 <ul className="sidebar-menu">
-                    <li><a href={"/absencesCP/"+idProjet}>liste des employés</a></li>
-                    <li><a href={"/materialsCP/"+idProjet}>liste des materials</a></li>
-                    <li><a href={"/files/"+idProjet}>liste des fichiers</a></li>
-                    <li><a href={`/needsCP/${idProjet}`}>Liste des besoins</a></li>
+                    <li><a href={"/absencesRT/"+idProjet}>liste des employés</a></li>
+                    <li><a href={"/materialsRT/"+idProjet}>liste des materials</a></li>
+                    <li><a href={"/filesRT/"+idProjet}>liste des fichiers</a></li>
+                    <li><a href={`/needsRT/${idProjet}`}>Liste des besoins</a></li>
                     <li>
-                        <a href={`/homeCP`}>Liste des projets</a>
+                        <a href={`/homeRT`}>Liste des projets</a>
                     </li>
                 </ul>
                 </aside>
@@ -179,4 +179,4 @@ const OuvriersAbsencesCP = () => {
     );
 };
 
-export default OuvriersAbsencesCP;
+export default OuvriersAbsencesRT;

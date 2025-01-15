@@ -27,6 +27,7 @@ import com.assalaIskane.project.models.Materiaux_chantier;
 import com.assalaIskane.project.models.Materiel;
 import com.assalaIskane.project.models.Materiel_chantier;
 import com.assalaIskane.project.models.Projet;
+import com.assalaIskane.project.models.User;
 
 @RestController
 public class ProjetController {
@@ -34,7 +35,7 @@ public class ProjetController {
 	private ProjetServiceInterface service;
 	
 	@PostMapping("/CreateProjet")
-	void createProjet(@RequestParam String id, @RequestParam String nom, @RequestParam String numero_marche, @RequestParam String objet, @RequestParam String date_ordre, @RequestParam String date_fin, @RequestParam int delai, @RequestParam String id_resp, @RequestParam String id_resp_chantier) throws ParseException {
+	void createProjet(@RequestParam String id, @RequestParam String nom, @RequestParam String numero_marche, @RequestParam String objet, @RequestParam String date_ordre, @RequestParam String date_fin, @RequestParam String delai, @RequestParam String id_resp, @RequestParam String id_resp_chantier) throws ParseException {
 		service.createProjet(id, nom, numero_marche, objet, new SimpleDateFormat("yyyy-MM-dd").parse(date_ordre), new SimpleDateFormat("yyyy-MM-dd").parse(date_fin), delai, id_resp, id_resp_chantier);
 	}
 	@PostMapping("/AddAbsence")
@@ -61,26 +62,30 @@ public class ProjetController {
 	List<Fichier_projet> getFichiersProjet(@RequestParam String id_projet) {
 		return service.getFichiersProjet(id_projet);
 	}
+	@GetMapping("/getProjets")
+	List<Projet> getProjets(@RequestParam String id_resp) {
+		return service.getProjets(id_resp);
+	}
 	@GetMapping("/getProjet")
 	List<Projet> getProjet(@RequestParam String id_resp) {
-		return service.getProjets(id_resp);
+		return service.getProjet(id_resp);
 	}
 	@GetMapping("/getChantier")
 	Chantier getChantier(@RequestParam String id_projet) {
 		return service.getChantier(id_projet);
 	}
-	@GetMapping("/getProjets")
-	List<Projet> getProjets() {
+	@GetMapping("/getAllProjets")
+	List<Projet> getAllProjets() {
 		return service.getProjets();
 	}
 	@GetMapping("/getMaterielsChantiers")
-	List<Materiel> getMaterielsChantiers(@RequestParam String id_projet) {
-		System.out.println("els : "+service.getMaterielsChantiers(id_projet).get(0));
+	List<Materiel_chantier> getMaterielsChantiers(@RequestParam String id_projet) {
+		System.out.println("els : "+service.getMaterielsChantiers(id_projet).size()+" : "+service.getMaterielsChantiers(id_projet).get(0));
 		return service.getMaterielsChantiers(id_projet);
 	}
 	@GetMapping("/getMateriauxChantiers")
-	List<Materiaux> getMateriauxChantiers(@RequestParam String id_projet) {
-		System.out.println("aux : "+service.getMateriauxChantiers(id_projet).get(0));
+	List<Materiaux_chantier> getMateriauxChantiers(@RequestParam String id_projet) {
+		System.out.println("aux : "+service.getMateriauxChantiers(id_projet).size()+" : "+service.getMateriauxChantiers(id_projet).get(0));
 		return service.getMateriauxChantiers(id_projet);
 	}
 	@PostMapping("/AddBesoin")
@@ -107,6 +112,14 @@ public class ProjetController {
 	List<Besoin> getBesoinsST(@RequestParam String id_projet){
 		return service.getBesoinsST(id_projet);
 	}
+	@GetMapping("/getBesoinsRC")
+	List<Besoin> getBesoinsRC(@RequestParam String id_projet){
+		return service.getBesoinsRC(id_projet);
+	}
+	@GetMapping("/getBesoinsRM")
+	List<Besoin> getBesoinsRM(@RequestParam String id_projet){
+		return service.getBesoinsRM(id_projet);
+	}
 	@GetMapping("/getAbsences")
 	List<Absence> getAbsences(@RequestParam String id_projet, @RequestParam String date_debut, @RequestParam String date_fin) throws ParseException{
 		for (Absence a : service.getAbsences(id_projet, new SimpleDateFormat("yyyy-MM-dd").parse(date_debut), new SimpleDateFormat("yyyy-MM-dd").parse(date_fin))) {
@@ -117,5 +130,41 @@ public class ProjetController {
 	@PostMapping("/validateBesoin")
 	void validateBesoin(@RequestParam String id_resp, @RequestParam String id_besoin){
 		service.validateBesoin(id_resp, id_besoin);
+	}
+	@PostMapping("/deleteBesoin")
+	void deleteBesoin(@RequestParam String id_besoin){
+		service.deleteBesoin(id_besoin);
+	}
+	@GetMapping("/getCC")
+	List<User> getCC(){
+		return service.getCC();
+	}
+	@GetMapping("/getRP")
+	List<User> getRP(){
+		return service.getRP();
+	}
+	@PostMapping("/addMateriel")
+	void addMateriel(@RequestParam String nom, @RequestParam String qte, @RequestParam String prix, @RequestParam String idProjet) {
+	    service.addMaterielToChantier(nom, qte, prix, idProjet);
+	}
+	@PostMapping("/addMateriaux")
+	void addMateriaux(@RequestParam String nom, @RequestParam String type, @RequestParam String qte, @RequestParam String prix, @RequestParam String idProjet) {
+	    service.addMateriauxToChantier(nom, type, qte, prix, idProjet);
+	}
+	@PostMapping("/updateMateriaux")
+	void updateMateriaux(@RequestParam String id, @RequestParam String qte) {
+	    service.updateMateriaux(id, qte);
+	}
+	@PostMapping("/updateMateriel")
+	void updateMateriel(@RequestParam String id, @RequestParam String qte) {
+	    service.updateMateriel(id, qte);
+	}
+	@PostMapping("/deleteMateriel")
+	void deleteMateriel(@RequestParam String id) {
+	    service.deleteMateriel(id);
+	}
+	@PostMapping("/deleteMateriau")
+	void deleteMateriau(@RequestParam String id) {
+	    service.deleteMateriau(id);
 	}
 }

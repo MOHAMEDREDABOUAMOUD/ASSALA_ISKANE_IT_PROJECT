@@ -4,7 +4,7 @@ import axios from 'axios';
 import logo from '../../images/logo00.png';
 import api from '../../utils/api';
 
-const ListMaterials = () => {
+const ListMaterialsRT = () => {
   const { idProjet } = useParams();
   const [materials, setMaterials] = useState([]);
   const [materiaux, setMateriaux] = useState([]);
@@ -117,9 +117,13 @@ const ListMaterials = () => {
         {/* Menu latéral gauche */}
         <aside className="sidebar">
           <ul className="sidebar-menu">
-            <li><a href={`/list-workers/${idProjet}`}>Liste des employés</a></li>
-            <li><a href={`/materials/${idProjet}`}>Liste des matériaux</a></li>
-            <li><a href={`/needs/${idProjet}`}>Liste des besoins</a></li>
+            <li><a href={`/list-workersRT/${idProjet}`}>Liste des employés</a></li>
+            <li><a href={`/materialsRT/${idProjet}`}>Liste des matériaux</a></li>
+            <li><a href={"/filesRT/"+idProjet}>liste des fichiers</a></li>
+            <li><a href={`/needsRT/${idProjet}`}>Liste des besoins</a></li>
+            <li>
+                <a href={`/homeRT`}>Liste des projets</a>
+            </li>
           </ul>
         </aside>
 
@@ -198,4 +202,4 @@ const ListMaterials = () => {
   );
 };
 
-export default ListMaterials;
+export default ListMaterialsRT;

@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import { FaDownload, FaTrash } from 'react-icons/fa';
 import api from '../../utils/api';
 
-const FileList = () => {
+const FileListRM = () => {
   const { idProjet } = useParams();
   const [files, setFiles] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -116,21 +116,13 @@ const FileList = () => {
         {/* Menu latéral gauche */}
         <aside className="sidebar">
           <ul className="sidebar-menu">
-            <li>
-              <a href={`/absencesCP/${idProjet}`}>Liste des employés</a>
-            </li>
-            <li>
-              <a href={`/materialsCP/${idProjet}`}>Liste des matériels</a>
-            </li>
-            <li>
-              <a href={`/files/${idProjet}`}>Liste des fichiers</a>
-            </li>
-            <li>
-                <a href={`/needsCP/${idProjet}`}>Liste des besoins</a>
-            </li>
-            <li>
-              <a href={`/homeCP`}>Liste des projets</a>
-            </li>
+                    <li><a href={"/absencesRM/"+idProjet}>liste des employés</a></li>
+                    <li><a href={"/materialsRM/"+idProjet}>liste des materials</a></li>
+                    <li><a href={"/filesRM/"+idProjet}>liste des fichiers</a></li>
+                    <li><a href={`/needsRM/${idProjet}`}>Liste des besoins</a></li>
+                    <li>
+                        <a href={`/homeRM`}>Liste des projets</a>
+                    </li>
           </ul>
         </aside>
 
@@ -179,4 +171,4 @@ const FileList = () => {
   );
 };
 
-export default FileList;
+export default FileListRM;

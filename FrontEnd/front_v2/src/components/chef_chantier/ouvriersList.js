@@ -9,6 +9,12 @@ const OuvriersList = () => {
   const [ouvriers, setOuvriers] = useState([]);
   const [error, setError] = useState('');
   const [absents, setAbsents] = useState([]);
+  const [newOuvrier, setNewOuvrier] = useState({
+    id: '',
+    nom: '',
+    prenom: '',
+    numero: '',
+  });
 
   // Récupérer les ouvriers liés à un projet
   useEffect(() => {
@@ -70,6 +76,40 @@ const OuvriersList = () => {
       alert('Une erreur est survenue lors de la déclaration des absences/présences.');
     }
   };
+
+  // Ajouter un ouvrier
+  // Ajouter un ouvrier
+  const handleAddOuvrier = async () => {
+    if (newOuvrier.nom && newOuvrier.prenom && newOuvrier.numero) {
+      try {
+        // Envoyer la requête au backend pour ajouter l'ouvrier
+        const response = await api.post(
+          `http://localhost:9092/assalaiskane/AddOuvrier?id=${newOuvrier.id}&nom=${newOuvrier.nom}&prenom=${newOuvrier.prenom}&numero=${newOuvrier.numero}&id_projet=${idProjet}`
+        );
+  
+        if (response.status === 200) {
+          // Ajouter directement l'ouvrier à la liste locale
+          setOuvriers((prevOuvriers) => [
+            ...prevOuvriers,
+            { id: newOuvrier.id, ...newOuvrier },
+          ]);
+  
+          // Réinitialiser le formulaire
+          setNewOuvrier({ nom: '', prenom: '', numero: '' });
+          alert('Ouvrier ajouté avec succès.');
+        } else {
+          alert("L'ajout a échoué, veuillez réessayer.");
+        }
+      } catch (err) {
+        console.error('Erreur lors de l’ajout de l’ouvrier :', err);
+        alert('Une erreur est survenue.');
+      }
+    } else {
+      alert('Veuillez remplir tous les champs du formulaire.');
+    }
+  };
+  
+
   
 
   return (
@@ -102,6 +142,36 @@ const OuvriersList = () => {
         {/* Zone principale */}
         <main className="main-content">
           <div className="ouvriers-container">
+          <h2>Ajouter un Ouvrier</h2>
+            <div className="form-container">
+              <input
+                type="text"
+                placeholder="Id"
+                value={newOuvrier.id}
+                onChange={(e) => setNewOuvrier({ ...newOuvrier, id: e.target.value })}
+              />
+              <input
+                type="text"
+                placeholder="Nom"
+                value={newOuvrier.nom}
+                onChange={(e) => setNewOuvrier({ ...newOuvrier, nom: e.target.value })}
+              />
+              <input
+                type="text"
+                placeholder="Prénom"
+                value={newOuvrier.prenom}
+                onChange={(e) => setNewOuvrier({ ...newOuvrier, prenom: e.target.value })}
+              />
+              <input
+                type="text"
+                placeholder="Numéro de téléphone"
+                value={newOuvrier.numero}
+                onChange={(e) => setNewOuvrier({ ...newOuvrier, numero: e.target.value })}
+              />
+              <button className="add-button" onClick={handleAddOuvrier}>
+                Ajouter
+              </button>
+            </div>
             <h2>Liste des Ouvriers</h2>
             {error && <p className="error-message">{error}</p>}
             {ouvriers.length > 0 ? (

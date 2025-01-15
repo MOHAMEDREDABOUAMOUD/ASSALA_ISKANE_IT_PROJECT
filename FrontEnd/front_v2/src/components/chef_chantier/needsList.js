@@ -15,8 +15,8 @@ const NeedsList = () => {
         const response = await api.get(
           `http://localhost:9092/assalaiskane/getBesoinsCC?id_projet=${idProjet}`
         );
-        const data = await response.json();
-        setNeeds(data);
+        setNeeds(response.data);
+        console.log(needs);
       } catch (error) {
         console.error('Erreur lors de la récupération des besoins :', error);
       }
