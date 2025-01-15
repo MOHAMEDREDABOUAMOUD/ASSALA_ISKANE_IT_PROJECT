@@ -93,7 +93,7 @@ public interface ProjetRepository extends JpaRepository<Projet, String> {
 	@Query("SELECT c FROM Chantier c WHERE c.projet.id = :id_projet")
 	Chantier getChantier(@Param("id_projet") String id_projet);
 	
-	@Query("SELECT b FROM Besoin b WHERE b.valide_par.fonction = 'ChefChantier' AND b.chantier.projet.id = :id_projet")
+	@Query("SELECT b FROM Besoin b WHERE b.valide_par.fonction = 'chef_chantier' AND b.chantier.projet.id = :id_projet")
 	List<Besoin> getBesoinsRP(@Param("id_projet") String id_projet);
 	
 	@Query("SELECT b FROM Besoin b WHERE b.valide_par.fonction = 'responsable_projet' AND b.chantier.projet.id = :id_projet")
