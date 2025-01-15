@@ -28,15 +28,10 @@ const HomePCP = ({ children }) => {
             <li><a href={"/absencesCP/"+idProjet}>liste des employés</a></li>
             <li><a href={"/materialsCP/"+idProjet}>liste des materials</a></li>
             <li><a href={"/files/"+idProjet}>liste des fichiers</a></li>
+            <li><a href={`/needsCP/${idProjet}`}>Liste des besoins</a></li>
             <li>
               <a href={`/homeCP`}>Liste des projets</a>
             </li>
-            <li><a href={`/needsCP/${idProjet}`}>Liste des besoins</a></li>
-            {/* <li><a href={"/list-workers/"+id_projet}>liste des employés</a></li>
-            <li><a href={"/materials/"+id_projet}>liste des materials</a></li>
-            <li><a href={"/needs/"+id_projet}>liste des besoins</a></li> */}
-            {/* <li><a href="#settings">declare des besoins</a></li>
-            <li><a href="#settings">Parametres</a></li> */}
           </ul>
         </aside>
 

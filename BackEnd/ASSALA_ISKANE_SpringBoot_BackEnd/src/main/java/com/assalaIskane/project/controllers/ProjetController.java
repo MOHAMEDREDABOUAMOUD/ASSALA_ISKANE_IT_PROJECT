@@ -102,6 +102,7 @@ public class ProjetController {
 	}
 	@GetMapping("/getBesoinsRP")
 	List<Besoin> getBesoinsRP(@RequestParam String id_projet){
+		System.out.println("RP : "+service.getBesoinsRP(id_projet).size());
 		return service.getBesoinsRP(id_projet);
 	}
 	@GetMapping("/getBesoinsRT")
