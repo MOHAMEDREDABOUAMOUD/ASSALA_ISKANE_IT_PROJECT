@@ -20,7 +20,7 @@ const Login = () => {
         const user = response.data;
 
         // Vérification des rôles et redirection
-        if (user.fonction === 'ChefChantier') {
+        if (user.fonction === 'chef_chantier') {
             setUSERID(user.id);
           // Récupération du projet pour le Chef de chantier
           const projectResponse = await api.get(`/getProjet?id_resp=${user.id}`);
@@ -35,19 +35,19 @@ const Login = () => {
           const userId = user.id;
           switch (user.fonction) {
             case 'responsable_comptabiliter':
-              //navigate(`/AllProjectsList/${userId}`);
+              navigate(`/homeRC`);
               break;
             case 'responsable_marchandise':
-              //navigate(`/AllProjectsListMarchandise/${userId}`);
+              navigate(`/homeRM`);
               break;
             case 'responsable_projet':
               navigate(`/homeCP/`);
               break;
             case 'responsable_technique':
-              //navigate(`/list-tech-projects/${userId}`);
+              navigate(`/homeRT`);
               break;
             case 'service_technique':
-              //navigate(`/list-service-projects/${userId}`);
+              navigate(`/homeST`);
               break;
             default:
               setErrorMessage('Rôle non reconnu.');

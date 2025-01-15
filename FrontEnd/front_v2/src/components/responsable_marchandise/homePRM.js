@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import logo from '../../images/logo00.png';
 import { useNavigate, useParams } from 'react-router-dom';
 
-const HomePCP = ({ children }) => {
+const HomePRM = ({ children }) => {
     const { idProjet } = useParams();
     const navigate = useNavigate();
   return (
@@ -25,18 +25,13 @@ const HomePCP = ({ children }) => {
         {/* Menu latéral gauche */}
         <aside className="sidebar">
           <ul className="sidebar-menu">
-            <li><a href={"/absencesCP/"+idProjet}>liste des employés</a></li>
-            <li><a href={"/materialsCP/"+idProjet}>liste des materials</a></li>
-            <li><a href={"/files/"+idProjet}>liste des fichiers</a></li>
-            <li>
-              <a href={`/homeCP`}>Liste des projets</a>
-            </li>
-            <li><a href={`/needsCP/${idProjet}`}>Liste des besoins</a></li>
-            {/* <li><a href={"/list-workers/"+id_projet}>liste des employés</a></li>
-            <li><a href={"/materials/"+id_projet}>liste des materials</a></li>
-            <li><a href={"/needs/"+id_projet}>liste des besoins</a></li> */}
-            {/* <li><a href="#settings">declare des besoins</a></li>
-            <li><a href="#settings">Parametres</a></li> */}
+                    <li><a href={"/absencesRM/"+idProjet}>liste des employés</a></li>
+                    <li><a href={"/materialsRM/"+idProjet}>liste des materials</a></li>
+                    <li><a href={"/filesRM/"+idProjet}>liste des fichiers</a></li>
+                    <li><a href={`/needsRM/${idProjet}`}>Liste des besoins</a></li>
+                    <li>
+                        <a href={`/homeRM`}>Liste des projets</a>
+                    </li>
           </ul>
         </aside>
 
@@ -54,8 +49,8 @@ const HomePCP = ({ children }) => {
 };
 
 // Validation des props
-HomePCP.propTypes = {
+HomePRM.propTypes = {
   children: PropTypes.node,
 };
 
-export default HomePCP;
+export default HomePRM;

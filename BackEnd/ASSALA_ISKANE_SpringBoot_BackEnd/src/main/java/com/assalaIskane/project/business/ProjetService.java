@@ -15,6 +15,7 @@ import com.assalaIskane.project.models.Materiaux_chantier;
 import com.assalaIskane.project.models.Materiel;
 import com.assalaIskane.project.models.Materiel_chantier;
 import com.assalaIskane.project.models.Projet;
+import com.assalaIskane.project.models.User;
 import com.assalaIskane.project.repositories.ProjetRepository;
 
 @Service
@@ -27,7 +28,7 @@ public class ProjetService implements ProjetServiceInterface{
 
 	@Override
 	public void createProjet(String id, String nom, String numero_marche, String objet, Date date_ordre, Date date_fin,
-			int delai, String id_resp, String id_resp_chantier) {
+			String delai, String id_resp, String id_resp_chantier) {
 		projetDao.insertProjet(id, nom, numero_marche, objet, date_ordre, date_fin, delai, id_resp);
 		projetDao.insertChantier(id, id_resp_chantier);
 	}
@@ -58,17 +59,22 @@ public class ProjetService implements ProjetServiceInterface{
 	}
 
 	@Override
+	public List<Projet> getProjet(String id_resp) {
+		return projetDao.getProjet(id_resp);
+	}
+	
+	@Override
 	public List<Projet> getProjets() {
 		return projetDao.getProjets();
 	}
 
 	@Override
-	public List<Materiel> getMaterielsChantiers(String id_projet) {
+	public List<Materiel_chantier> getMaterielsChantiers(String id_projet) {
 		return projetDao.getMaterielsChantiers(id_projet);
 	}
 
 	@Override
-	public List<Materiaux> getMateriauxChantiers(String id_projet) {
+	public List<Materiaux_chantier> getMateriauxChantiers(String id_projet) {
 		return projetDao.getMateriauxChantiers(id_projet);
 	}
 
@@ -107,6 +113,16 @@ public class ProjetService implements ProjetServiceInterface{
 	public List<Besoin> getBesoinsST(String id_projet) {
 		return projetDao.getBesoinsST(id_projet);
 	}
+
+	@Override
+	public List<Besoin> getBesoinsRC(String id_projet) {
+		return projetDao.getBesoinsRC(id_projet);
+	}
+	
+	@Override
+	public List<Besoin> getBesoinsRM(String id_projet) {
+		return projetDao.getBesoinsRM(id_projet);
+	}
 	
 	@Override
 	public Chantier getChantier(String id_projet) {
@@ -117,5 +133,61 @@ public class ProjetService implements ProjetServiceInterface{
 	public void validateBesoin(String id_resp, String id_besoin) {
 		projetDao.validateBesoins(id_resp, id_besoin);
 	}
+	
+	@Override
+	public void deleteBesoin(String id_besoin) {
+		projetDao.deleteBesoins(id_besoin);
+	}
+	
+	@Override
+	public List<User> getCC(){
+		return projetDao.getCC();
+	}
 
+	@Override
+	public List<User> getRP(){
+		return projetDao.getRP();
+	}
+
+	@Override
+	public void addMaterielToChantier(String nom, String qte, String prix, String idProjet) {
+	    // Appeler la méthode pour insérer le matériel et récupérer son ID
+	    projetDao.addMateriel(nom, qte, prix);
+	    
+	    int idMateriel = projetDao.getLastInsertedId();
+
+	    // Appeler la méthode pour associer le matériel au chantier
+	    projetDao.addMaterialChantier(idMateriel, idProjet, qte);
+	}
+
+	@Override
+	public void addMateriauxToChantier(String nom, String type, String qte, String prix, String idProjet) {
+	    // Appeler la méthode pour insérer le matériel et récupérer son ID
+	    projetDao.addMateriaux(nom, type, qte, prix);
+	    
+	    int idMateriau = projetDao.getLastInsertedId();
+
+	    // Appeler la méthode pour associer le matériel au chantier
+	    projetDao.addMateriauxChantier(idMateriau, idProjet, qte);
+	}
+	
+	@Override
+	public void updateMateriaux(String id, String qte) {
+		projetDao.updateMateriaux(id, qte);
+	}
+	
+	@Override
+	public void updateMateriel(String id, String qte) {
+		projetDao.updateMateriel(id, qte);
+	}
+	
+	@Override
+	public void deleteMateriau(String id) {
+		projetDao.deleteMateriau(id);
+	}
+	
+	@Override
+	public void deleteMateriel(String id) {
+		projetDao.deleteMateriel(id);
+	}
 }

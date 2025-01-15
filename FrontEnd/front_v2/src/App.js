@@ -14,6 +14,31 @@ import NeedsList from './components/chef_chantier/needsList.js';
 import HomeCP from './components/chef_projet/homeCP.js';
 import HomePCP from './components/chef_projet/homePCP.js';
 import FileList from './components/chef_projet/filesList.js';
+import NeedsListCP from './components/chef_projet/needsList.js';
+import HomeRT from './components/responsable_technique/homeRT.js';
+import HomePRT from './components/responsable_technique/homePRT.js';
+import OuvriersAbsencesRT from './components/responsable_technique/ouvriersListWA.js';
+import ListMaterialsRT from './components/responsable_technique/list_materials.js';
+import NeedsListRT from './components/responsable_technique/needsList.js';
+import FileListRT from './components/responsable_technique/filesList.js';
+import HomeRC from './components/responsable_comptabilité/homeRC.js';
+import HomePRC from './components/responsable_comptabilité/homePRC.js';
+import OuvriersAbsencesRC from './components/responsable_comptabilité/ouvriersListWA.js';
+import NeedsListRC from './components/responsable_comptabilité/needsList.js';
+import FileListRC from './components/responsable_comptabilité/filesList.js';
+import HomeRM from './components/responsable_marchandise/homeRM.js';
+import HomePRM from './components/responsable_marchandise/homePRM.js';
+import OuvriersAbsencesRM from './components/responsable_marchandise/ouvriersListWA.js';
+import ListMaterialsRM from './components/responsable_marchandise/list_materials.js';
+import NeedsListRM from './components/responsable_marchandise/needsList.js';
+import FileListRM from './components/responsable_marchandise/filesList.js';
+import HomeST from './components/service_technique/homeST.js';
+import HomePST from './components/service_technique/homePST.js';
+import OuvriersAbsencesST from './components/service_technique/ouvriersListWA.js';
+import ListMaterialsST from './components/service_technique/list_materials.js';
+import NeedsListST from './components/service_technique/needsList.js';
+import FileListST from './components/service_technique/filesList.js';
+import AddProject from './components/service_technique/add_projet.js';
 function App() {
   return (
     <Router>
@@ -32,7 +57,36 @@ function App() {
           <Route path="/homePCP/:idProjet" element={<HomePCP />} />
           <Route path="/absencesCP/:idProjet" element={<OuvriersAbsencesCP />} />
           <Route path="/materialsCP/:idProjet" element={<ListMaterialsCP />} />
+          <Route path="/needsCP/:idProjet" element={<NeedsListCP />} />
           <Route path="/files/:idProjet" element={<FileList />} />
+          
+          <Route path="/homeRT" element={<HomeRT />} />
+          <Route path="/homePRT/:idProjet" element={<HomePRT />} />
+          <Route path="/absencesRT/:idProjet" element={<OuvriersAbsencesRT />} />
+          <Route path="/materialsRT/:idProjet" element={<ListMaterialsRT />} />
+          <Route path="/needsRT/:idProjet" element={<NeedsListRT />} />
+          <Route path="/filesRT/:idProjet" element={<FileListRT />} />
+          
+          <Route path="/homeRC" element={<HomeRC />} />
+          <Route path="/homePRC/:idProjet" element={<HomePRC />} />
+          <Route path="/absencesRC/:idProjet" element={<OuvriersAbsencesRC />} />
+          <Route path="/needsRC/:idProjet" element={<NeedsListRC />} />
+          <Route path="/filesRC/:idProjet" element={<FileListRC />} />
+          
+          <Route path="/homeRM" element={<HomeRM />} />
+          <Route path="/homePRM/:idProjet" element={<HomePRM />} />
+          <Route path="/absencesRM/:idProjet" element={<OuvriersAbsencesRM />} />
+          <Route path="/materialsRM/:idProjet" element={<ListMaterialsRM />} />
+          <Route path="/needsRM/:idProjet" element={<NeedsListRM />} />
+          <Route path="/filesRM/:idProjet" element={<FileListRM />} />
+
+          <Route path="/homeST" element={<HomeST />} />
+          <Route path="/homePST/:idProjet" element={<HomePST />} />
+          <Route path="/absencesST/:idProjet" element={<OuvriersAbsencesST />} />
+          <Route path="/materialsST/:idProjet" element={<ListMaterialsST />} />
+          <Route path="/needsST/:idProjet" element={<NeedsListST />} />
+          <Route path="/filesST/:idProjet" element={<FileListST />} />
+          <Route path="/addProjet" element={<AddProject />} />
         </Routes>
       </div>
     </Router>
