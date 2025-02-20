@@ -50,9 +50,11 @@ const OuvriersList = () => {
     const dateAbsence = new Date().toISOString().split('T')[0]; // Date actuelle au format YYYY-MM-DD
     try {
       let idChantier;
+      let id_chef_chantier;
       const response = await api.get(`/getChantier?id_projet=${idProjet}`);
       if (response.status === 200) {
         idChantier = response.data.id;
+        id_chef_chantier = response.data.resp.id;
       } else {
         setError('Aucun chantier trouvé pour ce projet.');
         return;
@@ -65,7 +67,7 @@ const OuvriersList = () => {
           `Ouvrier ID: ${ouvrier.id}, Date: ${dateAbsence}, Chantier: ${idChantier}, Absent: ${absentValue}`
         );
         await api.post(
-          `http://localhost:9092/assalaiskane/AddAbsence?id_ouvrier=${ouvrier.id}&date_absence=${dateAbsence}&id_chantier=${idChantier}&absent=${absentValue}`
+          `http://localhost:9092/assalaiskane/AddAbsence?id_ouvrier=${ouvrier.id}&date_absence=${dateAbsence}&id_chantier=${idChantier}&absent=${absentValue}&valide_par=${id_chef_chantier}`
         );
       }
   

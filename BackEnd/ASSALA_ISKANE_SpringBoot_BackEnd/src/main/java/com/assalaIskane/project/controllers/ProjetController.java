@@ -39,8 +39,12 @@ public class ProjetController {
 		service.createProjet(id, nom, numero_marche, objet, new SimpleDateFormat("yyyy-MM-dd").parse(date_ordre), new SimpleDateFormat("yyyy-MM-dd").parse(date_fin), delai, id_resp, id_resp_chantier);
 	}
 	@PostMapping("/AddAbsence")
-	void AddAbsence(@RequestParam String id_ouvrier, @RequestParam String date_absence, @RequestParam int id_chantier, @RequestParam int absent) throws ParseException {
-		service.AddAbsence(id_ouvrier, new SimpleDateFormat("yyyy-MM-dd").parse(date_absence), id_chantier, absent);
+	void AddAbsence(@RequestParam String id_ouvrier, @RequestParam String date_absence, @RequestParam int id_chantier, @RequestParam int absent, @RequestParam String valide_par) throws ParseException {
+		service.AddAbsence(id_ouvrier, new SimpleDateFormat("yyyy-MM-dd").parse(date_absence), id_chantier, absent, valide_par);
+	}
+	@PostMapping("/ValiderAbsence")
+	void AddAbsence(@RequestParam int id, @RequestParam String valide_par) throws ParseException {
+		service.ValiderAbsence(id, valide_par);
 	}
 	@PostMapping("/AddFichier")
     public String handleFileUpload(@RequestParam("nom") String nom, @RequestParam("fichier") MultipartFile fichier, @RequestParam("id_projet") String id_projet) {
@@ -127,6 +131,13 @@ public class ProjetController {
 			System.out.println(a);
 		}
 		return service.getAbsences(id_projet, new SimpleDateFormat("yyyy-MM-dd").parse(date_debut), new SimpleDateFormat("yyyy-MM-dd").parse(date_fin));
+	}
+	@GetMapping("/getAbsencesSC")
+	List<Absence> getAbsencesSC(@RequestParam String id_projet, @RequestParam String date_debut, @RequestParam String date_fin) throws ParseException{
+		for (Absence a : service.getAbsencesSC(id_projet, new SimpleDateFormat("yyyy-MM-dd").parse(date_debut), new SimpleDateFormat("yyyy-MM-dd").parse(date_fin))) {
+			System.out.println(a);
+		}
+		return service.getAbsencesSC(id_projet, new SimpleDateFormat("yyyy-MM-dd").parse(date_debut), new SimpleDateFormat("yyyy-MM-dd").parse(date_fin));
 	}
 	@PostMapping("/validateBesoin")
 	void validateBesoin(@RequestParam String id_resp, @RequestParam String id_besoin){

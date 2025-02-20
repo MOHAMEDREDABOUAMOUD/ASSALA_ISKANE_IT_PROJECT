@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../../utils/api';
 import logo from '../../images/logo00.png';
+import { getUSERID } from '../constants';
 
 const OuvriersAbsencesRT = () => {
     const { idProjet } = useParams();
@@ -10,6 +11,33 @@ const OuvriersAbsencesRT = () => {
     const [absences, setAbsences] = useState([]);
     const [daysInterval, setDaysInterval] = useState([]);
     const [error, setError] = useState('');
+
+    const handleValidateAbsences = async () => {
+        try {
+            // Parcourir toutes les absences
+            for (let i = 0; i < absences.length; i++) {
+                const absence = absences[i];
+                // Appel à l'API pour valider l'absence
+                const response = await api.post(`/ValiderAbsence?id=${absence.id}&valide_par=${getUSERID()}`);
+    
+                if (response.status === 200) {
+                    // Mettre à jour l'état de l'application après la validation
+                    // setAbsences(prevAbsences => prevAbsences.map(abs => 
+                    //     abs.id === absence.id ? { ...abs, valide: true } : abs
+                    // ));
+                    //
+                } else {
+                    setError('Une erreur est survenue lors de la validation des absences.');
+                    return;
+                }
+            }
+            alert('Les absences ont été validées avec succès.');
+            setError('');
+        } catch (err) {
+            console.error('Erreur lors de la validation des absences :', err);
+            setError('Une erreur est survenue lors de la validation des absences.');
+        }
+    };
 
     const generateDateRange = (startDate, endDate) => {
         const dates = [];
@@ -173,6 +201,7 @@ const OuvriersAbsencesRT = () => {
                     ) : (
                         !error && <p>Aucune absence trouvée.</p>
                     )}
+                    <button onClick={handleValidateAbsences}>Valider les absences</button>
                 </div>
             </div>
         </div>

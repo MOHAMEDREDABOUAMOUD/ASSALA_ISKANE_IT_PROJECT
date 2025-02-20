@@ -35,8 +35,13 @@ public interface ProjetRepository extends JpaRepository<Projet, String> {
 
 	@Modifying
 	@Transactional
-	@Query(value = "INSERT INTO absence (id_ouvrier, date_absence, id_chantier, absent) VALUES (:id_ouvrier, :date_absence, :id_chantier, :absent)", nativeQuery = true)
-	void addAbsence(@Param("id_ouvrier") String id_ouvrier, @Param("date_absence") Date date_absence, @Param("id_chantier") int id_chantier, @Param("absent") int absent);
+	@Query(value = "INSERT INTO absence (id_ouvrier, date_absence, id_chantier, absent, valide_par) VALUES (:id_ouvrier, :date_absence, :id_chantier, :absent, :valide_par)", nativeQuery = true)
+	void addAbsence(@Param("id_ouvrier") String id_ouvrier, @Param("date_absence") Date date_absence, @Param("id_chantier") int id_chantier, @Param("absent") int absent, @Param("valide_par") String valide_par);
+
+	@Modifying
+	@Transactional
+	@Query(value = "UPDATE absence set valide_par = :valide_par where id = :id", nativeQuery = true)
+	void validerAbsence(@Param("id") int id, @Param("valide_par") String valide_par);
 
 	@Modifying
 	@Transactional
@@ -110,6 +115,9 @@ public interface ProjetRepository extends JpaRepository<Projet, String> {
 	
 	@Query("select a from Absence a where a.date_absence >= :date_debut and a.date_absence <= :date_fin and a.chantier.projet.id = :id_projet")
 	List<Absence> getAbsences(@Param("id_projet") String id_projet, @Param("date_debut") Date date_debut, @Param("date_fin") Date date_fin);
+
+	@Query("select a from Absence a where a.date_absence >= :date_debut and a.date_absence <= :date_fin and a.chantier.projet.id = :id_projet and a.valide_par.fonction='responsable_technique'")
+	List<Absence> getAbsencesSC(@Param("id_projet") String id_projet, @Param("date_debut") Date date_debut, @Param("date_fin") Date date_fin);
 
 	@Query("select u from User u where u.fonction = 'chef_chantier'")
 	List<User> getCC();

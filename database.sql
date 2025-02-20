@@ -14,7 +14,8 @@ alter table besoin add constraint foreign key (id_chantier) references chantier(
 alter table besoin add constraint foreign key (valide_par) references user(id);
 create table fichier_projet(id int primary key auto_increment, nom varchar(100), fichier longblob, id_projet varchar(100));
 alter table fichier_projet add constraint foreign key (id_projet) references projet(id);
-create table absence(id int primary key auto_increment, id_ouvrier varchar(10), date_absence date, id_chantier int, absent int);
+create table absence(id int primary key auto_increment, id_ouvrier varchar(10), date_absence date, id_chantier int, absent int, valide_par varchar(10));
+alter table absence add constraint foreign key (valide_par) references user(id);
 alter table absence add constraint foreign key (id_ouvrier) references ouvrier(id);
 alter table absence add constraint foreign key (id_chantier) references chantier(id);
 create table stock(id int primary key auto_increment, gerant varchar(50), numero varchar(15), email varchar(30));

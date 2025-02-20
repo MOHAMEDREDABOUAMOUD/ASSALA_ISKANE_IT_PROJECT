@@ -34,8 +34,13 @@ public class ProjetService implements ProjetServiceInterface{
 	}
 
 	@Override
-	public void AddAbsence(String id_ouvrier, Date date_absence, int id_chantier, int absent) {
-		projetDao.addAbsence(id_ouvrier, date_absence, id_chantier, absent);
+	public void AddAbsence(String id_ouvrier, Date date_absence, int id_chantier, int absent, String valide_par) {
+		projetDao.addAbsence(id_ouvrier, date_absence, id_chantier, absent, valide_par);
+	}
+	
+	@Override
+	public void ValiderAbsence(int id, String valide_par) {
+		projetDao.validerAbsence(id, valide_par);
 	}
 
 	@Override
@@ -92,6 +97,11 @@ public class ProjetService implements ProjetServiceInterface{
 	@Override
 	public List<Absence> getAbsences(String id_projet, Date date_debut, Date date_fin) {
 		return projetDao.getAbsences(id_projet, date_debut, date_fin);
+	}
+	
+	@Override
+	public List<Absence> getAbsencesSC(String id_projet, Date date_debut, Date date_fin) {
+		return projetDao.getAbsencesSC(id_projet, date_debut, date_fin);
 	}
 
 	@Override

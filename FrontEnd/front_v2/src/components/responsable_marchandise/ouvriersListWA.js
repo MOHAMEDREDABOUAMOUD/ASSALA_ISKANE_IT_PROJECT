@@ -34,7 +34,7 @@ const OuvriersAbsencesRM = () => {
 
         try {
             setError('');
-            const response = await api.get(`/getAbsences?id_projet=${idProjet}&date_debut=${dateStart}&date_fin=${dateEnd}`);
+            const response = await api.get(`/getAbsencesSC?id_projet=${idProjet}&date_debut=${dateStart}&date_fin=${dateEnd}`);
             if (response.status === 200 && response.data.length > 0) {
                 setAbsences(response.data);
                 setDaysInterval(generateDateRange(dateStart, dateEnd));

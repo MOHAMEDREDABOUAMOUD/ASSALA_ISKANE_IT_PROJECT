@@ -18,7 +18,8 @@ import com.assalaIskane.project.models.User;
 
 public interface ProjetServiceInterface {
 	void createProjet(String id, String nom, String numero_marche, String objet, Date date_ordre, Date date_fin, String delai, String id_resp, String id_resp_chantier);
-	void AddAbsence( String id_ouvrier, Date date_absence, int id_chantier, int absent);
+	void AddAbsence( String id_ouvrier, Date date_absence, int id_chantier, int absent, String valide_par);
+	void ValiderAbsence( int id, String valide_par);
 	void addFichier(String nom, byte[] fichier, String id_projet);
 	void removeFichier(int id);
 	List<Fichier_projet> getFichiersProjet(String id_projet);
@@ -39,6 +40,7 @@ public interface ProjetServiceInterface {
 	void validateBesoin(String id_resp, String id_besoin);
 	void deleteBesoin(String id_besoin);
 	List<Absence> getAbsences(String id_projet, Date date_debut, Date date_fin);
+	List<Absence> getAbsencesSC(String id_projet, Date date_debut, Date date_fin);
 	List<User> getCC();
 	List<User> getRP();
 	public void addMaterielToChantier(String nom, String qte, String prix, String idProjet);
