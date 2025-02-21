@@ -122,6 +122,7 @@ const FileListST = () => {
             <li>
               <a href={`/materialsST/${idProjet}`}>Liste des matériels</a>
             </li>
+            <li><a href={"/stockST/"+idProjet}>visualiser stock</a></li>
             <li>
               <a href={`/filesST/${idProjet}`}>Liste des fichiers</a>
             </li>

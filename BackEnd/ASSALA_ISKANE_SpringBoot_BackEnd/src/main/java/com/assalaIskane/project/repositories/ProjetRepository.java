@@ -66,10 +66,11 @@ public interface ProjetRepository extends JpaRepository<Projet, String> {
 	@Query("SELECT p FROM Projet p")
 	List<Projet> getProjets();
 
-
 	@Query("SELECT mc FROM Materiel_chantier mc WHERE mc.chantier.projet.id = :id_projet")
 	List<Materiel_chantier> getMaterielsChantiers(@Param("id_projet") String idProjet);
-
+	
+	@Query("SELECT m FROM Materiel m")
+	List<Materiel> getMateriels();
 	
 	@Query("SELECT mc FROM Materiaux_chantier mc WHERE mc.chantier.projet.id = :id_projet")
 	List<Materiaux_chantier> getMateriauxChantiers(@Param("id_projet") String id_projet);
@@ -155,13 +156,33 @@ public interface ProjetRepository extends JpaRepository<Projet, String> {
 
 	@Modifying
 	@Transactional
-	@Query(value = "update materiel_chantier m set qte = :qte where id_materiel = :id", nativeQuery = true)
-	void updateMateriel(@Param("id") String id, @Param("qte") String qte);
+	@Query(value = "update materiel_chantier mc set mc.qte = :qte where mc.id_materiel = :id", nativeQuery = true)
+	void updateMaterielC(@Param("id") int id, @Param("qte") String qte);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update materiel m set m.qte = m.qte + :qte where m.id = :id", nativeQuery = true)
+	void updateMateriel1(@Param("id") int id, @Param("qte") String qte);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update materiel m set m.qte = m.qte - :qte where m.id = :id", nativeQuery = true)
+	void updateMateriel2(@Param("id") int id, @Param("qte") String qte);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "update materiel m set m.qte = :qte_stock where m.id = :id", nativeQuery = true)
+	void updateMateriel(@Param("id") int id, @Param("qte_stock") String qte_stock);
 
 	@Modifying
 	@Transactional
 	@Query(value = "delete from materiel_chantier where id_materiel = :id", nativeQuery = true)
-	void deleteMateriel(@Param("id") String id);
+	void deleteMateriel(@Param("id") int id);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "delete from materiel where id = :id", nativeQuery = true)
+	void deleteMaterielC(@Param("id") int id);
 
 	@Modifying
 	@Transactional

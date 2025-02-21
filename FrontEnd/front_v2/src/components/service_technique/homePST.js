@@ -27,6 +27,7 @@ const HomePST = ({ children }) => {
           <ul className="sidebar-menu">
             <li><a href={"/absencesST/"+idProjet}>liste des employés</a></li>
             <li><a href={"/materialsST/"+idProjet}>liste des materials</a></li>
+            <li><a href={"/stockST/"+idProjet}>visualiser stock</a></li>
             <li><a href={"/filesST/"+idProjet}>liste des fichiers</a></li>
             <li>
               <a href={`/homeST`}>Liste des projets</a>

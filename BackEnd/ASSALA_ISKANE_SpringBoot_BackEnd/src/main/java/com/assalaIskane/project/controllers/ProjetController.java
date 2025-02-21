@@ -87,6 +87,10 @@ public class ProjetController {
 		System.out.println("els : "+service.getMaterielsChantiers(id_projet).size()+" : "+service.getMaterielsChantiers(id_projet).get(0));
 		return service.getMaterielsChantiers(id_projet);
 	}
+	@GetMapping("/getMateriels")
+	List<Materiel> getMateriels() {
+		return service.getMateriels();
+	}
 	@GetMapping("/getMateriauxChantiers")
 	List<Materiaux_chantier> getMateriauxChantiers(@RequestParam String id_projet) {
 		System.out.println("aux : "+service.getMateriauxChantiers(id_projet).size()+" : "+service.getMateriauxChantiers(id_projet).get(0));
@@ -156,8 +160,8 @@ public class ProjetController {
 		return service.getRP();
 	}
 	@PostMapping("/addMateriel")
-	void addMateriel(@RequestParam String nom, @RequestParam String qte, @RequestParam String prix, @RequestParam String idProjet) {
-	    service.addMaterielToChantier(nom, qte, prix, idProjet);
+	void addMateriel(@RequestParam int id_materiel, @RequestParam String qte, @RequestParam String idProjet) {
+	    service.addMaterielToChantier(id_materiel, qte, idProjet);
 	}
 	@PostMapping("/addMateriaux")
 	void addMateriaux(@RequestParam String nom, @RequestParam String type, @RequestParam String qte, @RequestParam String prix, @RequestParam String idProjet) {
@@ -168,11 +172,15 @@ public class ProjetController {
 	    service.updateMateriaux(id, qte);
 	}
 	@PostMapping("/updateMateriel")
-	void updateMateriel(@RequestParam String id, @RequestParam String qte) {
-	    service.updateMateriel(id, qte);
+	void updateMateriel(@RequestParam int id, @RequestParam String qte, @RequestParam String qte_stock) {
+	    service.updateMateriel(id, qte, qte_stock);
 	}
 	@PostMapping("/deleteMateriel")
-	void deleteMateriel(@RequestParam String id) {
+	void deleteMateriel(@RequestParam int id, @RequestParam String qte) {
+	    service.deleteMateriel(id, qte);
+	}
+	@PostMapping("/deleteMaterielAll")
+	void deleteMateriel(@RequestParam int id) {
 	    service.deleteMateriel(id);
 	}
 	@PostMapping("/deleteMateriau")

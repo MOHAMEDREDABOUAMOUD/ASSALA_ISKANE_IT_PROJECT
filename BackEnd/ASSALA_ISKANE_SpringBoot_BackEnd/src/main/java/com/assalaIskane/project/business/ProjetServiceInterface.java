@@ -26,6 +26,7 @@ public interface ProjetServiceInterface {
 	List<Projet> getProjet(String id_resp);
 	List<Projet> getProjets(String id_resp);
 	List<Projet> getProjets();
+	List<Materiel> getMateriels();
 	List<Materiel_chantier> getMaterielsChantiers(String id_projet);
 	List<Materiaux_chantier> getMateriauxChantiers(String id_projet);
 	void addBesoin(String nom, Date date_demande, String qte, String valide_par, String id_projet);
@@ -43,10 +44,11 @@ public interface ProjetServiceInterface {
 	List<Absence> getAbsencesSC(String id_projet, Date date_debut, Date date_fin);
 	List<User> getCC();
 	List<User> getRP();
-	public void addMaterielToChantier(String nom, String qte, String prix, String idProjet);
+	public void addMaterielToChantier(int id_materiel, String qte, String idProjet);
 	public void addMateriauxToChantier(String nom, String type, String qte, String prix, String idProjet);
 	public void updateMateriaux(String id, String qte);
-	public void updateMateriel(String id, String qte);
+	public void updateMateriel(int id, String qte, String qte_stock);
 	public void deleteMateriau(String id);
-	public void deleteMateriel(String id);
+	public void deleteMateriel(int id, String qte);
+	public void deleteMateriel(int id);
 }

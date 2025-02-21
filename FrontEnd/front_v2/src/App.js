@@ -39,6 +39,7 @@ import ListMaterialsST from './components/service_technique/list_materials.js';
 import NeedsListST from './components/service_technique/needsList.js';
 import FileListST from './components/service_technique/filesList.js';
 import AddProject from './components/service_technique/add_projet.js';
+import StockST from './components/service_technique/stockST.js';
 function App() {
   return (
     <Router>
@@ -84,6 +85,7 @@ function App() {
           <Route path="/homePST/:idProjet" element={<HomePST />} />
           <Route path="/absencesST/:idProjet" element={<OuvriersAbsencesST />} />
           <Route path="/materialsST/:idProjet" element={<ListMaterialsST />} />
+          <Route path="/stockST/:idProjet" element={<StockST />} />
           <Route path="/needsST/:idProjet" element={<NeedsListST />} />
           <Route path="/filesST/:idProjet" element={<FileListST />} />
           <Route path="/addProjet" element={<AddProject />} />

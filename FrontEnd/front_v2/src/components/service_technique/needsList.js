@@ -71,6 +71,7 @@ const NeedsListST = () => {
           <ul className="sidebar-menu">
             <li><a href={`/list-workersST/${idProjet}`}>Liste des employés</a></li>
             <li><a href={`/materialsST/${idProjet}`}>Liste des matériaux</a></li>
+            <li><a href={"/stockST/"+idProjet}>visualiser stock</a></li>
             <li><a href={"/filesST/"+idProjet}>liste des fichiers</a></li>
             <li><a href={`/needsST/${idProjet}`}>Liste des besoins</a></li>
             <li>
