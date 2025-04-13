@@ -16,6 +16,21 @@ const ListMaterialsST = () => {
   const [newMateriau, setNewMateriau] = useState({ nom: '', type: '', qte: '', prix: '' });
   const navigate = useNavigate();
 
+  const [stockMaterials, setStockMaterials] = useState([]);
+
+  useEffect(() => {
+    const fetchStockMaterials = async () => {
+      try {
+        const response = await api.get('http://localhost:9092/assalaiskane/getMateriels');
+        setStockMaterials(response.data);
+      } catch (error) {
+        console.error('Error fetching stock materials:', error);
+      }
+    };
+
+    fetchStockMaterials();
+  }, []);
+
   useEffect(() => {
     const fetchMaterials = async () => {
       try {
@@ -31,7 +46,9 @@ const ListMaterialsST = () => {
             id: material.materiel.id,
             nom: material.materiel.nom,
             qte: material.qte,
-            prix: material.materiel.prix
+            qte_stock: material.materiel.qte,
+            prix: material.materiel.prix,
+            diff: 0
           };
         });
 
@@ -99,15 +116,28 @@ const ListMaterialsST = () => {
   }, [searchMateriaux, materiaux]);
 
   const handleAddMaterial = async () => {
-    if (newMaterial.nom && newMaterial.qte && newMaterial.prix) {
+    if (newMaterial.id && newMaterial.qte) {
       try {
-        const { nom, qte, prix } = newMaterial;
+        const selectedMaterial = stockMaterials.find(material => material.id === parseInt(newMaterial.id));
+        if (!selectedMaterial) {
+          alert('Matériel non trouvé dans le stock');
+          return;
+        }
+
+        const { id, nom, prix } = selectedMaterial;
+        const qte = parseInt(newMaterial.qte);
+
+        if (qte > selectedMaterial.qte) {
+          alert('La quantité demandée dépasse la quantité disponible en stock');
+          return;
+        }
+
         const response = await api.post(
-          `http://localhost:9092/assalaiskane/addMateriel?nom=${nom}&qte=${qte}&prix=${prix}&idProjet=${idProjet}`
+          `http://localhost:9092/assalaiskane/addMateriel?id_materiel=${id}&qte=${qte}&idProjet=${idProjet}`
         );
-        // const addedMaterial = response.data;
-        setMaterials((prev) => [...prev, newMaterial]); // Mise à jour de la liste
-        setNewMaterial({ nom: '', qte: '', prix: '' });
+
+        setMaterials((prev) => [...prev, { id: selectedMaterial.id, nom, qte, prix }]);
+        setNewMaterial({ id: '', qte: '' });
         alert('Le matériel a été bien ajouté');
       } catch (error) {
         console.error('Error adding material:', error);
@@ -134,21 +164,28 @@ const ListMaterialsST = () => {
     }
   };
   const handleQuantityChangeMaterial = (id, value) => {
+    if (value < 0) return;
     setSearchedMaterials((prev) =>
-      prev.map((material) =>
-        material.id === id ? { ...material, qte: value } : material
-      )
+      prev.map((material) => {
+        console.log(value - material.qte + material.diff);
+        return material.id === id ? { ...material, diff: value - material.qte + material.diff, qte: value } : material;
+      })
     );
   };
 
   const handleSaveMaterial = async (material) => {
     try {
+      if (material.qte_stock - material.diff < 0) {
+        alert('vous avez depasser le nombre de ce materiel existant dans le stock');
+        return;
+      }
+      console.log("qte stock : " + (material.qte_stock - material.diff));
       const response = await api.post(
-        `http://localhost:9092/assalaiskane/updateMateriel?id=${material.id}&qte=${material.qte}`
+        `http://localhost:9092/assalaiskane/updateMateriel?id=${material.id}&qte=${material.qte}&qte_stock=${(material.qte_stock - material.diff)}`
       );
       setSearchedMaterials((prev) =>
         prev.map((mat) =>
-          mat.id === material.id ? { ...mat, qte: material.qte } : mat
+          mat.id === material.id ? { ...mat, qte: material.qte, qte_stock: material.qte_stock - material.diff, diff: 0 } : mat
         )
       );
       alert('Quantité mise à jour');
@@ -183,10 +220,10 @@ const ListMaterialsST = () => {
     }
   };
 
-  const handleDeleteMaterial = async (id) => {
+  const handleDeleteMaterial = async (id, qte) => {
     try {
       await api.post(
-        `http://localhost:9092/assalaiskane/deleteMateriel?id=${id}`
+        `http://localhost:9092/assalaiskane/deleteMateriel?id=${id}&qte=${qte}`
       );
       setSearchedMaterials((prev) => prev.filter((material) => material.id !== id));
       alert('Matériel supprimé');
@@ -232,6 +269,7 @@ const ListMaterialsST = () => {
           <ul className="sidebar-menu">
             <li><a href={`/list-workersST/${idProjet}`}>Liste des employés</a></li>
             <li><a href={`/materialsST/${idProjet}`}>Liste des matériaux</a></li>
+            <li><a href={"/stockST/" + idProjet}>visualiser stock</a></li>
             <li><a href={"/filesST/" + idProjet}>liste des fichiers</a></li>
             <li><a href={`/needsST/${idProjet}`}>Liste des besoins</a></li>
             <li>
@@ -247,24 +285,21 @@ const ListMaterialsST = () => {
             <div className="list-materials-container">
               <h2>Ajout d'un Matériel</h2>
               <div className="form-container">
-                <input
-                  type="text"
-                  placeholder="Nom du matériel"
-                  value={newMaterial.nom}
-                  onChange={(e) => setNewMaterial({ ...newMaterial, nom: e.target.value })}
-                />
-                <input
-                  type="number"
-                  placeholder="Quantité"
-                  value={newMaterial.qte}
-                  onChange={(e) => setNewMaterial({ ...newMaterial, qte: e.target.value })}
-                />
-                <input
-                  type="number"
-                  placeholder="Prix"
-                  value={newMaterial.prix}
-                  onChange={(e) => setNewMaterial({ ...newMaterial, prix: e.target.value })}
-                />
+                <div>
+                  <label>Nom du matériel:</label>
+                  <div className="select-container">
+                    <select value={newMaterial.id} onChange={(e) => setNewMaterial({ ...newMaterial, id: e.target.value })}>
+                      <option value="">Sélectionnez un matériel</option>
+                      {stockMaterials.map((material) => (
+                        <option key={material.id} value={material.id}>{material.nom}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+                <div>
+                  <label>Quantité:</label>
+                  <input type="number" value={newMaterial.qte} onChange={(e) => setNewMaterial({ ...newMaterial, qte: e.target.value })} />
+                </div>
                 <button onClick={handleAddMaterial}>Ajouter</button>
               </div>
               <h2>Liste des Matériels</h2>
@@ -301,7 +336,7 @@ const ListMaterialsST = () => {
                           <button onClick={() => handleSaveMaterial(material)}>Enregistrer</button>
                         </td>
                         <td>
-                          <button onClick={() => handleDeleteMaterial(material.id)}>
+                          <button onClick={() => handleDeleteMaterial(material.id, material.qte)}>
                             <FaTrash />
                           </button>
                         </td>

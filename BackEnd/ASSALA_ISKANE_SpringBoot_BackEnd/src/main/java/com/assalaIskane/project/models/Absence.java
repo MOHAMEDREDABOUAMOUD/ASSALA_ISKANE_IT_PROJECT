@@ -19,18 +19,22 @@ public class Absence {
 	@JoinColumn(name = "id_chantier")
 	private Chantier chantier;
 	private int absent;
+	@ManyToOne
+	@JoinColumn(name = "valide_par")
+	private User valide_par;
 	
 	public Absence() {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public Absence(int id, Ouvrier ouvrier, Date date_absence, Chantier chantier, int absent) {
+	public Absence(int id, Ouvrier ouvrier, Date date_absence, Chantier chantier, int absent, User valide_par) {
 		super();
 		this.id = id;
 		this.ouvrier = ouvrier;
 		this.date_absence = date_absence;
 		this.chantier = chantier;
 		this.absent = absent;
+		this.valide_par = valide_par;
 	}
 
 	public int getId() {
@@ -73,10 +77,18 @@ public class Absence {
 		this.absent = absent;
 	}
 
+	public User getValide_par() {
+		return valide_par;
+	}
+
+	public void setValide_par(User valide_par) {
+		this.valide_par = valide_par;
+	}
+
 	@Override
 	public String toString() {
 		return "Absence [id=" + id + ", ouvrier=" + ouvrier + ", date_absence=" + date_absence + ", chantier="
-				+ chantier + ", absent=" + absent + "]";
+				+ chantier + ", absent=" + absent + ", valide_par=" + valide_par + "]";
 	}
 
 }

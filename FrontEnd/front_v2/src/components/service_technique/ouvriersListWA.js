@@ -34,7 +34,7 @@ const OuvriersAbsencesST = () => {
 
         try {
             setError('');
-            const response = await api.get(`/getAbsences?id_projet=${idProjet}&date_debut=${dateStart}&date_fin=${dateEnd}`);
+            const response = await api.get(`/getAbsencesSC?id_projet=${idProjet}&date_debut=${dateStart}&date_fin=${dateEnd}`);
             if (response.status === 200 && response.data.length > 0) {
                 setAbsences(response.data);
                 setDaysInterval(generateDateRange(dateStart, dateEnd));
@@ -117,6 +117,7 @@ const OuvriersAbsencesST = () => {
                 <ul className="sidebar-menu">
                     <li><a href={"/absencesST/"+idProjet}>liste des employés</a></li>
                     <li><a href={"/materialsST/"+idProjet}>liste des materials</a></li>
+                    <li><a href={"/stockST/"+idProjet}>visualiser stock</a></li>
                     <li><a href={"/filesST/"+idProjet}>liste des fichiers</a></li>
                     <li><a href={`/needsST/${idProjet}`}>Liste des besoins</a></li>
                     <li>

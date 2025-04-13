@@ -34,8 +34,13 @@ public class ProjetService implements ProjetServiceInterface{
 	}
 
 	@Override
-	public void AddAbsence(String id_ouvrier, Date date_absence, int id_chantier, int absent) {
-		projetDao.addAbsence(id_ouvrier, date_absence, id_chantier, absent);
+	public void AddAbsence(String id_ouvrier, Date date_absence, int id_chantier, int absent, String valide_par) {
+		projetDao.addAbsence(id_ouvrier, date_absence, id_chantier, absent, valide_par);
+	}
+	
+	@Override
+	public void ValiderAbsence(int id, String valide_par) {
+		projetDao.validerAbsence(id, valide_par);
 	}
 
 	@Override
@@ -92,6 +97,11 @@ public class ProjetService implements ProjetServiceInterface{
 	@Override
 	public List<Absence> getAbsences(String id_projet, Date date_debut, Date date_fin) {
 		return projetDao.getAbsences(id_projet, date_debut, date_fin);
+	}
+	
+	@Override
+	public List<Absence> getAbsencesSC(String id_projet, Date date_debut, Date date_fin) {
+		return projetDao.getAbsencesSC(id_projet, date_debut, date_fin);
 	}
 
 	@Override
@@ -150,24 +160,15 @@ public class ProjetService implements ProjetServiceInterface{
 	}
 
 	@Override
-	public void addMaterielToChantier(String nom, String qte, String prix, String idProjet) {
-	    // Appeler la méthode pour insérer le matériel et récupérer son ID
-	    projetDao.addMateriel(nom, qte, prix);
-	    
-	    int idMateriel = projetDao.getLastInsertedId();
-
-	    // Appeler la méthode pour associer le matériel au chantier
-	    projetDao.addMaterialChantier(idMateriel, idProjet, qte);
+	public void addMaterielToChantier(int id_materiel, String qte, String idProjet) {
+		projetDao.updateMateriel2(id_materiel, qte);
+	    projetDao.addMaterialChantier(id_materiel, idProjet, qte);
 	}
 
 	@Override
 	public void addMateriauxToChantier(String nom, String type, String qte, String prix, String idProjet) {
-	    // Appeler la méthode pour insérer le matériel et récupérer son ID
 	    projetDao.addMateriaux(nom, type, qte, prix);
-	    
 	    int idMateriau = projetDao.getLastInsertedId();
-
-	    // Appeler la méthode pour associer le matériel au chantier
 	    projetDao.addMateriauxChantier(idMateriau, idProjet, qte);
 	}
 	
@@ -177,8 +178,9 @@ public class ProjetService implements ProjetServiceInterface{
 	}
 	
 	@Override
-	public void updateMateriel(String id, String qte) {
-		projetDao.updateMateriel(id, qte);
+	public void updateMateriel(int id, String qte, String qte_stock) {
+		projetDao.updateMaterielC(id, qte);
+		projetDao.updateMateriel(id, qte_stock);
 	}
 	
 	@Override
@@ -187,7 +189,19 @@ public class ProjetService implements ProjetServiceInterface{
 	}
 	
 	@Override
-	public void deleteMateriel(String id) {
+	public void deleteMateriel(int id, String qte) {
+		projetDao.updateMateriel1(id, qte);
 		projetDao.deleteMateriel(id);
+	}
+	
+	@Override
+	public void deleteMateriel(int id) {
+		projetDao.deleteMateriel(id);
+		projetDao.deleteMaterielC(id);
+	}
+
+	@Override
+	public List<Materiel> getMateriels() {
+		return projetDao.getMateriels();
 	}
 }

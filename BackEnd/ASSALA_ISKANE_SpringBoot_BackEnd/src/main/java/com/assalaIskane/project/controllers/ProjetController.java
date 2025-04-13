@@ -39,8 +39,12 @@ public class ProjetController {
 		service.createProjet(id, nom, numero_marche, objet, new SimpleDateFormat("yyyy-MM-dd").parse(date_ordre), new SimpleDateFormat("yyyy-MM-dd").parse(date_fin), delai, id_resp, id_resp_chantier);
 	}
 	@PostMapping("/AddAbsence")
-	void AddAbsence(@RequestParam String id_ouvrier, @RequestParam String date_absence, @RequestParam int id_chantier, @RequestParam int absent) throws ParseException {
-		service.AddAbsence(id_ouvrier, new SimpleDateFormat("yyyy-MM-dd").parse(date_absence), id_chantier, absent);
+	void AddAbsence(@RequestParam String id_ouvrier, @RequestParam String date_absence, @RequestParam int id_chantier, @RequestParam int absent, @RequestParam String valide_par) throws ParseException {
+		service.AddAbsence(id_ouvrier, new SimpleDateFormat("yyyy-MM-dd").parse(date_absence), id_chantier, absent, valide_par);
+	}
+	@PostMapping("/ValiderAbsence")
+	void AddAbsence(@RequestParam int id, @RequestParam String valide_par) throws ParseException {
+		service.ValiderAbsence(id, valide_par);
 	}
 	@PostMapping("/AddFichier")
     public String handleFileUpload(@RequestParam("nom") String nom, @RequestParam("fichier") MultipartFile fichier, @RequestParam("id_projet") String id_projet) {
@@ -82,6 +86,10 @@ public class ProjetController {
 	List<Materiel_chantier> getMaterielsChantiers(@RequestParam String id_projet) {
 		System.out.println("els : "+service.getMaterielsChantiers(id_projet).size()+" : "+service.getMaterielsChantiers(id_projet).get(0));
 		return service.getMaterielsChantiers(id_projet);
+	}
+	@GetMapping("/getMateriels")
+	List<Materiel> getMateriels() {
+		return service.getMateriels();
 	}
 	@GetMapping("/getMateriauxChantiers")
 	List<Materiaux_chantier> getMateriauxChantiers(@RequestParam String id_projet) {
@@ -128,6 +136,13 @@ public class ProjetController {
 		}
 		return service.getAbsences(id_projet, new SimpleDateFormat("yyyy-MM-dd").parse(date_debut), new SimpleDateFormat("yyyy-MM-dd").parse(date_fin));
 	}
+	@GetMapping("/getAbsencesSC")
+	List<Absence> getAbsencesSC(@RequestParam String id_projet, @RequestParam String date_debut, @RequestParam String date_fin) throws ParseException{
+		for (Absence a : service.getAbsencesSC(id_projet, new SimpleDateFormat("yyyy-MM-dd").parse(date_debut), new SimpleDateFormat("yyyy-MM-dd").parse(date_fin))) {
+			System.out.println(a);
+		}
+		return service.getAbsencesSC(id_projet, new SimpleDateFormat("yyyy-MM-dd").parse(date_debut), new SimpleDateFormat("yyyy-MM-dd").parse(date_fin));
+	}
 	@PostMapping("/validateBesoin")
 	void validateBesoin(@RequestParam String id_resp, @RequestParam String id_besoin){
 		service.validateBesoin(id_resp, id_besoin);
@@ -145,8 +160,8 @@ public class ProjetController {
 		return service.getRP();
 	}
 	@PostMapping("/addMateriel")
-	void addMateriel(@RequestParam String nom, @RequestParam String qte, @RequestParam String prix, @RequestParam String idProjet) {
-	    service.addMaterielToChantier(nom, qte, prix, idProjet);
+	void addMateriel(@RequestParam int id_materiel, @RequestParam String qte, @RequestParam String idProjet) {
+	    service.addMaterielToChantier(id_materiel, qte, idProjet);
 	}
 	@PostMapping("/addMateriaux")
 	void addMateriaux(@RequestParam String nom, @RequestParam String type, @RequestParam String qte, @RequestParam String prix, @RequestParam String idProjet) {
@@ -157,11 +172,15 @@ public class ProjetController {
 	    service.updateMateriaux(id, qte);
 	}
 	@PostMapping("/updateMateriel")
-	void updateMateriel(@RequestParam String id, @RequestParam String qte) {
-	    service.updateMateriel(id, qte);
+	void updateMateriel(@RequestParam int id, @RequestParam String qte, @RequestParam String qte_stock) {
+	    service.updateMateriel(id, qte, qte_stock);
 	}
 	@PostMapping("/deleteMateriel")
-	void deleteMateriel(@RequestParam String id) {
+	void deleteMateriel(@RequestParam int id, @RequestParam String qte) {
+	    service.deleteMateriel(id, qte);
+	}
+	@PostMapping("/deleteMaterielAll")
+	void deleteMateriel(@RequestParam int id) {
 	    service.deleteMateriel(id);
 	}
 	@PostMapping("/deleteMateriau")
