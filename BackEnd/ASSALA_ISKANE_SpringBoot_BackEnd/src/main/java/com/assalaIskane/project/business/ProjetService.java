@@ -162,14 +162,16 @@ public class ProjetService implements ProjetServiceInterface{
 	@Override
 	public void addMaterielToChantier(int id_materiel, String qte, String idProjet) {
 		projetDao.updateMateriel2(id_materiel, qte);
-	    projetDao.addMaterialChantier(id_materiel, idProjet, qte);
+		java.sql.Date date = new java.sql.Date(System.currentTimeMillis());
+	    projetDao.addMaterialChantier(id_materiel, idProjet, qte, date);
 	}
 
 	@Override
 	public void addMateriauxToChantier(String nom, String type, String qte, String prix, String idProjet) {
 	    projetDao.addMateriaux(nom, type, qte, prix);
 	    int idMateriau = projetDao.getLastInsertedId();
-	    projetDao.addMateriauxChantier(idMateriau, idProjet, qte);
+	    java.sql.Date date = new java.sql.Date(System.currentTimeMillis());
+	    projetDao.addMateriauxChantier(idMateriau, idProjet, qte, date);
 	}
 	
 	@Override

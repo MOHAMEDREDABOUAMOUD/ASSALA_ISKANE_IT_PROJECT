@@ -136,8 +136,8 @@ public interface ProjetRepository extends JpaRepository<Projet, String> {
 
 	@Modifying
 	@Transactional
-	@Query(value = "INSERT INTO materiel_chantier (id_materiel, id_chantier, qte) VALUES (:idMateriel, (select c.id from Chantier c where c.id_projet = :idProjet), :qte)", nativeQuery = true)
-	void addMaterialChantier(@Param("idMateriel") int idMateriel, @Param("idProjet") String idProjet, @Param("qte") String qte);
+	@Query(value = "INSERT INTO materiel_chantier (id_materiel, id_chantier, qte, date_entre) VALUES (:idMateriel, (select c.id from Chantier c where c.id_projet = :idProjet), :qte, :date_entre)", nativeQuery = true)
+	void addMaterialChantier(@Param("idMateriel") int idMateriel, @Param("idProjet") String idProjet, @Param("qte") String qte, @Param("date_entre") Date date_entre);
 	
 	@Modifying
 	@Transactional
@@ -151,8 +151,8 @@ public interface ProjetRepository extends JpaRepository<Projet, String> {
 
 	@Modifying
 	@Transactional
-	@Query(value = "INSERT INTO materiaux_chantier (id_materiaux, id_chantier, qte) VALUES (:idMateriau, (select c.id from Chantier c where c.id_projet = :idProjet), :qte)", nativeQuery = true)
-	void addMateriauxChantier(@Param("idMateriau") int idMateriau, @Param("idProjet") String idProjet, @Param("qte") String qte);
+	@Query(value = "INSERT INTO materiaux_chantier (id_materiaux, id_chantier, qte, date_entre) VALUES (:idMateriau, (select c.id from Chantier c where c.id_projet = :idProjet), :qte, :date_entre)", nativeQuery = true)
+	void addMateriauxChantier(@Param("idMateriau") int idMateriau, @Param("idProjet") String idProjet, @Param("qte") String qte, @Param("date_entre") Date date_entre);
 
 	@Modifying
 	@Transactional
