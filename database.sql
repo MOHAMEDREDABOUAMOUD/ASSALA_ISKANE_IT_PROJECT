@@ -21,12 +21,12 @@ alter table absence add constraint foreign key (id_chantier) references chantier
 create table stock(id int primary key auto_increment, gerant varchar(50), numero varchar(15), email varchar(30));
 create table materiel(id int primary key auto_increment, nom varchar(20), qte int, prix float, id_stock int);
 alter table materiel add constraint foreign key (id_stock) references stock(id);
-create table materiel_chantier(id int primary key auto_increment, id_materiel int, id_chantier int, qte int);
+create table materiel_chantier(id int primary key auto_increment, id_materiel int, id_chantier int, qte int, date_entre date);
 alter table materiel_chantier add constraint foreign key (id_materiel) references materiel(id);
 alter table materiel_chantier add constraint foreign key (id_chantier) references chantier(id);
 create table materiaux(id int primary key auto_increment, nom varchar(50), type varchar(20), qte int, prix float, id_stock int);
 alter table materiaux add constraint foreign key (id_stock) references stock(id);
-create table materiaux_chantier(id int primary key auto_increment, id_materiaux int, id_chantier int, qte int);
+create table materiaux_chantier(id int primary key auto_increment, id_materiaux int, id_chantier int, qte int, date_entre date);
 alter table materiaux_chantier add constraint foreign key (id_materiaux) references materiaux(id);
 alter table materiaux_chantier add constraint foreign key (id_chantier) references chantier(id);
 create table rapport_jour(id int primary key, date_rj date, temperature varchar(50), pluie varchar(50), vent varchar(50), remarque varchar(150), id_chantier int);
