@@ -1,8 +1,10 @@
 import axios from 'axios';
 
-// Crée une instance Axios avec une URL de base
+// Use environment variable for API URL (set in Docker) or fallback to localhost
+const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:9092/assalaiskane/";
+
 const api = axios.create({
-  baseURL: 'http://localhost:9092/assalaiskane/', // Remplace par l'URL de ton serveur Spring Boot
+  baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
