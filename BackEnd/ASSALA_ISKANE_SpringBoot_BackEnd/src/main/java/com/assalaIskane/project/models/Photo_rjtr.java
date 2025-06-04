@@ -1,11 +1,22 @@
 package com.assalaIskane.project.models;
 
-import java.util.Base64;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
+@Entity
 public class Photo_rjtr {
+	@Id
+	private int id;
+	@ManyToOne
+	@JoinColumn(name = "id_rj_tr")
 	private Rj_travaux_realiser rjtr;
-	private Base64 photo;
+	private byte[] photo;
 	
+	public Photo_rjtr() {
+		// TODO Auto-generated constructor stub
+	}
 	public Rj_travaux_realiser getRjtr() {
 		return rjtr;
 	}
@@ -14,15 +25,15 @@ public class Photo_rjtr {
 		this.rjtr = rjtr;
 	}
 
-	public Base64 getPhoto() {
+	public byte[] getPhoto() {
 		return photo;
 	}
 
-	public void setPhoto(Base64 photo) {
+	public void setPhoto(byte[] photo) {
 		this.photo = photo;
 	}
 
-	public Photo_rjtr(Rj_travaux_realiser rjtr, Base64 photo) {
+	public Photo_rjtr(Rj_travaux_realiser rjtr, byte[] photo) {
 		super();
 		this.rjtr = rjtr;
 		this.photo = photo;

@@ -1,13 +1,25 @@
 package com.assalaIskane.project.models;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+@Entity
 public class Materiaux {
+	@Id
 	private int id;
 	private String nom;
 	private String type;
 	private int qte;
 	private float prix;
+	@ManyToOne
+	@JoinColumn(name = "id_stock")
 	private Stock stock;
 	
+	public Materiaux() {
+		// TODO Auto-generated constructor stub
+	}
 	public Materiaux(int id, String nom, String type, int qte, float prix, Stock stock) {
 		super();
 		this.id = id;

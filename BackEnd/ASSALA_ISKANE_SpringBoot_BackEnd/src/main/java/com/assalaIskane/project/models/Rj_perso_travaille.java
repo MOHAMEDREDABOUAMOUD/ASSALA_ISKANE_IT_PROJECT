@@ -1,9 +1,25 @@
 package com.assalaIskane.project.models;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+@Entity
 public class Rj_perso_travaille {
+	@Id
+	private int id;
+	@ManyToOne
+	@JoinColumn(name = "id_rj")
 	private Rapport_jour rj;
 	private String type;
+	@ManyToOne
+	@JoinColumn(name = "id_ouvrier")
 	private Ouvrier ouvrier;
+	
+	public Rj_perso_travaille() {
+		// TODO Auto-generated constructor stub
+	}
 	public Rj_perso_travaille(Rapport_jour rj, String type, Ouvrier ouvrier) {
 		super();
 		this.rj = rj;

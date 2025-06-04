@@ -1,11 +1,19 @@
 package com.assalaIskane.project.models;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Stock {
+	@Id
 	private int id;
 	private String gerant;
 	private String numero;
 	private String email;
 	
+	public Stock() {
+		// TODO Auto-generated constructor stub
+	}
 	public Stock(int id, String gerant, String numero, String email) {
 		super();
 		this.id = id;

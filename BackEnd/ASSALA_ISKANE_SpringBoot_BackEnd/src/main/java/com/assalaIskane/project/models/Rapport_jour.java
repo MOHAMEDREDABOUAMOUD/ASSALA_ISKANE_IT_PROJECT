@@ -2,14 +2,27 @@ package com.assalaIskane.project.models;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+@Entity
 public class Rapport_jour {
+	@Id
 	private int id;
 	private Date date_rj;
 	private String temperature;
 	private String pluie;
 	private String vent;
 	private String remarque;
+	@ManyToOne
+	@JoinColumn(name = "id_chantier")
 	private Chantier chantier;
+	
+	public Rapport_jour() {
+		// TODO Auto-generated constructor stub
+	}
 	public Rapport_jour(int id, Date date_rj, String temperature, String pluie, String vent, String remarque,
 			Chantier chantier) {
 		super();

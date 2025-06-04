@@ -1,10 +1,24 @@
 package com.assalaIskane.project.models;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+@Entity
 public class Chantier {
+	@Id
 	private int id;
+	@ManyToOne
+	@JoinColumn(name = "id_projet")
 	private Projet projet;
+	@ManyToOne
+	@JoinColumn(name = "id_resp")
 	private User resp;
 	
+	public Chantier() {
+		// TODO Auto-generated constructor stub
+	}
 	public Chantier(int id, Projet projet, User resp) {
 		super();
 		this.id = id;

@@ -1,16 +1,31 @@
 package com.assalaIskane.project.models;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+@Entity
 public class Ouvrier {
+	@Id
 	private String id;
 	private String nom;
 	private String prenom;
 	private String numero;
-	public Ouvrier(String id, String nom, String prenom, String numero) {
+	@ManyToOne
+	@JoinColumn(name = "id_projet")
+	private Projet projet;
+	
+	public Ouvrier() {
+		// TODO Auto-generated constructor stub
+	}
+	public Ouvrier(String id, String nom, String prenom, String numero, Projet projet) {
 		super();
 		this.id = id;
 		this.nom = nom;
 		this.prenom = prenom;
 		this.numero = numero;
+		this.projet = projet;
 	}
 	public String getId() {
 		return id;
@@ -36,9 +51,16 @@ public class Ouvrier {
 	public void setNumero(String numero) {
 		this.numero = numero;
 	}
+	public Projet getProjet() {
+		return projet;
+	}
+	public void setProjet(Projet projet) {
+		this.projet = projet;
+	}
 	@Override
 	public String toString() {
-		return "Ouvrier [id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", numero=" + numero + "]";
+		return "Ouvrier [id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", numero=" + numero + ", projet=" + projet
+				+ "]";
 	}
 	
 }

@@ -1,0 +1,32 @@
+version: "3.8"
+services:
+  frontend:
+    image: react-app
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: mysql-1
+      MYSQL_ROOT_PASSWORD: reda
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  backend:
+    image: spring-app
+    ports:
+      - "9092:9092"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/assalaIskane?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: reda
+    depends_on:
+      - mysql
+
+volumes:
+  mysql_data:
