@@ -17,8 +17,6 @@ jobs:
           MYSQL_ROOT_PASSWORD: reda
         ports:
           - 3306:3306
-        volumes:
-          - ./mysql-init:/docker-entrypoint-initdb.d
         healthcheck:
           test: ["CMD", "mysqladmin", "ping", "--silent"]
           interval: 10s
