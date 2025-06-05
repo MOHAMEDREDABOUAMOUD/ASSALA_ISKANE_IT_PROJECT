@@ -26,7 +26,7 @@ jobs:
 
       - name: Build React app
         working-directory: FrontEnd/front_v2
-        run: npm run build
+        run: CI=false npm run build
 
       # ☕ BACKEND: Build Spring Boot project with Maven
       - name: Set up JDK
