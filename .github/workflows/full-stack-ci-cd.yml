@@ -158,7 +158,7 @@ jobs:
                                               (1, '0xFFD8FFE2'),
                                               (2, '0xFFD8FFE3');
 
-                                              INSERT INTO rj_materiels_materiaux (id_rj, designation, unité, qte) VALUES
+                                              INSERT INTO rj_materiels_materiaux (id_rj, designation, unite, qte) VALUES
                                               (1, 'Cement', 'T', 20),
                                               (2, 'Steel', 'T', 15);
 
@@ -236,7 +236,7 @@ jobs:
                                               (1, '0xFFD8FFE2'),
                                               (2, '0xFFD8FFE3');
 
-                                              INSERT INTO rj_materiels_materiaux (id_rj, designation, unité, qte) VALUES
+                                              INSERT INTO rj_materiels_materiaux (id_rj, designation, unite, qte) VALUES
                                               (1, 'Cement', 'T', 20),
                                               (2, 'Steel', 'T', 15);
 
