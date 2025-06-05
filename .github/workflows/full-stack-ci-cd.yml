@@ -21,11 +21,11 @@ jobs:
           node-version: '18'
 
       - name: Install dependencies (React)
-        working-directory: Frontend/front_v2
+        working-directory: FrontEnd/front_v2
         run: npm install
 
       - name: Build React app
-        working-directory: Frontend/front_v2
+        working-directory: FrontEnd/front_v2
         run: npm run build
 
       # ☕ BACKEND: Build Spring Boot project with Maven
@@ -36,7 +36,7 @@ jobs:
           java-version: '17'
 
       - name: Build with Maven
-        working-directory: Backend/ASSALA_ISKANE_SpringBoot_BackEnd
+        working-directory: BackEnd/ASSALA_ISKANE_SpringBoot_BackEnd
         run: mvn clean install
 
   # Optional: Dockerize and deploy (CD)
