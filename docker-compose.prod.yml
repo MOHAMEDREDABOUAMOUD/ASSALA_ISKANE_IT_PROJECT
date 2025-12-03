@@ -1,0 +1,10 @@
+services:
+  frontend:
+    environment:
+      - NODE_ENV=production
+    command: ["npm", "run", "build"]
+
+  backend:
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    command: ["java", "-jar", "target/ASSALA_ISKANE_BackEnd.jar"]

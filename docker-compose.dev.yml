@@ -1,0 +1,14 @@
+services:
+  frontend:
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./FrontEnd/front_v2:/app
+    command: ["npm", "start"]
+
+  backend:
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    volumes:
+      - ./BackEnd/ASSALA_ISKANE_SpringBoot_BackEnd:/app
+    command: ["./mvnw", "spring-boot:run"]
